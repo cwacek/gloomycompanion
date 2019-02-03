@@ -387,3 +387,21 @@ DECK_DEFINITONS =
             ]
         }
 ];
+
+OTHER = []
+
+DECK_DEFINITONS.forEach(function(def) {
+    var newCards = []
+    def.cards.forEach(function(card) {
+        newCard = {
+            shuffle: card[0],
+            initiative: parseInt(card[1]),
+            actions: card.slice(2)
+        }
+        newCards.push(newCard)
+    })
+    OTHER.push({
+        class: def.class,
+        cards: newCards
+    })
+})
