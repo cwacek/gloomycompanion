@@ -1,6 +1,7 @@
 import {shuffle_list} from '../util'
 
 export interface ICard {
+    monster : IMonster;
     shuffle : boolean;
     initiative : number;
     actions : string[];
@@ -51,7 +52,7 @@ const DECKS : {[key :string] : IMonster} =
 };
 
 
-const DECK_DEFINITIONS: { class: string; cards: ICard[] }[] = [
+const DECK_DEFINITIONS: { class: string; cards: {shuffle: boolean, initiative:number, actions: string[]}[] }[] = [
   {
     class: "Ancient Artillery",
     cards: [
@@ -1861,9 +1862,9 @@ const DECK_DEFINITIONS: { class: string; cards: ICard[] }[] = [
 
 
 export class MonsterDeck {
-    private monster : IMonster;
-    private deck : ICard[];
-    private drawn : ICard[] = [];
+    readonly monster : IMonster;
+    readonly deck : ICard[];
+    readonly drawn : ICard[] = [];
 
     constructor(name : string) {
         this.monster = DECKS[name];
@@ -1874,12 +1875,22 @@ export class MonsterDeck {
         if (!thing) {
             throw new Error(`Failed to find deck for ${name}`);
         }
-        this.deck = thing.cards.slice();
-
+        this.deck = thing.cards.map(card => {
+            return {
+                monster: this.monster,
+                initiative: card.initiative,
+                actions: card.actions,
+                shuffle: card.shuffle
+            } as ICard;
+        })
         shuffle_list(this.deck);
     }
 
-    drawCard() : ICard {
+    get drawnCard() : ICard {
+        return this.drawn[-1]; 
+    }
+
+    drawCard() : ICard | undefined {
         if (this.drawn.length > 0 && this.drawn[0].shuffle) {
             while (this.drawn.length > 0) {
                 let card = this.drawn.pop()
@@ -1887,6 +1898,7 @@ export class MonsterDeck {
             }
 
             shuffle_list(this.deck);
+            return undefined;
         }
 
         let card = this.deck.pop();

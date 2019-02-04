@@ -28,6 +28,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "autobind-decorator": "^2.4.0",
     "typings-for-css-modules-loader": "^1.7.0"
   }
 }

@@ -1,0 +1,25 @@
+
+.app-surface {
+    padding: 10px;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 16% auto;
+    background-color: black;
+    background-size: cover;
+}
+
+.card-area {
+    display: grid;
+    grid-auto-columns: 20em;
+    grid-column-gap: 10px;
+}
+
+.monster-column {
+    height: 0 auto;
+
+}
+
+.monsters {
+    display: grid;
+    grid-auto-rows: 50px;
+}
