@@ -11,7 +11,7 @@
 .card-area {
     display: grid;
     grid-auto-columns: 20em;
-    grid-column-gap: 10px;
+    grid-column-gap: 20px;
 }
 
 .monster-column {

@@ -19,18 +19,19 @@ class Deck extends Component<IProps, IState>  {
 
   @autobind
   draw (evt : any) : void {
-    debugger
     this.setState({shownCard: this.props.deck.drawCard()})
   }
 
   render() {
-    let cardClasses = [styles.card, styles.ability, styles.draw ]
+    let cardClasses = [styles.card, styles.ability ]
     if (this.state.shownCard) {
-      cardClasses.push(styles.down);
       cardClasses.push(styles.front);
+      cardClasses.push(styles.discard);
+      cardClasses.push(styles.pull);
     } else {
       cardClasses.push(styles.up);
       cardClasses.push(styles.back);
+      cardClasses.push(styles.draw)
     }
 
     return (
