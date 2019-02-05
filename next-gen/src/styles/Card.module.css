@@ -202,7 +202,7 @@
 
     color:                      white;
     font-family:                'PirataOne';
-    font-size:                  100%;
+    font-size:                  110%;
     text-shadow:                1px 2px 3px black;
 
     background-clip:            content-box;
@@ -366,7 +366,11 @@
     font-family:                'Nyala', 'Sakkal Majalla', 'Philosopher', sans-serif;
 }
 
-.card>ul
+.cardDetails {
+    height: 100%;
+}
+
+.cardDetails>ul
 {
     position:                   relative;
     height:                     100%;
@@ -389,16 +393,16 @@
     justify-content:            center;
 }
 
-.card li
+.cardDetails li
 {
     margin:                     0.25em 0;
-    margin-left:                17%;
+    /*margin-left:                12%;*/
 }
 
-.card li li
+.cardDetails li li
 {
     font-size:                  75%;
-    margin:                     0;
+    margin:                     3px 0;
 }
 
 .small
@@ -475,7 +479,7 @@ div.collapse
 
     position:                   absolute;
     left:                       0;
-    top:                        18%;
+    top:                        22%;
     width:                      19%;
 }
 
@@ -536,7 +540,7 @@ div.collapse
     bottom:                     5%;
 }
 
-img[src="images/shuffle.svg"]
+img.shuffle
 {
     position:                   absolute;
     right:                      3%;

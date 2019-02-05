@@ -4,7 +4,7 @@ export interface ICard {
     monster : IMonster;
     shuffle : boolean;
     initiative : number;
-    actions : string[];
+    actions : IMonsterAction[];
 }
 
 export interface IMonster {
@@ -1860,6 +1860,11 @@ const DECK_DEFINITIONS: { class: string; cards: {shuffle: boolean, initiative:nu
   }
 ];
 
+interface IMonsterAction {
+    action : string
+    modifiers : string[]
+}
+
 
 export class MonsterDeck {
     readonly monster : IMonster;
@@ -1876,29 +1881,44 @@ export class MonsterDeck {
             throw new Error(`Failed to find deck for ${name}`);
         }
         this.deck = thing.cards.map(card => {
+            let actions : IMonsterAction[] = [];
+            card.actions.forEach(actionDef => {
+                if (actionDef.startsWith("**")) {
+                  let currentAction = actions[actions.length - 1];
+                  currentAction.modifiers.push(
+                    actionDef.substring(3)
+                  );
+                } else {
+                  actions.push({
+                    action: actionDef.substring(1),
+                    modifiers: []
+                  });
+                }
+            })
+
             return {
-                monster: this.monster,
-                initiative: card.initiative,
-                actions: card.actions,
-                shuffle: card.shuffle
+              monster: this.monster,
+              initiative: card.initiative,
+              actions: actions,
+              shuffle: card.shuffle
             } as ICard;
         })
         shuffle_list(this.deck);
     }
 
     get drawnCard() : ICard {
-        return this.drawn[-1]; 
+        return this.drawn[this.drawn.length-1]; 
     }
 
-    drawCard() : ICard | undefined {
-        if (this.drawn.length > 0 && this.drawn[0].shuffle) {
+    drawCard() : ICard | null {
+        if (this.drawn.length > 0 && this.drawn[this.drawn.length-1].shuffle) {
             while (this.drawn.length > 0) {
                 let card = this.drawn.pop()
                 if (card) {this.deck.push(card)};
             }
 
             shuffle_list(this.deck);
-            return undefined;
+            return null;
         }
 
         let card = this.deck.pop();

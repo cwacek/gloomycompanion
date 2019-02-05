@@ -1,0 +1,161 @@
+
+.small
+{
+    font-size:                  75%;
+}
+
+.elite-color
+{
+    color:                      gold;
+}
+
+.icon
+{
+    height:                     1.25em;
+    vertical-align:             text-bottom;
+}
+
+.mirrored
+{
+    -webkit-transform:          scale(-1,1);
+    transform:                  scale(-1,1);
+}
+
+.rotated
+{
+    -webkit-transform:          rotateZ(-60deg);
+    transform:                  rotateZ(-60deg);
+}
+
+.aoe
+{
+    vertical-align:             middle;
+}
+
+.aoe.h1 { height:               1.5em; }
+.aoe.h2 { height:               3em; }
+.aoe.h3 { height:               4.5em; }
+.aoe.h4 { height:               6em; }
+.aoe.h6 { height:               7.5em; }
+
+.aoe.right-aligned
+{
+    position:                   absolute;
+    top:                        0;
+    right:                      0;
+    bottom:                     0;
+    margin:                     auto 0;
+}
+
+div.collapse
+{
+    display:                    inline-block;
+    width:                      0;
+    height:                     1px; /* can't be 0 or MS Edge hides the whole div; sigh */
+}
+
+.element
+{
+    height:                     1.75em;
+    vertical-align:             middle;
+}
+
+.element.overlay
+{
+    margin-left:                -1.75em;
+    z-index:                    1;
+}
+
+.card .initiative
+{
+    font-size:                  180%;
+    text-align:                 center;
+
+    position:                   absolute;
+    left:                       0;
+    top:                        18%;
+    width:                      19%;
+}
+
+.card .healthNormal
+{
+    font-size:                  130%;
+    text-align:                 left;
+
+    position:                   absolute;
+    left:                       3%;
+    top:                        45%;
+    width:                      15%;
+}
+
+.card .healthElite
+{
+	color:						gold;
+    font-size:                  130%;
+    text-align:                 left;
+
+    position:                   absolute;
+    left:                       3%;
+    top:                        70%;
+    width:                      15%;
+}
+
+.card.front .name
+{
+    font-size:                  120%;
+    text-align:                 center;
+
+    position:                   absolute;
+    left:                       0;
+    top:                        0;
+    width:                      100%;
+    line-height:                200%;
+}
+
+.card.back .name
+{
+    text-align:                 center;
+    font-size:                  90%;
+
+    position:                   absolute;
+    left:                       0;
+    bottom:                     14%;
+    width:                      100%;
+}
+
+.card .number
+{
+    font-family:                initial;
+    font-size:                  30%;
+    text-shadow:                none;
+
+    position:                   absolute;
+    left:                       3%;
+    bottom:                     5%;
+}
+
+img[src="images/shuffle.svg"]
+{
+    position:                   absolute;
+    right:                      3%;
+    bottom:                     5%;
+    height:                     1.25em;
+}
+
+.card::selection
+{
+    color:                      rgba(0, 0, 0, 0);
+    background:                 rgba(0, 0, 0, 0);
+}
+
+.up
+{
+    -webkit-transform:          rotateY(0deg);
+    transform:                  rotateY(0deg);
+}
+
+.down
+{
+    -webkit-transform:          rotateY(180deg);
+    transform:                  rotateY(180deg);
+}
