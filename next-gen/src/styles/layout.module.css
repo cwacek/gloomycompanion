@@ -3,8 +3,25 @@
     padding: 10px;
     height: 100%;
     display: grid;
-    grid-template-columns: 16% auto;
+    grid-template-rows: 10% auto;
     font-size:26.6px;
+    row-gap: 10px;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 32em auto;
+}
+
+.controls .new_monster {
+    display: grid;
+    grid-template-columns: 1fr 8fr;
+    justify-items: stretch;
+}
+
+.expand_icon {
+    height: 100%;
+    width: 100%;
 }
 
 .card-area {
