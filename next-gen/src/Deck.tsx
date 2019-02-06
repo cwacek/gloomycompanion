@@ -25,11 +25,12 @@ class Deck extends Component<IProps, IState>  {
   }
 
   render() {
-    let hiddenCardClasses = [styles.card, styles.ability, styles.up, styles.back, styles.draw ].join(' ')
-    let shownCardClasses = [styles.card, styles.ability, styles.front, styles.discard].join(' ')
+    let hiddenCardClasses = [styles.card, styles.ability, styles.back, styles.draw ].join(' ')
+    let shownCardClasses = [styles.card, styles.ability, styles.front, styles.discard, styles.pull].join(' ')
 
     return (
-      <div className="card-container" onClick={this.draw}>
+      <div className={styles['card-container']} onClick={this.draw}>
+        <div className={hiddenCardClasses} />
         <div className={this.state.shownCard ? shownCardClasses : hiddenCardClasses}>
           <span className={styles.name}>
             {this.props.deck.monster.name}
@@ -37,7 +38,6 @@ class Deck extends Component<IProps, IState>  {
           <CardDetails card={this.state.shownCard}/>
 
         </div>
-        <div className={hiddenCardClasses} />
       </div>
     );
   }

@@ -4,14 +4,12 @@
     height: 100%;
     display: grid;
     grid-template-columns: 16% auto;
-    background-color: black;
-    background-size: cover;
+    font-size:26.6px;
 }
 
 .card-area {
     display: grid;
-    grid-auto-columns: 20em;
-    grid-column-gap: 20px;
+    grid-template-rows: 100%;
 }
 
 .monster-column {

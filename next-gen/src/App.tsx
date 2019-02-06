@@ -9,7 +9,7 @@ import styles from './styles/layout.module.css';
 
 class App extends Component {
   state = {
-    monsters: [new MonsterDeck("Bandit Guard"), new MonsterDeck("Rending Drake")]
+    monsters: [new MonsterDeck("Bandit Guard"), new MonsterDeck("Rending Drake"), new MonsterDeck("Bandit Archer")]
   }
 
   render() {
