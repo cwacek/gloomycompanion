@@ -10,6 +10,7 @@ import plus_circle from './images/plus-circle.svg';
 
 import autobind from 'autobind-decorator';
 import { ValueType } from 'react-select/lib/types';
+import MonsterColumn from './MonsterColumn';
 
 interface IProps {}
 interface IState {
@@ -67,19 +68,7 @@ class App extends Component<IProps, IState> {
 
   render() {
     let monsterColumns: JSX.Element[] = this.state.monsters.map((m, i) => {
-      let style: CSSProperties = {
-        gridColumn: i + 1
-      };
-      return (
-        <div
-          className={styles["monster-column"]}
-          style={style}
-          key={m.monster.name}
-        >
-          <Deck deck={m} />
-          <div className={styles["monsters"]} />
-        </div>
-      );
+      return <MonsterColumn columnIdx={i} monsterInfo={m}/>
     });
 
     let availableMonsters = monsterOptions.filter(opt => {
