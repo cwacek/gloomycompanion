@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {IActionType, AoEAttack, ComplexAction} from './data/cards';
 
 import styles from './styles/Card.module.css';
 
@@ -65,9 +66,9 @@ import light from './images/light.svg';
 import poison from './images/poison.svg';
 
 
-export default class MonsterAction extends Component<{ definition: string }> {
+export default class MonsterAction extends Component<{ definition: IActionType }> {
   MACROS : {[key :string] : JSX.Element} = {
-    "%air%": <img className='element' src={air}/>,
+    "%air%": <img className={styles.element} src={air}/>,
     "%any%": <img className={ styles.element } src={any_element}/>,
     "%aoe-4-with-black%":
       <img className='aoe h2' src={aoe_4_with_black}/>,
@@ -103,21 +104,21 @@ export default class MonsterAction extends Component<{ definition: string }> {
       <div className='collapse'><img className='aoe h3' src={ sightlessEye2 }/></div>,
     "%curse%":
       <span className='nobr'>CURSE <img className='icon' src={ curse }/></span>,
-    "%dark%": <img className='element' src={ dark }/>,
+    "%dark%": <img className={styles.element} src={ dark }/>,
     "%disarm%":
       <span className='nobr'>DISARM <img className='icon' src={ disarm }/></span>,
-    "%earth%": <img className='element' src={ earth }/>,
-    "%fire%": <img className='element' src={ fire }/>,
+    "%earth%": <img className={styles.element} src={ earth }/>,
+    "%fire%": <img className={styles.element}src={ fire }/>,
     "%heal%":
       <span className='nobr'>Heal <img className='icon' src={ heal }/></span>,
-    "%ice%": <img className='element' src={ ice }/>,
+    "%ice%": <img className={styles.element} src={ ice }/>,
     "%immobilize%":
       <span className='nobr'>IMMOBILIZE <img className='icon' src={ immobilize }/></span>,
     "%invisible%":
       <span className='nobr'>INVISIBLE <img className='icon' src={ invisibility }/></span>,
     "%jump%":
       <span className='nobr'>Jump <img className='icon' src={ jump }/></span>,
-    "%light%": <img className='element' src={ light }/>,
+    "%light%": <img className={styles.element} src={ light }/>,
     "%loot%":
       <span className='nobr'>Loot <img className='icon' src={ loot }/></span>,
     "%move%":
@@ -147,30 +148,70 @@ export default class MonsterAction extends Component<{ definition: string }> {
     "%target%":
       <span className='nobr'>Target <img className='icon' src={ target }/></span>,
     "%use_element%":
-      <img className='element overlay' src={ use_element }/>,
+      <img className={[styles.element, styles.overlay].join(' ')} src={ use_element }/>,
     "%wound%":
       <span className='nobr'>WOUND <img className='icon' src={ wound }/></span>
   };
 
   REGEX = /(%[^%]*%)/gi;
 
-
-  render() {
+  renderString(definition : string) {
       let actionElems : JSX.Element[] = []
-      let searchString = this.props.definition
+      let searchString = definition
       let match = this.REGEX.exec(searchString)
       let previousMatchIndex = 0;
       let elemCounter = 0
       while (match != null) {
-          actionElems.push(<span key={elemCounter++}>{this.props.definition.slice(previousMatchIndex, match.index)}</span>) 
+          actionElems.push(<span key={elemCounter++}>{definition.slice(previousMatchIndex, match.index)}</span>)
           previousMatchIndex = match.index + match[0].length;
           actionElems.push(<span key={elemCounter++}>{this.MACROS[match[0]]}</span>);
-          searchString = searchString.slice(previousMatchIndex);
           match = this.REGEX.exec(searchString);
       }
-      if (previousMatchIndex < this.props.definition.length) {
-          actionElems.push(<span key={elemCounter++}>{this.props.definition.slice(previousMatchIndex)}</span>)
+      if (previousMatchIndex < definition.length) {
+          actionElems.push(<span key={elemCounter++}>{definition.slice(previousMatchIndex)}</span>)
       }
     return <span className={styles.nobr} >{actionElems}</span>;
+  }
+
+  renderAoEAttack(definition : AoEAttack) {
+      let attack = this.renderString(`%attack% ${definition.bonus < 0 ? '-' : '+'}${definition.bonus}`)
+      let img = <div className={styles.aoe_attack}><img src={definition.aoe}/></div>
+
+      return <div className={styles.complex_action}>{attack}{img}</div>
+  }
+
+  renderComplexAction(definition : ComplexAction) {
+      console.log("STyle", styles.complex_action)
+      return (
+        <div className={styles.complex_action}>
+          <div className={styles.cause}>
+            {this.renderString(definition.cause)}
+          </div>
+          <div className={styles.effect}>
+            {this.renderAny(definition.effect)}
+          </div>
+        </div>
+      );
+
+  }
+
+  isComplexAction(object: any): object is ComplexAction {
+      return 'cause' in object &&'effect' in object;
+  }
+
+  render() {
+      console.log("Rendering", this.props.definition);
+      return this.renderAny(this.props.definition);
+  }
+
+  renderAny(definition : IActionType) {
+      console.log("Rendering", definition)
+      if (typeof definition === "string") {
+        return this.renderString(definition);
+      } else if (definition instanceof AoEAttack) {
+          return this.renderAoEAttack(definition);
+      } else if (this.isComplexAction(definition)) {
+          return this.renderComplexAction(definition)
+      }
   }
 }

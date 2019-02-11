@@ -36,13 +36,9 @@ function isSelectionType(
 
 class App extends Component<IProps, IState> {
   state = {
-    monsters: [
-      new MonsterDeck("Bandit Guard"),
-      new MonsterDeck("Rending Drake"),
-      new MonsterDeck("Bandit Archer")
-    ],
+    monsters: [],
     selectedMonster: undefined
-  };
+  } as IState;
 
   @autobind
   selectMonster(selection: ValueType<SelectionType>): void {
@@ -68,7 +64,7 @@ class App extends Component<IProps, IState> {
 
   render() {
     let monsterColumns: JSX.Element[] = this.state.monsters.map((m, i) => {
-      return <MonsterColumn columnIdx={i} monsterInfo={m}/>
+      return <MonsterColumn key={m.monster.name} columnIdx={i} monsterInfo={m}/>
     });
 
     let availableMonsters = monsterOptions.filter(opt => {

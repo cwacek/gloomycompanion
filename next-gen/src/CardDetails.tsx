@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import {ICard} from './data/cards';
+import {ICard, IMonsterAction} from './data/cards';
 import styles from './styles/Card.module.css';
 import MonsterAction from './MonsterAction';
 
@@ -23,13 +23,20 @@ export default class CardDetails extends Component<IProps, IState>  {
             return null;
         }
         let actions : JSX.Element[] = this.props.card.actions.map((action, index) => {
-            let modifiers = action.modifiers.map((mod, idx) => {
-                return <li key={idx}><MonsterAction definition={mod}/></li>
-            })
+            let modifiers : JSX.Element[] | null = null
+            if (action.modifiers) {
+              modifiers = action.modifiers.map((mod, idx) => {
+                return (
+                  <li key={idx}>
+                    <MonsterAction definition={mod} />
+                  </li>
+                );
+              });
+            }
             return (
               <li key={index}>
                 <MonsterAction definition={action.action} />
-                {modifiers.length > 0 ? <ul>{modifiers}</ul> : null}
+                {modifiers ? <ul>{modifiers}</ul> : null}
               </li>
             );
         })

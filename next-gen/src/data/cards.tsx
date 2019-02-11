@@ -1,5 +1,8 @@
 import {shuffle_list} from '../util'
 
+import aoe_4_with_black from '../images/aoe-4-with-black.svg'
+import aoe_circle_with_side_black from '../images/aoe-circle-with-side-black.svg'
+
 export interface ICard {
     monster : IMonster;
     shuffle : boolean;
@@ -11,6 +14,39 @@ export interface IMonster {
     name : string;
     class : string;
 }
+
+export interface IMonsterAction {
+    action : IActionType
+    modifiers?: IActionType[]
+}
+
+export type  IActionType = string | AoEAttack | ComplexAction | StyledAction
+
+export class AoEAttack {
+    bonus: number;
+    aoe : string;
+
+    constructor(bonus : number, aoe : string) {
+        this.bonus = bonus
+        this.aoe = aoe
+    }
+}
+
+export interface ComplexAction {
+    cause: string
+    effect: AoEAttack | string
+}
+
+export class StyledAction {
+    action : string
+    style: string
+
+    constructor(action : string, style : string) {
+        this.action = action;
+        this.style = style;
+    }
+}
+
 
 
 export const DECKS : {[key :string] : IMonster} =
@@ -52,7 +88,15 @@ export const DECKS : {[key :string] : IMonster} =
 };
 
 
-const DECK_DEFINITIONS: { class: string; cards: {shuffle: boolean, initiative:number, actions: string[]}[] }[] = [
+const DECK_DEFINITIONS: {
+  class: string;
+  cards: {
+    shuffle: boolean;
+    initiative: number;
+    actions?: string[];
+    complexActions?: IMonsterAction[];
+  }[];
+}[] = [
   {
     class: "Ancient Artillery",
     cards: [
@@ -162,11 +206,10 @@ const DECK_DEFINITIONS: { class: string; cards: {shuffle: boolean, initiative:nu
       {
         shuffle: false,
         initiative: 14,
-        actions: [
-          "* %move% -1",
-          "* %attack% -1",
-          "** %range% +0",
-          "* <span class='small'> Create a 3 damage trap in an adjacent empty hex closest to an enemy </span>"
+        complexActions: [
+            {action: "%move% -1"},
+            {action: "%attack% -1", modifiers: ["%range% +0"]},
+            {action: new StyledAction("Create a 3 damage trap in an adjacent empty hex closest to an enemy", "small")}
         ]
       },
       {
@@ -498,8 +541,10 @@ const DECK_DEFINITIONS: { class: string; cards: {shuffle: boolean, initiative:nu
       {
         shuffle: true,
         initiative: 30,
+        complexActions: [
+            {action: {cause: "%fire%%use_element%:", effect: "All adjacent enemies suffer 2 damage"}}
+        ],
         actions: [
-          "* <table align='center'><tr> <td>  %fire%%use_element%: </td> <td> <span class='small'>All adjacent enemies<br/>suffer 2 damage.</span> </td> </tr> </table>",
           "* %move% +0",
           "* %attack% -2",
           "** %range% +0",
@@ -1782,11 +1827,13 @@ const DECK_DEFINITIONS: { class: string; cards: {shuffle: boolean, initiative:nu
           "** %range% +0",
           "* %heal% 1",
           "** Self",
-          "* %air%%use_element%: %invisible%<br/><span class='small'>Self</span>"
+          "* %air%%use_element%: %invisible%",
+          "** Self"
         ]
       },
       {
-        shuffle: true,
+        //shuffle: true,
+        shuffle: false,
         initiative: 21,
         actions: [
           "* %move% +0",
@@ -1796,7 +1843,8 @@ const DECK_DEFINITIONS: { class: string; cards: {shuffle: boolean, initiative:nu
         ]
       },
       {
-        shuffle: true,
+        //shuffle: true,
+        shuffle: false,
         initiative: 21,
         actions: [
           "* %move% +0",
@@ -1818,10 +1866,17 @@ const DECK_DEFINITIONS: { class: string; cards: {shuffle: boolean, initiative:nu
       {
         shuffle: false,
         initiative: 37,
-        actions: [
-          "* %move% +0",
-          "* %attack% +0 <div style='display: inline-block; width: 0; margin-top: -1.5em; vertical-align: bottom'>%aoe-4-with-black%</div>",
-          "** %air%%use_element%: +1 Attack <div style='display: inline-block; margin-right: -3em'>%aoe-circle-with-side-black%</div>"
+        complexActions: [
+          { action: "%move% +0" },
+          {
+            action: new AoEAttack(0, aoe_4_with_black),
+            modifiers: [
+              {
+                cause: "%air%%use_element%",
+                effect: new AoEAttack(1, aoe_circle_with_side_black)
+              }
+            ]
+          }
         ]
       },
       {
@@ -1860,11 +1915,6 @@ const DECK_DEFINITIONS: { class: string; cards: {shuffle: boolean, initiative:nu
   }
 ];
 
-interface IMonsterAction {
-    action : string
-    modifiers : string[]
-}
-
 
 export class MonsterDeck {
     readonly monster : IMonster;
@@ -1882,19 +1932,29 @@ export class MonsterDeck {
         }
         this.deck = thing.cards.map(card => {
             let actions : IMonsterAction[] = [];
-            card.actions.forEach(actionDef => {
+            if (card.actions) {
+              card.actions.forEach(actionDef => {
                 if (actionDef.startsWith("**")) {
                   let currentAction = actions[actions.length - 1];
+                  if (currentAction.modifiers){
                   currentAction.modifiers.push(
                     actionDef.substring(3)
                   );
+                }
                 } else {
                   actions.push({
                     action: actionDef.substring(1),
                     modifiers: []
                   });
                 }
-            })
+              });
+            }
+
+            if (card.complexActions) {
+                card.complexActions.forEach(actionDef => {
+                    actions.push(actionDef);
+                })
+            }
 
             return {
               monster: this.monster,

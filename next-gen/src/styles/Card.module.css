@@ -204,7 +204,7 @@
 
     color:                      white;
     font-family:                'PirataOne';
-    font-size:                  110%;
+    font-size:                  100%;
     text-shadow:                1px 2px 3px black;
 
     background-clip:            content-box;
@@ -464,13 +464,13 @@ div.collapse
 
 .element
 {
-    height:                     1.75em;
+    height:                     1.25em;
     vertical-align:             middle;
 }
 
 .element.overlay
 {
-    margin-left:                -1.75em;
+    margin-left:                -1.25em;
     z-index:                    1;
 }
 
@@ -566,4 +566,22 @@ img.shuffle
 {
     -webkit-transform:          rotateY(180deg);
     transform:                  rotateY(180deg);
+}
+
+.complex_action {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    height: 1.25em;
+}
+
+.complex_action .cause {
+    justify-self: end;
+}
+
+.complex_action .effect {
+    justify-self: start;
+}
+
+.complex_action .aoe_attack {
+    justify-self: start;
 }
