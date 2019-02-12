@@ -17,6 +17,7 @@
     display: grid;
     grid-template-columns: 1fr 8fr;
     justify-items: stretch;
+    height: 2em;
 }
 
 .expand_icon {
@@ -27,6 +28,7 @@
 .card-area {
     display: grid;
     grid-template-rows: 100%;
+    justify-items: center;
 }
 
 .monster-column {

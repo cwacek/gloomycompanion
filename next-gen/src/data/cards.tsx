@@ -1832,8 +1832,7 @@ const DECK_DEFINITIONS: {
         ]
       },
       {
-        //shuffle: true,
-        shuffle: false,
+        shuffle: true,
         initiative: 21,
         actions: [
           "* %move% +0",
@@ -1843,8 +1842,7 @@ const DECK_DEFINITIONS: {
         ]
       },
       {
-        //shuffle: true,
-        shuffle: false,
+        shuffle: true,
         initiative: 21,
         actions: [
           "* %move% +0",

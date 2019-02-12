@@ -175,9 +175,9 @@ export default class MonsterAction extends Component<{ definition: IActionType }
 
   renderAoEAttack(definition : AoEAttack) {
       let attack = this.renderString(`%attack% ${definition.bonus < 0 ? '-' : '+'}${definition.bonus}`)
-      let img = <div className={styles.aoe_attack}><img src={definition.aoe}/></div>
+      let img = <div className={styles.aoe_container}><img src={definition.aoe}/></div>
 
-      return <div className={styles.complex_action}>{attack}{img}</div>
+      return <div className={styles.aoe_attack}>{attack}{img}</div>
   }
 
   renderComplexAction(definition : ComplexAction) {
@@ -185,7 +185,7 @@ export default class MonsterAction extends Component<{ definition: IActionType }
       return (
         <div className={styles.complex_action}>
           <div className={styles.cause}>
-            {this.renderString(definition.cause)}
+            {this.renderString(definition.cause)}:
           </div>
           <div className={styles.effect}>
             {this.renderAny(definition.effect)}
