@@ -181,7 +181,6 @@ export default class MonsterAction extends Component<{ definition: IActionType }
   }
 
   renderComplexAction(definition : ComplexAction) {
-      console.log("STyle", styles.complex_action)
       return (
         <div className={styles.complex_action}>
           <div className={styles.cause}>
@@ -200,7 +199,6 @@ export default class MonsterAction extends Component<{ definition: IActionType }
   }
 
   render() {
-      console.log("Rendering", this.props.definition);
       return this.renderAny(this.props.definition);
   }
 
