@@ -1947,7 +1947,7 @@ export class MonsterDeck {
                 }
               });
             }
-
+            
             if (card.complexActions) {
                 card.complexActions.forEach(actionDef => {
                     actions.push(actionDef);

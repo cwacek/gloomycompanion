@@ -162,7 +162,7 @@ export default class MonsterAction extends Component<{ definition: IActionType }
       let previousMatchIndex = 0;
       let elemCounter = 0
       while (match != null) {
-          actionElems.push(<span key={elemCounter++}>{definition.slice(previousMatchIndex, match.index)}</span>)
+          actionElems.push(<span key={elemCounter++}>{definition.slice(previousMatchIndex, match.index)}</span>) 
           previousMatchIndex = match.index + match[0].length;
           actionElems.push(<span key={elemCounter++}>{this.MACROS[match[0]]}</span>);
           match = this.REGEX.exec(searchString);
@@ -213,5 +213,5 @@ export default class MonsterAction extends Component<{ definition: IActionType }
       } else if (this.isComplexAction(definition)) {
           return this.renderComplexAction(definition)
       }
-  }
+  }  
 }
