@@ -7,6 +7,7 @@ import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import Deck from './Deck'
 import MonsterState from './data/MonsterState';
 import autobind from 'autobind-decorator';
+import { AppContext } from './AppContext';
 
 interface IProps {
     columnIdx: number
@@ -22,6 +23,7 @@ interface IState {
 }
 
 export default class MonsterColumn extends React.Component<IProps, IState> {
+  static contextType = AppContext
   state = {
     currentMonsters: [],
     addModalOpen: false,

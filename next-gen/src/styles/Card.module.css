@@ -568,11 +568,17 @@ img.shuffle
     transform:                  rotateY(180deg);
 }
 
-.complex_action {
-    /*display: grid;
-    grid-template-columns: 50% 50%;
-    height: 1.25em;
-    */
+.removeDeck {
+    position: absolute;
+    top: 0;
+    margin-left: -.75em;
+    z-index: 12;
+    margin-top: -.75em;
+}
+
+.removeDeck .icon {
+    width: 1.75em;
+    height: 1.75em;
 }
 
 .complex_action .cause {

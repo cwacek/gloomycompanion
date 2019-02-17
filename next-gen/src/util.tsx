@@ -1,3 +1,16 @@
+import React from 'react'
+import {ValueType} from 'react-select/lib/types'
+export interface SelectionType {value : string, label : string};
+
+export function isSelectionType(
+  selection: ValueType<SelectionType>
+): selection is SelectionType {
+  if (selection) {
+    if (selection instanceof Array) return false;
+    return true;
+  }
+  return false;
+}
 
 export function shuffle_list(l: any[])
 {
@@ -9,4 +22,21 @@ export function shuffle_list(l: any[])
         l[switch_index] = l[i];
         l[i] = tmp;
     }
+}
+
+export function createMandatoryContext<T>(defaultValue?: T) {
+  let context = React.createContext<T>((undefined as any) as T);
+  // @ts-ignore
+  let consumer: React.Consumer<T> = props => {
+    return (
+      <context.Consumer>
+        {state => (state ? props.children(state)
+          : <span style={{ color: "red" }}>Missing Context</span>)}
+      </context.Consumer>
+    );
+  };
+  return {
+    Provider: context.Provider,
+    Consumer: consumer,
+  };
 }

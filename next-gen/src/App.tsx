@@ -1,9 +1,11 @@
-import React, { Component, CSSProperties } from 'react';
+import React, { Component, CSSProperties, ReactNode } from 'react';
+import {RouteComponentProps} from 'react-router-dom'
+import {AppContext, AppContextProvider} from './AppContext'
 import './App.css';
 
-import Deck from './Deck';
-import {MonsterDeck, DECKS} from './data/cards';
+import {MonsterDeck, DECKS, LocalState } from './data/cards';
 import Select from 'react-select';
+import {SelectionType, isSelectionType} from './util'
 
 import styles from './styles/layout.module.css';
 import plus_circle from './images/plus-circle.svg';
@@ -12,33 +14,22 @@ import autobind from 'autobind-decorator';
 import { ValueType } from 'react-select/lib/types';
 import MonsterColumn from './MonsterColumn';
 
-interface IProps {}
+interface IProps { }
 interface IState {
-  monsters : MonsterDeck[];
   selectedMonster : string | undefined;
 }
 
-interface SelectionType {value : string, label : string};
 const monsterOptions : SelectionType[] = Object.keys(DECKS).map(name => {
   return {value: name, label: name}
 });
 
-
-function isSelectionType(
-  selection: ValueType<SelectionType>
-): selection is SelectionType {
-  if (selection) {
-    if (selection instanceof Array) return false;
-    return true;
-  }
-  return false;
-}
-
 class App extends Component<IProps, IState> {
+  static contextType = AppContext
+
   state = {
-    monsters: [],
-    selectedMonster: undefined
+    selectedMonster: undefined,
   } as IState;
+
 
   @autobind
   selectMonster(selection: ValueType<SelectionType>): void {
@@ -49,26 +40,18 @@ class App extends Component<IProps, IState> {
 
   @autobind
   addMonster() {
-    this.setState((prevState, props) => {
-      let newMonsters = prevState.monsters;
-      if (prevState.selectedMonster) {
-        newMonsters.push(new MonsterDeck(prevState.selectedMonster));
-      }
-
-      return {
-        selectedMonster: undefined,
-        monsters: newMonsters
-      };
-    });
+    this.context.activateMonsterType(this.state.selectedMonster);
   }
 
   render() {
-    let monsterColumns: JSX.Element[] = this.state.monsters.map((m, i) => {
+    console.log(this.context)
+    let monsters : MonsterDeck[] = this.context.activeMonsters
+    let monsterColumns: JSX.Element[] = monsters.map((m, i) => {
       return <MonsterColumn key={m.monster.name} columnIdx={i} monsterInfo={m}/>
     });
 
     let availableMonsters = monsterOptions.filter(opt => {
-      return !this.state.monsters.find((m) => {
+      return !this.context.activeMonsters.find((m : MonsterDeck) => {
         return opt.value == m.monster.name
       })
     })
@@ -88,7 +71,7 @@ class App extends Component<IProps, IState> {
             />
           </div>
         </div>
-        <div className={styles["card-area"]}>{monsterColumns}</div>
+          <div className={styles["card-area"]}>{monsterColumns}</div>
       </div>
     );
   }
