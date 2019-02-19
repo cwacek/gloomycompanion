@@ -41,6 +41,21 @@ export default class MonsterState {
         }
     }
 
+    get currentHealth() : number {
+        return this.health
+    }
+
+    get effects() : StatusEffects[] {
+        let result : StatusEffects[] = []
+        for (let entry in this.activeEffects.entries()) {
+            if (entry[1]) {
+                result.push(entry[0] as StatusEffects);
+            }
+        }
+
+        return result;
+    }
+
     static fromJSON(json: MonsterStateJSON): MonsterState {
         return new MonsterState(json.id, json.name, json );
     }
