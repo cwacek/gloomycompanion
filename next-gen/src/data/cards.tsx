@@ -3,6 +3,7 @@ import {shuffle_list} from '../util'
 import aoe_4_with_black from '../images/aoe-4-with-black.svg'
 import aoe_circle_with_side_black from '../images/aoe-circle-with-side-black.svg'
 import { stat } from 'fs';
+import MonsterState, { MonsterStateJSON } from './MonsterState';
 
 export interface ICard {
     id : number
@@ -2033,7 +2034,7 @@ export class MonsterDeck {
 
 export class LocalState {
   static GetDecks(session: string): MonsterDeck[] {
-    let saved = localStorage.getItem(`monsters:${session}`)
+    let saved = localStorage.getItem(`gloomy:${session}:monsters`)
     if (!saved) {
       return []
     }
@@ -2044,6 +2045,21 @@ export class LocalState {
 
   static PersistDecks(session: string, monsters : MonsterDeck[]): void {
     let toSave = JSON.stringify(monsters);
-    localStorage.setItem(`monsters:${session}`, toSave)
+    localStorage.setItem(`gloomy:${session}:monsters`, toSave)
+  }
+
+  static PersistMonsters(session : string, monsterId : string, monsters : MonsterState[]): void {
+    let toSave = JSON.stringify(monsters);
+    localStorage.setItem(`gloomy:${session}:monsters:${monsterId}`, toSave)
+  }
+
+  static GetMonsters(session: string, monsterId :string): MonsterState[] {
+    let saved = localStorage.getItem(`gloomy:${session}:monsters:${monsterId}`)
+    if (!saved) {
+      return []
+    }
+    let stateObjects = JSON.parse(saved) as MonsterStateJSON[]
+
+    return stateObjects.map(o => MonsterState.fromJSON(o))
   }
 }

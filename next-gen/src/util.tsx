@@ -40,3 +40,8 @@ export function createMandatoryContext<T>(defaultValue?: T) {
     Consumer: consumer,
   };
 }
+
+interface IPersistableState {
+  persist : () => void;
+}
+export const PersistableStateContext = createMandatoryContext<IPersistableState>();

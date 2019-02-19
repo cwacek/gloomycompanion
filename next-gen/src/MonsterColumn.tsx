@@ -1,13 +1,14 @@
 
 import styles from './styles/layout.module.css';
 import React from 'react';
-import {MonsterDeck} from './data/cards'
+import {MonsterDeck, LocalState} from './data/cards'
 import MonsterStatus from './MonsterStatus'
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
+import {Button, Modal, ModalBody, ModalFooter} from 'reactstrap';
 import Deck from './Deck'
 import MonsterState from './data/MonsterState';
 import autobind from 'autobind-decorator';
 import { AppContext } from './AppContext';
+import { createMandatoryContext, PersistableStateContext } from './util';
 
 interface IProps {
     columnIdx: number
@@ -29,6 +30,14 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
     addModalOpen: false,
     availableIds: Array(10).fill(0).map((_, idx) => {return 1 + idx}),
     selectedId: undefined
+  }
+
+  componentDidMount() {
+      this.setState(() => {
+      return {
+        currentMonsters: LocalState.GetMonsters(this.context.sessionId, this.props.monsterInfo.monster.name),
+      }
+    });
   }
 
   render() {
@@ -63,7 +72,9 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
         <Button color='secondary' size='lg' onClick={this.openAddModal}>Add</Button>
         </div>
         <div className={styles["monsterlist"]} >
+        <PersistableStateContext.Provider value={{persist: this.persist}}>
         {monsters}
+        </PersistableStateContext.Provider>
         </div>
 
         <Modal isOpen={this.state.addModalOpen} toggle={this.cancel}>
@@ -79,6 +90,14 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
         </Modal>
       </div>
     );
+  }
+
+  @autobind
+  persist() : void {
+    LocalState.PersistMonsters(
+      this.context.sessionId,
+      this.props.monsterInfo.monster.name,
+      this.state.currentMonsters);
   }
 
   @autobind
@@ -98,14 +117,14 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
         return null;
       }
 
-      let monster = new MonsterState(prevState.selectedId, this.props.monsterInfo.monster)
+      let monster = new MonsterState(prevState.selectedId, this.props.monsterInfo.monster.name)
       prevState.currentMonsters.push(monster);
       return {
         addModalOpen: false,
         selectedId: undefined,
         currentMonsters: prevState.currentMonsters.sort((a,b) => a.id - b.id )
       }
-    })
+    }, this.persist)
   }
 
   @autobind

@@ -5,6 +5,7 @@ import autobind from 'autobind-decorator';
 import { createMandatoryContext } from './util';
 
 interface IAppContext {
+  sessionId? : string
   activeMonsters: MonsterDeck[]
   activateMonsterType: (name : string) => void
   deactivateMonsterType: (name : string) => void
@@ -58,9 +59,11 @@ export default class DataProvider extends Component<IProps, IAppContext> {
   }
 
   componentDidMount() {
-    console.log(this.props.match)
     if (this.props.match.params.id) {
-      this.setState({activeMonsters: LocalState.GetDecks(this.props.match.params.id)})
+      this.setState({
+        activeMonsters: LocalState.GetDecks(this.props.match.params.id),
+        sessionId: this.props.match.params.id
+      })
     } else {
       this.props.history.push({
         pathname: '/' +Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
