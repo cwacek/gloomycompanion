@@ -12,17 +12,23 @@ interface IProps {
 }
 
 interface IState {
+    currentHealth : number;
 }
 
 export default class MonsterStatus extends React.Component<IProps, IState> {
     static contextType = PersistableStateContext
+    state = {
+        currentHealth: this.props.monster.currentHealth
+    }
 
     render() {
         let activeEffects : JSX.Element[] = this.props.monster.effects.map( effect => {
             return <div className={styles['effect-'+effect]}>{effect}</div>
         })
 
-        return <div className={styles.statusContainer}>
+        let health = this.state.currentHealth/this.props.monster.baseAttributes.health * 100;
+
+        return <div className={[styles.statusContainer, styles[this.props.monster.type]].join(" ")}>
             <div className={styles.statusDetailsContainer}>
                 <div className={styles.statusIconContainer}>
                 <span>{this.props.monster.id} </span>
@@ -30,7 +36,11 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
             
                 <div className={styles.statusEffectsContainer}>
                     <div className={styles.health}>
-                    {this.props.monster.currentHealth}
+                        <div className={styles.label}>
+                            {this.props.monster.currentHealth}
+                        </div>
+                        <div className={styles.healthBar}
+                            style={{width: `${health}%`}}></div>
                     </div>
                     <div className={styles.effects}>{activeEffects}</div>
                 </div>
@@ -40,4 +50,14 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
             </div>
         </div>
     }
+
+
+  static getDerivedStateFromProps(nextProps : IProps, prevState : IState) {
+    if (nextProps.monster.currentHealth !== prevState.currentHealth) {
+      return {
+          currentHealth: nextProps.monster.currentHealth
+      }
+    }
+    return null
+  }
 }
