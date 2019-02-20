@@ -1,0 +1,9 @@
+
++ Make level selection persist
++ Create damage input for monsters
++ Create death handling for monsters
++ Add status effects input and display for monsters
++ Add auto-remove status effects for monsters on card turn
+
+Nice to have
++ Highlight next monster based on initiative
