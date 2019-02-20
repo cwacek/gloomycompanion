@@ -45,15 +45,18 @@
             .health {
                 grid-column: 1/7;
                 display: grid;
-                grid-template-columns: min-content auto;
+                grid-template-columns: 1em auto;
                 padding-left: 10px;
                 padding-right: 5px;
+
+                div:first-child {
+                    margin-right: 5px;
+                }
 
                 .healthBar {
                     background-color: crimson;
                     height: 30%;
-                    border-radius: 4px;
-                    margin-left: 10px;
+                    border-radius: 6px;
                     align-self: center;
                 }
             }
