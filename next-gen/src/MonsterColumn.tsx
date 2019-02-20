@@ -1,5 +1,5 @@
 
-import styles from './styles/layout.module.css';
+import styles from './styles/layout.module.scss';
 import React from 'react';
 import {MonsterDeck, LocalState} from './data/cards'
 import MonsterStatus from './MonsterStatus'
@@ -9,6 +9,7 @@ import MonsterState from './data/MonsterState';
 import autobind from 'autobind-decorator';
 import { AppContext } from './AppContext';
 import { createMandatoryContext, PersistableStateContext } from './util';
+import { MonsterTypes } from './data/monster_stats';
 
 interface IProps {
     columnIdx: number
@@ -111,13 +112,18 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
   }
 
   @autobind
-  addMonster(type : string): any {
+  addMonster(type : MonsterTypes): any {
     this.setState((prevState, props) => {
       if (!prevState.selectedId) {
         return null;
       }
 
-      let monster = new MonsterState(prevState.selectedId, this.props.monsterInfo.monster.name)
+      let monster = new MonsterState(
+        prevState.selectedId,
+        this.props.monsterInfo.monster.name,
+        this.context.monsterLevel,
+        type
+      )
       prevState.currentMonsters.push(monster);
       return {
         addModalOpen: false,

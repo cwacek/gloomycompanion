@@ -10,14 +10,30 @@
 
 .controls {
     display: grid;
-    grid-template-columns: 32em auto;
-}
+    grid-template-columns: 24em auto;
 
-.controls .new_monster {
-    display: grid;
-    grid-template-columns: 1fr 8fr;
-    justify-items: stretch;
-    height: 2em;
+    .new_monster {
+        display: grid;
+        grid-template-columns: 1fr 8fr;
+        justify-items: stretch;
+        height: 2em;
+
+        .monster_select {
+            z-index:20;
+        }
+    }
+
+    .monsterLevel {
+        color: white;
+        font-family: "Philosopher";
+        justify-self: end;
+        select {
+            margin: 0 5px;
+            width: 1.5em;
+            background-color: white;
+
+        }
+    }
 }
 
 .expand_icon {

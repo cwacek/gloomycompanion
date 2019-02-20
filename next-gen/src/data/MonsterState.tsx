@@ -1,4 +1,4 @@
-import { IMonster } from "./cards";
+import { getMonsterAttrs, MonsterTypes, MonsterAttrs } from "./monster_stats";
 
 type StatusEffects = 'wound' | 'poison' | 'immobilize' | 'strengthen' | 'stun' | 'disarm'
 const TemporaryEffects : StatusEffects[] = ['immobilize', 'strengthen', 'stun', 'disarm']
@@ -6,6 +6,8 @@ const TemporaryEffects : StatusEffects[] = ['immobilize', 'strengthen', 'stun', 
 export interface MonsterStateJSON {
     id : number;
     name : string;
+    level : number;
+    type : MonsterTypes;
     health : number;
     effects : string[];
 }
@@ -13,23 +15,28 @@ export interface MonsterStateJSON {
 export default class MonsterState {
     readonly id: number
     readonly name: string
-    //private activeEffects : {[key in StatusEffects] : boolean} 
+    readonly level :number
+    readonly type : MonsterTypes
     private activeEffects : Map<StatusEffects, boolean>
     private health: number
+    readonly baseAttributes : MonsterAttrs;
 
-    constructor(id : number, name : string, state? :MonsterStateJSON) {
+    constructor(id : number, name : string, level : number, type : MonsterTypes, state? :MonsterStateJSON) {
         this.id = id;
         this.name = name;
+        this.level = level;
+        this.type = type;
         this.activeEffects = new Map([
             ['wound' as StatusEffects, false],
             ['immobilize' as StatusEffects, false],
             ['stun' as StatusEffects, false],
             ['disarm' as StatusEffects, false],
             ['poison' as StatusEffects, false],
-            ['strengthn' as StatusEffects, false],
+            ['strengthen' as StatusEffects, false],
         ]);
 
-        this.health = 10;
+        this.baseAttributes = getMonsterAttrs(name, level, type);
+        this.health = this.baseAttributes.health;
 
         if (state) {
             state.effects.forEach((s) => {
@@ -57,7 +64,7 @@ export default class MonsterState {
     }
 
     static fromJSON(json: MonsterStateJSON): MonsterState {
-        return new MonsterState(json.id, json.name, json );
+        return new MonsterState(json.id, json.name, json.level, json.type, json );
     }
 
     toJSON() : MonsterStateJSON {
@@ -69,9 +76,11 @@ export default class MonsterState {
         })
 
         return {
-            name : this.name,
-            health : this.health,
             id: this.id,
+            name : this.name,
+            level : this.level,
+            type : this.type,
+            health : this.health,
             effects: effects,
         }
     }

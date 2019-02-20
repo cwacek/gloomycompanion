@@ -2062,4 +2062,8 @@ export class LocalState {
 
     return stateObjects.map(o => MonsterState.fromJSON(o))
   }
+
+  static ClearMonsters(session : string, monsterId: string) : void {
+    localStorage.removeItem(`gloomy:${session}:monsters:${monsterId}`)
+  }
 }

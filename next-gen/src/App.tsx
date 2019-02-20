@@ -5,9 +5,10 @@ import './App.css';
 
 import {MonsterDeck, DECKS, LocalState } from './data/cards';
 import Select from 'react-select';
-import {SelectionType, isSelectionType} from './util'
+import {Input} from 'reactstrap'
+import {SelectionType, isSelectionType, range} from './util'
 
-import styles from './styles/layout.module.css';
+import styles from './styles/layout.module.scss';
 import plus_circle from './images/plus-circle.svg';
 
 import autobind from 'autobind-decorator';
@@ -68,7 +69,17 @@ class App extends Component<IProps, IState> {
             <Select
               options={availableMonsters}
               onChange={this.selectMonster}
+              className={styles.monster_select}
             />
+          </div>
+          <div className={styles.monsterLevel}>
+          Level
+            <select name="level" id="monsterLevel"
+              onChange={this.context.setMonsterLevel}
+              disabled={this.context.activeMonsters.length > 0}
+            >
+              {range(9).map((idx) => <option>{idx}</option>)}
+            </select>
           </div>
         </div>
           <div className={styles["card-area"]}>{monsterColumns}</div>

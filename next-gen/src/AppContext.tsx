@@ -7,9 +7,11 @@ import { createMandatoryContext } from './util';
 interface IAppContext {
   sessionId? : string
   activeMonsters: MonsterDeck[]
+  monsterLevel : number
   activateMonsterType: (name : string) => void
   deactivateMonsterType: (name : string) => void
   saveDeckState: (monsterName : string) => void
+  setMonsterLevel: (level : number) => void
 }
 
 interface IProps extends RouteComponentProps<any> { }
@@ -21,14 +23,27 @@ export const AppContextConsumer = AppContext.Consumer
 export default class DataProvider extends Component<IProps, IAppContext> {
   state = {
     activeMonsters: [],
+    monsterLevel : 1,
     activateMonsterType: this.activateMonsterType,
     deactivateMonsterType: this.deactivateMonsterType,
-    saveDeckState: this.saveDeckState
+    saveDeckState: this.saveDeckState,
+    setMonsterLevel: this.setMonsterLevel
   } as IAppContext
 
   @autobind
   saveDeckState() {
     LocalState.PersistDecks(this.props.match.params.id, this.state.activeMonsters);
+  }
+
+  @autobind
+  setMonsterLevel(level : number) {
+    this.setState(() => {
+      return {
+        monsterLevel: level 
+      }
+    }, () => {
+      localStorage.setItem(`gloomy:${this.props.match.params.id}:monsterLevel`, `${level}`)
+    })
   }
 
   @autobind
@@ -51,6 +66,7 @@ export default class DataProvider extends Component<IProps, IAppContext> {
         return m.monster.name !== name
       });
       LocalState.PersistDecks(props.match.params.id, newMonsters);
+      LocalState.ClearMonsters(props.match.params.id, name);
 
       return {
         activeMonsters: newMonsters
@@ -60,9 +76,20 @@ export default class DataProvider extends Component<IProps, IAppContext> {
 
   componentDidMount() {
     if (this.props.match.params.id) {
-      this.setState({
-        activeMonsters: LocalState.GetDecks(this.props.match.params.id),
-        sessionId: this.props.match.params.id
+      this.setState(() => {
+        let level: number = 1
+        let levelData = localStorage.getItem(`gloomy:${this.props.match.params.id}`)
+        if (levelData) {
+          level = parseInt(levelData)
+          if (!level) {
+            level = 1
+          }
+        }
+        return {
+          activeMonsters: LocalState.GetDecks(this.props.match.params.id),
+          monsterLevel: level,
+          sessionId: this.props.match.params.id
+        }
       })
     } else {
       this.props.history.push({
