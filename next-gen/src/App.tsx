@@ -75,10 +75,11 @@ class App extends Component<IProps, IState> {
           <div className={styles.monsterLevel}>
           Level
             <select name="level" id="monsterLevel"
-              onChange={this.context.setMonsterLevel}
+              onChange={(e) => {this.context.setMonsterLevel(e.target.value)}}
               disabled={this.context.activeMonsters.length > 0}
+              value={this.context.monsterLevel}
             >
-              {range(9).map((idx) => <option>{idx}</option>)}
+              {range(9).map((idx) => <option key={idx} value={idx}>{idx}</option>)}
             </select>
           </div>
         </div>

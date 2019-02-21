@@ -42,7 +42,8 @@ export default class DataProvider extends Component<IProps, IAppContext> {
         monsterLevel: level 
       }
     }, () => {
-      localStorage.setItem(`gloomy:${this.props.match.params.id}:monsterLevel`, `${level}`)
+      console.log(level);
+      localStorage.setItem(`gloomy:${this.props.match.params.id}:monsterLevel`, ""+level)
     })
   }
 
@@ -78,7 +79,7 @@ export default class DataProvider extends Component<IProps, IAppContext> {
     if (this.props.match.params.id) {
       this.setState(() => {
         let level: number = 1
-        let levelData = localStorage.getItem(`gloomy:${this.props.match.params.id}`)
+        let levelData = localStorage.getItem(`gloomy:${this.props.match.params.id}:monsterLevel`)
         if (levelData) {
           level = parseInt(levelData)
           if (!level) {

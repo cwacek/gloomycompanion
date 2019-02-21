@@ -44,8 +44,7 @@ export function createMandatoryContext<T>(defaultValue?: T) {
 interface IPersistableState {
   persist : () => void;
 }
-export const PersistableStateContext = createMandatoryContext<IPersistableState>();
-
+export const PersistableStateContext = React.createContext<IPersistableState | null>(null);
 
 export function range(end : number) : number[] {
   return Array(end).fill(0).map((_, idx) => {return 1 + idx});

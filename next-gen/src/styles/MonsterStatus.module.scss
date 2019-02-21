@@ -60,6 +60,10 @@
                     align-self: center;
                 }
             }
+            
+            .effect {
+                font-size: 75%;
+            }
         }
     }
 
@@ -68,4 +72,22 @@
         padding-left: 0.3em;
 
     }
+}
+
+.monsterActionPane {
+    font-family: "PirataOne";
+    font-size: 20pt;
+
+    .damage {
+        .damageChange {
+            text-align: center;
+            color: crimson;
+        }
+
+        .btn-group {
+            width: 100%;
+        }
+
+    }
+
 }

@@ -5,7 +5,7 @@ import {MonsterDeck, LocalState} from './data/cards'
 import MonsterStatus from './MonsterStatus'
 import {Button, Modal, ModalBody, ModalFooter} from 'reactstrap';
 import Deck from './Deck'
-import MonsterState from './data/MonsterState';
+import MonsterState, { MonsterStateProvider } from './data/MonsterState';
 import autobind from 'autobind-decorator';
 import { AppContext } from './AppContext';
 import { createMandatoryContext, PersistableStateContext } from './util';
@@ -58,8 +58,14 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
       >{idx + 1}</Button>
     })
 
-    let monsters = this.state.currentMonsters.map((m : MonsterState) => {
-      return <MonsterStatus key={m.id} monster={m} onDeath={this.onMonsterDeath}/>
+    let monsters = this.state.currentMonsters.map((m: MonsterState) => {
+      return <MonsterStateProvider key={m.id} name={this.props.monsterInfo.monster.name}
+        level={this.context.monsterLevel}
+        id={m.id}
+        type={m.type}
+      >
+        <MonsterStatus monster={m} onDeath={this.onMonsterDeath} />
+      </MonsterStateProvider>
     })
 
     return (
@@ -73,9 +79,7 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
         <Button color='secondary' size='lg' onClick={this.openAddModal}>Add</Button>
         </div>
         <div className={styles["monsterlist"]} >
-        <PersistableStateContext.Provider value={{persist: this.persist}}>
         {monsters}
-        </PersistableStateContext.Provider>
         </div>
 
         <Modal isOpen={this.state.addModalOpen} toggle={this.cancel}>

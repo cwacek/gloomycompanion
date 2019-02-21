@@ -1,7 +1,11 @@
 import { getMonsterAttrs, MonsterTypes, MonsterAttrs } from "./monster_stats";
+import React, { Component } from "react";
+import autobind from "autobind-decorator";
+import { AppContextConsumer, AppContext } from "../AppContext";
 
-type StatusEffects = 'wound' | 'poison' | 'immobilize' | 'strengthen' | 'stun' | 'disarm'
-const TemporaryEffects : StatusEffects[] = ['immobilize', 'strengthen', 'stun', 'disarm']
+export type StatusEffectsType = 'wound' | 'poison' | 'immobilize' | 'strengthen' | 'stun' | 'disarm'
+export const AllStatusEffects : StatusEffectsType[] =  ['wound' , 'poison' , 'immobilize' , 'strengthen' , 'stun' , 'disarm']
+const TemporaryEffects : StatusEffectsType[] = ['immobilize', 'strengthen', 'stun', 'disarm']
 
 export interface MonsterStateJSON {
     id : number;
@@ -12,13 +16,89 @@ export interface MonsterStateJSON {
     effects : string[];
 }
 
-export default class MonsterState {
+interface IState {
+    health : number;
+    effects : string[];
+    attrs? : MonsterAttrs;
+    applyEffects : (effect : StatusEffectsType[]) => void;
+    applyDamage : (dmg : number) => void;
+}
+
+interface IProps{
+    id : number;
+    name :string;
+    level : number;
+    type :MonsterTypes;
+}
+
+export const MonsterStateCtx = React.createContext<IState| null>(null);
+export class MonsterStateProvider extends React.Component<IProps, IState> {
+    static contextType = AppContext
+
+    static getDerivedStateFromProps(nProps :IProps, pState :IState) {
+        if (!pState.attrs)  {
+            let attrs = getMonsterAttrs(nProps.name, nProps.level, nProps.type)
+
+            return {
+                attrs: getMonsterAttrs(nProps.name, nProps.level, nProps.type),
+                health: attrs.health,
+            }
+        }
+        return null;
+    }
+    state = {
+        health: 0,
+        effects: [],
+        applyEffects: this.applyEffects,
+        applyDamage: this.applyDamage
+    }
+
+    @autobind
+    applyDamage(dmg: number) {
+        this.setState(pState => {
+            return {
+                health: Math.max(0, Math.min(pState.health - dmg, pState.attrs!.health))
+            }
+        })
+    }
+
+    @autobind
+    applyEffects(active : StatusEffectsType[]) {
+        this.setState({
+            effects: active.sort()
+        })
+    }
+
+    @autobind
+    toggleEffect(effect : StatusEffectsType) {
+        this.setState((pState : IState) => {
+            if (pState.effects.includes(effect)) {
+                return {
+                    effects: pState.effects.filter(e => e !== effect)
+                }
+            } else {
+                pState.effects.push(effect)
+                return {
+                    effects: pState.effects
+                }
+            }
+        })
+    }
+
+    render() {
+        return <MonsterStateCtx.Provider value={this.state}>
+        {this.props.children}
+        </MonsterStateCtx.Provider>
+    }
+}
+
+export default class MonsterState{
     readonly id: number
     readonly name: string
     readonly level :number
     readonly type : MonsterTypes
-    private activeEffects : Map<StatusEffects, boolean>
-    private health: number
+    private activeEffects : Map<StatusEffectsType, boolean>
+    health: number
     readonly baseAttributes : MonsterAttrs;
 
     constructor(id : number, name : string, level : number, type : MonsterTypes, state? :MonsterStateJSON) {
@@ -27,12 +107,12 @@ export default class MonsterState {
         this.level = level;
         this.type = type;
         this.activeEffects = new Map([
-            ['wound' as StatusEffects, false],
-            ['immobilize' as StatusEffects, false],
-            ['stun' as StatusEffects, false],
-            ['disarm' as StatusEffects, false],
-            ['poison' as StatusEffects, false],
-            ['strengthen' as StatusEffects, false],
+            ['wound' as StatusEffectsType, false],
+            ['immobilize' as StatusEffectsType, false],
+            ['stun' as StatusEffectsType, false],
+            ['disarm' as StatusEffectsType, false],
+            ['poison' as StatusEffectsType, false],
+            ['strengthen' as StatusEffectsType, false],
         ]);
 
         this.baseAttributes = getMonsterAttrs(name, level, type);
@@ -40,7 +120,7 @@ export default class MonsterState {
 
         if (state) {
             state.effects.forEach((s) => {
-                let status = s as StatusEffects
+                let status = s as StatusEffectsType
                 this.activeEffects.set(status, true);
             })
 
@@ -48,19 +128,20 @@ export default class MonsterState {
         }
     }
 
-    get currentHealth() : number {
-        return this.health
-    }
-
-    get effects() : StatusEffects[] {
-        let result : StatusEffects[] = []
-        for (let entry in this.activeEffects.entries()) {
-            if (entry[1]) {
-                result.push(entry[0] as StatusEffects);
+    get effects() : StatusEffectsType[] {
+        let result : StatusEffectsType[] = []
+        for (let [key, value] of this.activeEffects.entries()) {
+            if (value) {
+                result.push(key as StatusEffectsType);
             }
         }
 
         return result;
+    }
+
+    hasEffect(effect : StatusEffectsType) : boolean{
+        let hasIt = this.activeEffects.get(effect);
+        return hasIt == null ? false : hasIt;
     }
 
     static fromJSON(json: MonsterStateJSON): MonsterState {
@@ -85,7 +166,17 @@ export default class MonsterState {
         }
     }
 
-    applyEffect(effect : StatusEffects) {
+    applyEffects(active : StatusEffectsType[]) {
+        AllStatusEffects.forEach(effect => {
+            if (active.includes(effect)) {
+                this.activeEffects.set(effect, true);
+            } else {
+                this.activeEffects.set(effect, false);
+            }
+        })
+    }
+
+    applyEffect(effect : StatusEffectsType) {
         this.activeEffects.set(effect, true);
     } 
 
@@ -99,7 +190,7 @@ export default class MonsterState {
         }
 
         //Clear all temporary effects
-        TemporaryEffects.forEach((effect : StatusEffects) => {
+        TemporaryEffects.forEach((effect : StatusEffectsType) => {
             this.activeEffects.set(effect, false);
         })
     }
