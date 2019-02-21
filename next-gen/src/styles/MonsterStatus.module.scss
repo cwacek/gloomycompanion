@@ -39,11 +39,10 @@
         .statusEffectsContainer {
             padding: 3px;
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: 1fr ;
             grid-template-rows: 1fr 1fr;
 
             .health {
-                grid-column: 1/7;
                 display: grid;
                 grid-template-columns: 1em auto;
                 padding-left: 10px;
@@ -63,6 +62,7 @@
             
             .effect {
                 font-size: 75%;
+                margin-right:6px;
             }
         }
     }
@@ -84,7 +84,7 @@
             color: crimson;
         }
 
-        .btn-group {
+        div.btn-group  {
             width: 100%;
         }
 

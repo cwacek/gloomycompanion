@@ -4,7 +4,7 @@ import styles from './styles/Card.module.css';
 import CardDetails from './CardDetails';
 
 import autobind from 'autobind-decorator';
-import { AppContext } from './AppContext';
+import { AppContext } from './context/AppContext';
 
 import {IconContext} from 'react-icons';
 import {TiDeleteOutline} from 'react-icons/ti'

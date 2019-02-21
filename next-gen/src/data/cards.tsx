@@ -2,7 +2,6 @@ import {shuffle_list} from '../util'
 
 import aoe_4_with_black from '../images/aoe-4-with-black.svg'
 import aoe_circle_with_side_black from '../images/aoe-circle-with-side-black.svg'
-import { stat } from 'fs';
 import MonsterState, { MonsterStateJSON } from './MonsterState';
 
 export interface ICard {
@@ -2032,7 +2031,34 @@ export class MonsterDeck {
   }
 }
 
+interface Serializable {
+  toJSON: () => any
+}
+
 export class LocalState {
+  readonly sessionId : string;
+  constructor( session : string) {
+    this.sessionId = session;
+  }
+
+  Clear(key : string) {
+    localStorage.removeItem(`gloomy:${this.sessionId}:${key}`);
+  }
+
+  Put(key : string, serializable : Serializable ) {
+      let toSave = JSON.stringify(serializable);
+      localStorage.setItem(`gloomy:${this.sessionId}:${key}`, toSave)
+  }
+
+  Get<T>(key : string) : (T | null) {
+      let saved = localStorage.getItem(`gloomy:${this.sessionId}:${key}`)
+      if (!saved) {
+        return null;
+      }
+      let object = JSON.parse(saved) as T
+      return object;
+  }
+
   static GetDecks(session: string): MonsterDeck[] {
     let saved = localStorage.getItem(`gloomy:${session}:monsters`)
     if (!saved) {

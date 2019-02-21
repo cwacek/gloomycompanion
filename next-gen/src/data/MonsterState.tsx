@@ -1,7 +1,9 @@
 import { getMonsterAttrs, MonsterTypes, MonsterAttrs } from "./monster_stats";
 import React, { Component } from "react";
 import autobind from "autobind-decorator";
-import { AppContextConsumer, AppContext } from "../AppContext";
+import { AppContextConsumer, AppContext } from "../context/AppContext";
+import { PersistableStateContext } from "../util";
+import { LocalState } from "./cards";
 
 export type StatusEffectsType = 'wound' | 'poison' | 'immobilize' | 'strengthen' | 'stun' | 'disarm'
 export const AllStatusEffects : StatusEffectsType[] =  ['wound' , 'poison' , 'immobilize' , 'strengthen' , 'stun' , 'disarm']
@@ -46,6 +48,7 @@ export class MonsterStateProvider extends React.Component<IProps, IState> {
         }
         return null;
     }
+
     state = {
         health: 0,
         effects: [],
@@ -54,19 +57,25 @@ export class MonsterStateProvider extends React.Component<IProps, IState> {
     }
 
     @autobind
+    persist() {
+        let store : LocalState = this.context.store
+        store.Put(`monsters:${this.props.type}:${this.props.id}`, this);
+    }
+
+    @autobind
     applyDamage(dmg: number) {
         this.setState(pState => {
             return {
                 health: Math.max(0, Math.min(pState.health - dmg, pState.attrs!.health))
             }
-        })
+        }, this.persist)
     }
 
     @autobind
     applyEffects(active : StatusEffectsType[]) {
         this.setState({
             effects: active.sort()
-        })
+        }, this.persist)
     }
 
     @autobind
@@ -90,6 +99,32 @@ export class MonsterStateProvider extends React.Component<IProps, IState> {
         {this.props.children}
         </MonsterStateCtx.Provider>
     }
+
+    componentDidMount() {
+        console.log("Context on load of MonstersState:", this.context);
+        let store: LocalState = this.context.store
+        let saved = store.Get<MonsterStateJSON>(`monsters:${this.props.type}:${this.props.id}`)
+        if (saved != null) { this.loadFromJSON(saved)};
+    };
+
+    loadFromJSON(json: MonsterStateJSON) {
+        this.setState({
+            health: json.health,
+            effects: json.effects
+        })
+    }
+
+    toJSON() : MonsterStateJSON {
+        return {
+            id: this.props.id,
+            name : this.props.name,
+            level : this.props.level,
+            type : this.props.type,
+            health : this.state.health,
+            effects: this.state.effects,
+        }
+    }
+
 }
 
 export default class MonsterState{

@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter, Route, RouteComponentProps} from 'react-router-dom';
-import DataProvider from './AppContext'
+import DataProvider from "./context/DataProvider";
 
 ReactDOM.render(<BrowserRouter>
 <Route path="/:id?" render={(props : RouteComponentProps)=><DataProvider {...props}><App/></DataProvider>} />

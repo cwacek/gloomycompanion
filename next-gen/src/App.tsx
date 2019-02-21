@@ -1,11 +1,9 @@
 import React, { Component, CSSProperties, ReactNode } from 'react';
-import {RouteComponentProps} from 'react-router-dom'
-import {AppContext, AppContextProvider} from './AppContext'
+import {AppContext, AppContextProvider} from './context/AppContext'
 import './App.css';
 
 import {MonsterDeck, DECKS, LocalState } from './data/cards';
 import Select from 'react-select';
-import {Input} from 'reactstrap'
 import {SelectionType, isSelectionType, range} from './util'
 
 import styles from './styles/layout.module.scss';

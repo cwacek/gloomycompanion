@@ -32,7 +32,7 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
 
     render() {
         let activeEffects : JSX.Element[] = this.context.effects.map( (effect : StatusEffectsType) => {
-            return <div key={effect} className={styles.effect}>{effect}</div>
+            return <span key={effect} className={styles.effect}>{effect}</span>
         })
 
         let effectController : JSX.Element[] = AllStatusEffects.map(effect => {
@@ -61,7 +61,9 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
                             <div className={styles.healthBar}
                                 style={{ width: `${health}%` }}></div>
                         </div>
+                        <div>
                         {activeEffects}
+                        </div>
                     </div>
                 </div>
                 <div className={styles.name}>
@@ -71,7 +73,6 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
             <Popover placement="right" 
                 isOpen={this.state.popoverOpen}
                 target='monsterDetails'
-                trigger='manual'
                 >
                 <PopoverBody className={styles.monsterActionPane}>
                     <div className={styles.damage}>
@@ -99,9 +100,19 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
     @autobind
     togglePopover() : void {
         this.setState(prevState => {
-            return {
-                popoverOpen: !prevState.popoverOpen
-            };
+            if (prevState.popoverOpen) {
+                return {
+                    modDmg: 0,
+                    modEffects: [],
+                    popoverOpen: !prevState.popoverOpen
+                }
+            } else {
+                return {
+                    modDmg: 0,
+                    modEffects: this.context.effects,
+                    popoverOpen: !prevState.popoverOpen
+                }
+            }
         });
     }
 
@@ -113,7 +124,8 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
 
             return {
                 modDmg: 0,
-                modEffects: []
+                modEffects: [],
+                popoverOpen: false
             }
         })
     }
@@ -124,7 +136,7 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
             let existing = pState.modEffects.find(e => e === effect)
             if (existing) {
                 return {
-                    modEffects: pState.modEffects.filter(e => e === effect)
+                    modEffects: pState.modEffects.filter(e => e !== effect)
                 }
             } else {
                 pState.modEffects.push(effect as StatusEffectsType)
