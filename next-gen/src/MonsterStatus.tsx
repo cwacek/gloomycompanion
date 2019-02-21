@@ -13,7 +13,6 @@ import {FaRegCheckSquare, FaSquare} from 'react-icons/fa';
 
 interface IProps {
     monster : MonsterState
-    onDeath : (id : number) => void
 }
 
 interface IState {
@@ -48,6 +47,7 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
 
         return <div onClick={this.togglePopover} id='monsterDetails'>
             <div className={[styles.statusContainer, styles[this.props.monster.type]].join(" ")}>
+                {this.context.health > 0 ? null : <div className={styles.dying}/> }
                 <div className={styles.statusDetailsContainer}>
                     <div className={styles.statusIconContainer}>
                         <span>{this.props.monster.id} </span>
@@ -99,6 +99,7 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
 
     @autobind
     togglePopover() : void {
+        if (this.context.health <= 0) { return }
         this.setState(prevState => {
             if (prevState.popoverOpen) {
                 return {
@@ -107,9 +108,10 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
                     popoverOpen: !prevState.popoverOpen
                 }
             } else {
+                let currentEffects : StatusEffectsType[] = this.context.effects
                 return {
                     modDmg: 0,
-                    modEffects: this.context.effects,
+                    modEffects: currentEffects.slice(),
                     popoverOpen: !prevState.popoverOpen
                 }
             }

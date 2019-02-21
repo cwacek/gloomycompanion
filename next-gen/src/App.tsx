@@ -39,7 +39,9 @@ class App extends Component<IProps, IState> {
 
   @autobind
   addMonster() {
-    this.context.activateMonsterType(this.state.selectedMonster);
+    if (this.state.selectedMonster) {
+      this.context.activateMonsterType(this.state.selectedMonster);
+    }
   }
 
   render() {

@@ -10,6 +10,9 @@
     font-family: "PirataOne";
     color: white;
     text-shadow: 1px 2px 3px black;
+    position:relative;
+    overflow:hidden;
+
 
     &.elite {
 
@@ -21,6 +24,14 @@
             color: gold;
         }
     }
+
+    .dying {
+        position: absolute;
+        width: 20em;
+        background-color: #efefef9e;
+        height: 5em;
+    }
+
 
     .statusDetailsContainer {
         display: grid;

@@ -2090,6 +2090,15 @@ export class LocalState {
   }
 
   static ClearMonsters(session : string, monsterId: string) : void {
-    localStorage.removeItem(`gloomy:${session}:monsters:${monsterId}`)
+    console.log(`Removing ${monsterId}`)
+    let key = `gloomy:${session}:monsters:${monsterId}`;
+    localStorage.removeItem(key)
+    for (let i = 0; i < localStorage.length; i++) {
+      let subKey = localStorage.key(i);
+      if (subKey!.startsWith(key)) {
+        console.log(`Cascading to remove ${subKey}`)
+        localStorage.removeItem(subKey!)
+      }
+    }
   }
 }

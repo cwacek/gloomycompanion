@@ -64,8 +64,9 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
         level={this.context.monsterLevel}
         id={m.id}
         type={m.type}
+        onDeath={this.onMonsterDeath} 
       >
-        <MonsterStatus monster={m} onDeath={this.onMonsterDeath} />
+        <MonsterStatus monster={m} />
       </MonsterStateProvider>
     })
 

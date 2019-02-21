@@ -31,6 +31,7 @@ interface IProps{
     name :string;
     level : number;
     type :MonsterTypes;
+    onDeath : (id : number) => void
 }
 
 export const MonsterStateCtx = React.createContext<IState| null>(null);
@@ -57,18 +58,21 @@ export class MonsterStateProvider extends React.Component<IProps, IState> {
     }
 
     @autobind
-    persist() {
-        let store : LocalState = this.context.store
-        store.Put(`monsters:${this.props.type}:${this.props.id}`, this);
-    }
-
-    @autobind
     applyDamage(dmg: number) {
         this.setState(pState => {
+            let nextHealth = Math.max(0, Math.min(pState.health - dmg, pState.attrs!.health))
+
+            if (nextHealth == 0) {
+                this.context.store.Clear(`monsters:${this.props.name}:${this.props.type}:${this.props.id}`);
+                setTimeout(()=> {
+                    this.props.onDeath(this.props.id);
+                }, 5000)
+            }
             return {
-                health: Math.max(0, Math.min(pState.health - dmg, pState.attrs!.health))
+                health: nextHealth
             }
         }, this.persist)
+
     }
 
     @autobind
@@ -100,10 +104,15 @@ export class MonsterStateProvider extends React.Component<IProps, IState> {
         </MonsterStateCtx.Provider>
     }
 
+    @autobind
+    persist() {
+        let store : LocalState = this.context.store
+        store.Put(`monsters:${this.props.name}:${this.props.type}:${this.props.id}`, this);
+    }
+
     componentDidMount() {
-        console.log("Context on load of MonstersState:", this.context);
         let store: LocalState = this.context.store
-        let saved = store.Get<MonsterStateJSON>(`monsters:${this.props.type}:${this.props.id}`)
+        let saved = store.Get<MonsterStateJSON>(`monsters:${this.props.name}:${this.props.type}:${this.props.id}`)
         if (saved != null) { this.loadFromJSON(saved)};
     };
 
