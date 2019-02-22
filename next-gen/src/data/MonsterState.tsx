@@ -5,9 +5,9 @@ import { AppContextConsumer, AppContext } from "../context/AppContext";
 import { PersistableStateContext } from "../util";
 import { LocalState } from "./cards";
 
-export type StatusEffectsType = 'wound' | 'poison' | 'immobilize' | 'strengthen' | 'stun' | 'disarm'
-export const AllStatusEffects : StatusEffectsType[] =  ['wound' , 'poison' , 'immobilize' , 'strengthen' , 'stun' , 'disarm']
-const TemporaryEffects : StatusEffectsType[] = ['immobilize', 'strengthen', 'stun', 'disarm']
+export type StatusEffectsType = 'wound' | 'poison' | 'immobilize' | 'strengthen' | 'stun' | 'disarm' | 'muddle'
+export const AllStatusEffects : StatusEffectsType[] =  ['wound' , 'poison' , 'immobilize' , 'strengthen' , 'stun' , 'disarm', 'muddle']
+const TemporaryEffects : StatusEffectsType[] = ['immobilize', 'strengthen', 'stun', 'disarm', 'muddle']
 
 export interface MonsterStateJSON {
     id : number;

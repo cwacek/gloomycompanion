@@ -11,6 +11,7 @@ import {TiDeleteOutline} from 'react-icons/ti'
 
 interface IProps {
     deck : MonsterDeck
+    onDraw: () => void
 }
 
 interface IState {
@@ -36,7 +37,7 @@ class Deck extends Component<IProps, IState>  {
       let newState = {shownCard: prevProps.deck.drawCard()}
       this.context.saveDeckState()
       return newState
-    })
+    }, this.props.onDraw)
   }
 
   @autobind

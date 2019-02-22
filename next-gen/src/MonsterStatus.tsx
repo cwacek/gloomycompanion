@@ -45,7 +45,7 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
 
         let health = this.context.health/this.props.monster.baseAttributes.health * 100;
 
-        return <div onClick={this.togglePopover} id='monsterDetails'>
+        return <div onClick={this.togglePopover} id={`monsterDetails-${this.props.monster.name.replace(' ', '_')}-${this.props.monster.id}`}>
             <div className={[styles.statusContainer, styles[this.props.monster.type]].join(" ")}>
                 {this.context.health > 0 ? null : <div className={styles.dying}/> }
                 <div className={styles.statusDetailsContainer}>
@@ -72,12 +72,12 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
             </div>
             <Popover placement="right" 
                 isOpen={this.state.popoverOpen}
-                target='monsterDetails'
+                target={`monsterDetails-${this.props.monster.name.replace(' ', '_')}-${this.props.monster.id}`}
                 >
                 <PopoverBody className={styles.monsterActionPane}>
                     <div className={styles.damage}>
                         <div className={styles.damageChange}>{this.state.modDmg}</div>
-                        <ButtonGroup>
+                        <ButtonGroup style={{width: "100%"}}>
                             <Button color="secondary" onClick={this.decrementDmg}>-</Button>
                             <Button color="danger" onClick={this.incrementDmg}>+</Button>
                         </ButtonGroup>

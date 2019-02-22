@@ -76,7 +76,7 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
         style={style}
         key={this.props.monsterInfo.monster.name}
       >
-        <Deck deck={this.props.monsterInfo} />
+        <Deck deck={this.props.monsterInfo} onDraw={this.onDraw} />
         <div className={styles.buttonset}>
         <Button color='secondary' size='lg' onClick={this.openAddModal}>Add</Button>
         </div>
@@ -97,6 +97,14 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
         </Modal>
       </div>
     );
+  }
+
+  @autobind
+  onDraw() : void {
+    LocalState.PersistMonsters(
+      this.context.sessionId,
+      this.props.monsterInfo.monster.name,
+      this.state.currentMonsters);
   }
 
   @autobind
