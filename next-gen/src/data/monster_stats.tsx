@@ -8297,6 +8297,7 @@ export const MONSTER_STATS: MonsterStatsCollection = {
 };
 
 export function getMonsterAttrs(name: string, level: number, type : MonsterTypes): MonsterAttrs {
+  console.log(MONSTER_STATS.monsters[name])
   let stats = MONSTER_STATS.monsters[name].level.find((def) => def.level === level)
   if (!stats) {
     throw new Error(`Failed to find level ${level} ${name}`)
