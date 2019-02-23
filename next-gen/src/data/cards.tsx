@@ -1947,23 +1947,6 @@ export class LocalState {
       return object;
   }
 
-  /*
-  static GetDecks(session: string): MonsterDeck[] {
-    let saved = localStorage.getItem(`gloomy:${session}:monsters`)
-    if (!saved) {
-      return []
-    }
-    let stateObjects = JSON.parse(saved) as IDeckState[]
-
-    return stateObjects.map(o => MonsterDeck.fromJSON(o))
-  }
-
-  static PersistDecks(session: string, monsters : MonsterDeck[]): void {
-    let toSave = JSON.stringify(monsters);
-    localStorage.setItem(`gloomy:${session}:monsters`, toSave)
-  }
-  */
-
   static PersistMonsters(session : string, monsterId : string, monsters : MonsterState[]): void {
     let toSave = JSON.stringify(monsters);
     localStorage.setItem(`gloomy:${session}:monsters:${monsterId}`, toSave)
