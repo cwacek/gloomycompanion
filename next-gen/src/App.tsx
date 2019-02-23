@@ -1,5 +1,5 @@
 import React, { Component, CSSProperties, ReactNode } from 'react';
-import {AppContext, AppContextProvider} from './context/AppContext'
+import {AppContext, IAppContext } from './context/AppContext'
 import './App.css';
 
 import {MonsterDeck, DECKS, LocalState } from './data/cards';
@@ -24,6 +24,7 @@ const monsterOptions : SelectionType[] = Object.keys(DECKS).map(name => {
 
 class App extends Component<IProps, IState> {
   static contextType = AppContext
+  context!: React.ContextType<typeof AppContext>;
 
   state = {
     selectedMonster: undefined,
@@ -40,19 +41,19 @@ class App extends Component<IProps, IState> {
   @autobind
   addMonster() {
     if (this.state.selectedMonster) {
-      this.context.activateMonsterType(this.state.selectedMonster);
+      this.context!.activateMonsterType(this.state.selectedMonster);
     }
   }
 
   render() {
     console.log(this.context)
-    let monsters : MonsterDeck[] = this.context.activeMonsters
+    let monsters : MonsterDeck[] = this.context!.activeMonsters
     let monsterColumns: JSX.Element[] = monsters.map((m, i) => {
       return <MonsterColumn key={m.monster.name} columnIdx={i} monsterInfo={m}/>
     });
 
     let availableMonsters = monsterOptions.filter(opt => {
-      return !this.context.activeMonsters.find((m : MonsterDeck) => {
+      return !this.context!.activeMonsters.find((m : MonsterDeck) => {
         return opt.value == m.monster.name
       })
     })
@@ -75,9 +76,15 @@ class App extends Component<IProps, IState> {
           <div className={styles.monsterLevel}>
           Level
             <select name="level" id="monsterLevel"
-              onChange={(e) => {this.context.setMonsterLevel(e.target.value)}}
-              disabled={this.context.activeMonsters.length > 0}
-              value={this.context.monsterLevel}
+              onChange={(e) => {
+                let lvl = parseInt(e.target.value);
+                if (lvl == null) {
+                  throw new Error("Failed to parse valid level from selection");
+                }
+                this.context!.setMonsterLevel(lvl)
+              }}
+              disabled={this.context!.activeMonsters.length > 0}
+              value={this.context!.monsterLevel}
             >
               {range(9).map((idx) => <option key={idx} value={idx}>{idx}</option>)}
             </select>
