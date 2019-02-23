@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {IActionType, AoEAttack, ComplexAction} from './data/cards';
+import {IActionType, AoEAttack, ComplexAction, StyledAction} from './data/cards';
 
 import styles from './styles/Card.module.css';
 
@@ -203,13 +203,14 @@ export default class MonsterAction extends Component<{ definition: IActionType }
   }
 
   renderAny(definition : IActionType) {
-      console.log("Rendering", definition)
       if (typeof definition === "string") {
         return this.renderString(definition);
       } else if (definition instanceof AoEAttack) {
           return this.renderAoEAttack(definition);
       } else if (this.isComplexAction(definition)) {
           return this.renderComplexAction(definition)
+      } else if (definition instanceof StyledAction) {
+        return <span className={styles[definition.style]}>{definition.action}</span>
       }
   }  
 }

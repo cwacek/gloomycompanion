@@ -42,50 +42,26 @@ export class DeckStateProvider extends React.Component<IProps, IState> {
     </DeckStateCtx.Provider>
   }
 
-  static getDerivedStateFromProps(nProps: IProps, pState: IState) {
-    if (pState.deck.length == 0 && pState.drawn.length == 0) {
-      let thing = DECK_DEFINITIONS.find((d) => {
-        return (d.class == nProps.monster.class);
-      });
-      if (!thing) {
-        throw new Error(`Failed to find deck for ${name}`);
-      }
-      let deckDef: {
-        class: string;
-        cards: {
-          shuffle: boolean;
-          initiative: number;
-          actions?: string[];
-          complexActions?: IMonsterAction[];
-        }[];
-      } = thing;
-
-      return {
-        deck: shuffle_list(thing.cards.map((card, idx) => DeckStateProvider.buildICard(
-          idx, nProps.monster, card)))
-      }
-    }
-    return null;
-  }
-
   componentDidMount() {
+    let thing = DECK_DEFINITIONS.find((d) => {
+      return (d.class == this.props.monster.class);
+    });
+    if (!thing) {
+      throw new Error(`Failed to find deck for ${name}`);
+    }
+    let deckDef: {
+      class: string;
+      cards: {
+        shuffle: boolean;
+        initiative: number;
+        actions?: string[];
+        complexActions?: IMonsterAction[];
+      }[];
+    } = thing;
+
+    /* If we have saved state, then by all means, set it back up */
     let saved = this.context!.store.Get<DeckStateJSON>(`decks:${this.props.monster.name}`);
-    if (saved != null) {
-      let thing = DECK_DEFINITIONS.find((d) => {
-        return (d.class == this.props.monster.class);
-      });
-      if (!thing) {
-        throw new Error(`Failed to find deck for ${name}`);
-      }
-      let deckDef: {
-        class: string;
-        cards: {
-          shuffle: boolean;
-          initiative: number;
-          actions?: string[];
-          complexActions?: IMonsterAction[];
-        }[];
-      } = thing;
+    if (saved) {
 
       let drawn = saved.drawn.map(cardId => {
         return DeckStateProvider.buildICard(cardId, this.props.monster, deckDef.cards[cardId]);
@@ -97,6 +73,13 @@ export class DeckStateProvider extends React.Component<IProps, IState> {
         drawn: drawn,
         shownCard: drawn[0]
       });
+    } else {
+      /* If we don't have saved state, shuffle the deck and set it up*/
+      this.setState({
+        deck: shuffle_list(thing.cards.map((card, idx) => DeckStateProvider.buildICard(
+          idx, this.props.monster, card)))
+      });
+
     }
   }
 
@@ -132,7 +115,7 @@ export class DeckStateProvider extends React.Component<IProps, IState> {
         drawn: pState.drawn,
         deck: deck
       }
-    }, () => { this.context!.store.Put(`decks:${this.props.monster.name}`, this.toJSON) }
+    }, () => { this.context!.store.Put(`decks:${this.props.monster.name}`, this) }
     );
   }
 

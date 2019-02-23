@@ -12,46 +12,40 @@ interface IProps {
     card : ICard | null
 }
 
-interface IState {
-}
-
-
-
-export default class CardDetails extends Component<IProps, IState>  {
-    render() {
-        if (!this.props.card) {
-            return null;
-        }
-        let actions : JSX.Element[] = this.props.card.actions.map((action, index) => {
-            let modifiers : JSX.Element[] | null = null
-            if (action.modifiers) {
-              modifiers = action.modifiers.map((mod, idx) => {
-                return (
-                  <li key={idx}>
-                    <MonsterAction definition={mod} />
-                  </li>
-                );
-              });
-            }
-            return (
-              <li key={index}>
-                <MonsterAction definition={action.action} />
-                {modifiers ? <ul>{modifiers}</ul> : null}
-              </li>
-            );
-        })
-
+const CardDetails = (props: IProps) => {
+  if (!props.card) {
+    return null;
+  }
+  let actions: JSX.Element[] = props.card.actions.map((action, index) => {
+    let modifiers: JSX.Element[] | null = null
+    if (action.modifiers) {
+      modifiers = action.modifiers.map((mod, idx) => {
         return (
-          <div className={styles.cardDetails}>
-            <span className={styles.initiative}>
-              {this.props.card.initiative}
-            </span>
-            {this.props.card.shuffle ? (
-              <img className={styles.shuffle} src={shuffle} />
-            ) : null}
-            <ul>{actions}</ul>
-          </div>
+          <li key={idx}>
+            <MonsterAction definition={mod} />
+          </li>
         );
-
+      });
     }
+    return (
+      <li key={index}>
+        <MonsterAction definition={action.action} />
+        {modifiers ? <ul>{modifiers}</ul> : null}
+      </li>
+    );
+  })
+
+  return (
+    <div className={styles.cardDetails}>
+      <span className={styles.initiative}>
+        {props.card.initiative}
+      </span>
+      {props.card.shuffle ? (
+        <img className={styles.shuffle} src={shuffle} />
+      ) : null}
+      <ul>{actions}</ul>
+    </div>
+  );
 }
+
+export default CardDetails;
