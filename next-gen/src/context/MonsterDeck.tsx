@@ -71,7 +71,7 @@ export class DeckStateProvider extends React.Component<IProps, IState> {
           return DeckStateProvider.buildICard(cardId, this.props.monster, deckDef.cards[cardId]);
         }),
         drawn: drawn,
-        shownCard: drawn[0]
+        shownCard: drawn[drawn.length-1]
       });
     } else {
       /* If we don't have saved state, shuffle the deck and set it up*/
