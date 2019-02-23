@@ -1,5 +1,5 @@
 import React from "react";
-import MonsterState, { StatusEffectsType, AllStatusEffects, MonsterStateCtx } from "./data/MonsterState";
+import MonsterState, { StatusEffectsType, AllStatusEffects, MonsterStateCtx } from "./context/MonsterState";
 
 import attack from './images/attack.svg';
 import move from './images/move.svg';

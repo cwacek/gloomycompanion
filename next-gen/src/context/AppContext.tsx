@@ -1,14 +1,14 @@
 import React, {ReactNode} from 'react';
-import { MonsterDeck, LocalState, ICard } from '../data/cards';
+import { LocalState, ICard, IMonster } from '../data/cards';
 import { RouteComponentProps } from 'react-router';
 
+
 export interface IAppContext {
-  sessionId? : string
-  activeMonsters: MonsterDeck[]
+  sessionId : string
+  activeMonsters: IMonster[]
   monsterLevel : number
   activateMonsterType: (name : string) => void
   deactivateMonsterType: (name : string) => void
-  saveDeckState: (monsterName : string) => void
   setMonsterLevel: (level : number) => void
   store : LocalState
 }

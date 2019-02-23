@@ -2,7 +2,7 @@ import React, { Component, CSSProperties, ReactNode } from 'react';
 import {AppContext, IAppContext } from './context/AppContext'
 import './App.css';
 
-import {MonsterDeck, DECKS, LocalState } from './data/cards';
+import {DECKS, LocalState, IMonster } from './data/cards';
 import Select from 'react-select';
 import {SelectionType, isSelectionType, range} from './util'
 
@@ -42,19 +42,19 @@ class App extends Component<IProps, IState> {
   addMonster() {
     if (this.state.selectedMonster) {
       this.context!.activateMonsterType(this.state.selectedMonster);
+      this.setState({selectedMonster: undefined})
     }
   }
 
   render() {
-    console.log(this.context)
-    let monsters : MonsterDeck[] = this.context!.activeMonsters
+    let monsters : IMonster[] = this.context!.activeMonsters
     let monsterColumns: JSX.Element[] = monsters.map((m, i) => {
-      return <MonsterColumn key={m.monster.name} columnIdx={i} monsterInfo={m}/>
+      return <MonsterColumn key={m.name} columnIdx={i} monsterInfo={m}/>
     });
 
     let availableMonsters = monsterOptions.filter(opt => {
-      return !this.context!.activeMonsters.find((m : MonsterDeck) => {
-        return opt.value == m.monster.name
+      return !this.context!.activeMonsters.find((m : IMonster) => {
+        return opt.value == m.name
       })
     })
 

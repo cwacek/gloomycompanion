@@ -1,24 +1,19 @@
 import React, { Component } from 'react';
-import { MonsterDeck, LocalState } from '../data/cards';
+import { LocalState, DECKS, IMonster } from '../data/cards';
 import autobind from 'autobind-decorator';
 import { IProps, IAppContext, AppContextProvider } from './AppContext';
 
 export default class DataProvider extends Component<IProps, IAppContext> {
 
   state = {
+    sessionId: "",
     activeMonsters: [],
     monsterLevel: 1,
     activateMonsterType: this.activateMonsterType,
     deactivateMonsterType: this.deactivateMonsterType,
-    saveDeckState: this.saveDeckState,
     setMonsterLevel: this.setMonsterLevel,
     store: new LocalState(this.props.match.params.id)
   } as IAppContext;
-
-  @autobind
-  saveDeckState() {
-    LocalState.PersistDecks(this.props.match.params.id, this.state.activeMonsters);
-  }
 
   @autobind
   setMonsterLevel(level: number) {
@@ -36,8 +31,9 @@ export default class DataProvider extends Component<IProps, IAppContext> {
   activateMonsterType(name: string): void {
     this.setState((prevState, props) => {
       let newMonsters = prevState.activeMonsters;
-      newMonsters.push(new MonsterDeck(name));
-      LocalState.PersistDecks(props.match.params.id, newMonsters);
+      newMonsters.push(DECKS[name]);
+
+      prevState.store.Put('decks', newMonsters);
       return {
         activeMonsters: newMonsters
       };
@@ -47,10 +43,10 @@ export default class DataProvider extends Component<IProps, IAppContext> {
   @autobind
   deactivateMonsterType(name: string): void {
     this.setState((prevState, props) => {
-      let newMonsters = prevState.activeMonsters.filter((m: MonsterDeck) => {
-        return m.monster.name !== name;
+      let newMonsters = prevState.activeMonsters.filter((m: IMonster) => {
+        return m.name !== name;
       });
-      LocalState.PersistDecks(props.match.params.id, newMonsters);
+      prevState.store.Put('decks', newMonsters);
       LocalState.ClearMonsters(props.match.params.id, name);
       return {
         activeMonsters: newMonsters
@@ -61,6 +57,8 @@ export default class DataProvider extends Component<IProps, IAppContext> {
   componentDidMount() {
     if (this.props.match.params.id) {
       this.setState(() => {
+        let store = new LocalState(this.props.match.params.id);
+
         let level: number = 1;
         let levelData = localStorage.getItem(`gloomy:${this.props.match.params.id}:monsterLevel`);
         if (levelData) {
@@ -69,11 +67,12 @@ export default class DataProvider extends Component<IProps, IAppContext> {
             level = 1;
           }
         }
+        let activeMonsters = store.Get<IMonster[]>('decks');
         return {
-          activeMonsters: LocalState.GetDecks(this.props.match.params.id),
+          activeMonsters: activeMonsters ? activeMonsters : [],
           monsterLevel: level,
           sessionId: this.props.match.params.id,
-          store: new LocalState(this.props.match.params.id)
+          store: store
         };
       });
     }

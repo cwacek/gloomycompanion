@@ -2,7 +2,7 @@ import {shuffle_list} from '../util'
 
 import aoe_4_with_black from '../images/aoe-4-with-black.svg'
 import aoe_circle_with_side_black from '../images/aoe-circle-with-side-black.svg'
-import MonsterState, { MonsterStateJSON } from './MonsterState';
+import MonsterState, { MonsterStateJSON } from '../context/MonsterState';
 
 export interface ICard {
     id : number
@@ -90,7 +90,7 @@ export const DECKS : {[key :string] : IMonster} =
 };
 
 
-const DECK_DEFINITIONS: {
+export const DECK_DEFINITIONS: {
   class: string;
   cards: {
     shuffle: boolean;
@@ -1915,124 +1915,12 @@ const DECK_DEFINITIONS: {
   }
 ];
 
-interface IDeckState {
-  name : string;
-  class : string;
-  deck : number[];
-  drawn : number[];
-}
-
-export class MonsterDeck {
-  readonly monster: IMonster;
-  readonly deck: ICard[];
-  readonly drawn: ICard[] = [];
-
-  constructor(name: string, state? :IDeckState) {
-    this.monster = DECKS[name];
-
-    let thing = DECK_DEFINITIONS.find((d) => {
-      return (d.class == this.monster!.class)
-    });
-    if (!thing) {
-      throw new Error(`Failed to find deck for ${name}`);
-    }
-    let deckDef: {
-      class: string; cards: { shuffle: boolean; initiative: number; actions?: string[]; complexActions?: IMonsterAction[]; }[]
-    } = thing
-
-    if (state) {
-      this.deck = state.deck.map(cardId => {
-        return this.buildICard(cardId, deckDef.cards[cardId])
-      })
-      this.drawn = state.drawn.map(cardId => {
-        return this.buildICard(cardId, deckDef.cards[cardId])
-      })
-    } else {
-      this.deck = thing.cards.map((card, idx) => this.buildICard(idx, card))
-      shuffle_list(this.deck);
-    }
-  }
-
-  private buildICard(id: number, card: { shuffle: boolean; initiative: number; actions?: string[]; complexActions?: IMonsterAction[]; }): ICard {
-    let actions: IMonsterAction[] = [];
-    if (card.actions) {
-      card.actions.forEach(actionDef => {
-        if (actionDef.startsWith("**")) {
-          let currentAction = actions[actions.length - 1];
-          if (currentAction.modifiers) {
-            currentAction.modifiers.push(
-              actionDef.substring(3)
-            );
-          }
-        } else {
-          actions.push({
-            action: actionDef.substring(1),
-            modifiers: []
-          });
-        }
-      });
-    }
-
-    if (card.complexActions) {
-      card.complexActions.forEach(actionDef => {
-        actions.push(actionDef);
-      })
-    }
-
-    return {
-      id: id,
-      monster: this.monster,
-      initiative: card.initiative,
-      actions: actions,
-      shuffle: card.shuffle
-    } as ICard;
-
-  }
-
-  get drawnCard(): ICard | null {
-    if (this.drawn.length > 0) {
-      return this.drawn[this.drawn.length - 1];
-    } else {
-      return null;
-    }
-  }
-
-  drawCard(): ICard | null {
-    if (this.drawn.length > 0 && this.drawn[this.drawn.length - 1].shuffle) {
-      while (this.drawn.length > 0) {
-        let card = this.drawn.pop()
-        if (card) { this.deck.push(card) };
-      }
-
-      shuffle_list(this.deck);
-      return null;
-    }
-
-    let card = this.deck.pop();
-    if (!card) {
-      throw new Error("Failed to draw card???");
-    }
-    this.drawn.push(card);
-    return card;
-  }
-
-
-  static fromJSON(json: IDeckState): MonsterDeck {
-    return new MonsterDeck(json.name, json);
-  }
-
-  toJSON() : IDeckState {
-    return {
-      name: this.monster.name,
-      class: this.monster.class,
-      drawn: this.drawn.map(card => card.id),
-      deck: this.deck.map(card => card.id),
-    }
-  }
-}
-
 interface Serializable {
-  toJSON: () => any
+  toJSON: () => any;
+}
+
+interface Iterable {
+  length: number;
 }
 
 export class LocalState {
@@ -2045,7 +1933,7 @@ export class LocalState {
     localStorage.removeItem(`gloomy:${this.sessionId}:${key}`);
   }
 
-  Put(key : string, serializable : Serializable ) {
+  Put(key : string, serializable : Serializable | Iterable ) {
       let toSave = JSON.stringify(serializable);
       localStorage.setItem(`gloomy:${this.sessionId}:${key}`, toSave)
   }
@@ -2059,6 +1947,7 @@ export class LocalState {
       return object;
   }
 
+  /*
   static GetDecks(session: string): MonsterDeck[] {
     let saved = localStorage.getItem(`gloomy:${session}:monsters`)
     if (!saved) {
@@ -2073,6 +1962,7 @@ export class LocalState {
     let toSave = JSON.stringify(monsters);
     localStorage.setItem(`gloomy:${session}:monsters`, toSave)
   }
+  */
 
   static PersistMonsters(session : string, monsterId : string, monsters : MonsterState[]): void {
     let toSave = JSON.stringify(monsters);

@@ -1,20 +1,20 @@
 
 import styles from './styles/layout.module.scss';
 import React from 'react';
-import {MonsterDeck, LocalState} from './data/cards'
+import {LocalState, IMonster} from './data/cards'
+import { DeckStateProvider } from "./context/MonsterDeck";
 import MonsterStatus from './MonsterStatus'
 import {Button, Modal, ModalBody, ModalFooter} from 'reactstrap';
 import Deck from './Deck'
-import MonsterState, { MonsterStateProvider } from './data/MonsterState';
+import MonsterState, { MonsterStateProvider } from './context/MonsterState';
 import autobind from 'autobind-decorator';
 import { AppContext } from './context/AppContext';
 import { createMandatoryContext, PersistableStateContext } from './util';
 import { MonsterTypes } from './data/monster_stats';
 
 interface IProps {
-    columnIdx: number
-    monsterInfo : MonsterDeck
-
+    columnIdx: number;
+    monsterInfo : IMonster;
 }
 
 interface IState {
@@ -26,6 +26,7 @@ interface IState {
 
 export default class MonsterColumn extends React.Component<IProps, IState> {
   static contextType = AppContext
+  context! : React.ContextType<typeof AppContext>
   state = {
     currentMonsters: [],
     addModalOpen: false,
@@ -34,10 +35,9 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
-    console.log("Context on load of MonsterColumn:", this.context);
       this.setState(() => {
       return {
-        currentMonsters: LocalState.GetMonsters(this.context.sessionId, this.props.monsterInfo.monster.name),
+        currentMonsters: LocalState.GetMonsters(this.context!.sessionId, this.props.monsterInfo.name),
       }
     });
   }
@@ -60,8 +60,8 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
     })
 
     let monsters = this.state.currentMonsters.map((m: MonsterState) => {
-      return <MonsterStateProvider key={m.id} name={this.props.monsterInfo.monster.name}
-        level={this.context.monsterLevel}
+      return <MonsterStateProvider key={m.id} name={this.props.monsterInfo.name}
+        level={this.context!.monsterLevel}
         id={m.id}
         type={m.type}
         onDeath={this.onMonsterDeath} 
@@ -74,15 +74,18 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
       <div
         className={styles["monster-column"]}
         style={style}
-        key={this.props.monsterInfo.monster.name}
+        key={this.props.monsterInfo.name}
       >
-        <Deck deck={this.props.monsterInfo} onDraw={this.onDraw} />
+      <DeckStateProvider monster={this.props.monsterInfo}>
+
+        <Deck monster={this.props.monsterInfo} />
         <div className={styles.buttonset}>
         <Button color='secondary' size='lg' onClick={this.openAddModal}>Add</Button>
         </div>
         <div className={styles["monsterlist"]} >
         {monsters}
         </div>
+      </DeckStateProvider>
 
         <Modal isOpen={this.state.addModalOpen} toggle={this.cancel}>
           <ModalBody>
@@ -102,16 +105,16 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
   @autobind
   onDraw() : void {
     LocalState.PersistMonsters(
-      this.context.sessionId,
-      this.props.monsterInfo.monster.name,
+      this.context!.sessionId,
+      this.props.monsterInfo.name,
       this.state.currentMonsters);
   }
 
   @autobind
   persist() : void {
     LocalState.PersistMonsters(
-      this.context.sessionId,
-      this.props.monsterInfo.monster.name,
+      this.context!.sessionId,
+      this.props.monsterInfo.name,
       this.state.currentMonsters);
   }
 
@@ -134,8 +137,8 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
 
       let monster = new MonsterState(
         prevState.selectedId,
-        this.props.monsterInfo.monster.name,
-        this.context.monsterLevel,
+        this.props.monsterInfo.name,
+        this.context!.monsterLevel,
         type
       )
       prevState.currentMonsters.push(monster);

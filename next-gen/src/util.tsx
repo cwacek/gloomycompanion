@@ -12,7 +12,7 @@ export function isSelectionType(
   return false;
 }
 
-export function shuffle_list(l: any[])
+export function shuffle_list<T>(l: T[]) : T[]
 {
     for (let i = 0; i < l.length-1; i++)
     {
@@ -22,6 +22,8 @@ export function shuffle_list(l: any[])
         l[switch_index] = l[i];
         l[i] = tmp;
     }
+
+    return l
 }
 
 export function createMandatoryContext<T>(defaultValue?: T) {
