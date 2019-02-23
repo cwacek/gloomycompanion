@@ -1,4 +1,13 @@
 
+%pseudo-icon {
+    content: "";
+    width: .9em;
+    height: .9em;
+    display: inline-flex;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: .2em;
+}
 
 .statusContainer {
     margin: 10px 0;
@@ -78,10 +87,28 @@
         }
     }
 
-    .name {
+    .statsContainer {
         border-top: 1px solid white;
         padding-left: 0.3em;
+        display: flex;
 
+        .stats {
+            span {
+                padding-left: 1.2em;
+                &.attack::before {
+                    @extend %pseudo-icon;
+                    background-image: url(../images/attack.svg);
+                }
+                &.move::before {
+                    @extend %pseudo-icon;
+                    background-image: url(../images/move.svg);
+                }
+                &.range::before {
+                    @extend %pseudo-icon;
+                    background-image: url(../images/range.svg);
+                }
+            }
+        }
     }
 }
 
@@ -90,6 +117,7 @@
     font-size: 20pt;
 
     .damage {
+        margin-bottom: 10px;
         .damageChange {
             text-align: center;
             color: crimson;
@@ -98,7 +126,7 @@
         .btn-group  {
             width: 100% !important;
         }
-
     }
+
 
 }

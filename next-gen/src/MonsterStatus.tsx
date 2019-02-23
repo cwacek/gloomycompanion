@@ -1,8 +1,9 @@
 import React from "react";
 import MonsterState, { StatusEffectsType, AllStatusEffects, MonsterStateCtx } from "./data/MonsterState";
 
-import skull from './images/icon.png'
-import { PersistableStateContext } from "./util";
+import attack from './images/attack.svg';
+import move from './images/move.svg';
+import range from './images/range.svg';
 
 import styles from './styles/MonsterStatus.module.scss';
 import { Popover, PopoverHeader, PopoverBody, ButtonGroup } from "reactstrap";
@@ -66,8 +67,21 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
                         </div>
                     </div>
                 </div>
-                <div className={styles.name}>
-                    {this.props.monster.name}
+                <div className={styles.statsContainer}>
+                    <div className={styles.name}>
+                        {this.props.monster.name}
+                    </div>
+                    <div className={styles.stats}>
+                        <span className={styles.move}>
+                            {this.props.monster.baseAttributes.move}
+                        </span>
+                        <span className={styles.attack}>
+                            {this.props.monster.baseAttributes.attack}
+                        </span>
+                        <span className={styles.range}>
+                            {this.props.monster.baseAttributes.range}
+                        </span>
+                    </div>
                 </div>
             </div>
             <Popover placement="right" 
