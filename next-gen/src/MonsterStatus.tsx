@@ -1,10 +1,6 @@
 import React from "react";
 import MonsterState, { StatusEffectsType, AllStatusEffects, MonsterStateCtx } from "./context/MonsterState";
 
-import attack from './images/attack.svg';
-import move from './images/move.svg';
-import range from './images/range.svg';
-
 import styles from './styles/MonsterStatus.module.scss';
 import { Popover, PopoverHeader, PopoverBody, ButtonGroup } from "reactstrap";
 import autobind from "autobind-decorator";
@@ -32,7 +28,7 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
 
     render() {
         let activeEffects : JSX.Element[] = this.context.effects.map( (effect : StatusEffectsType) => {
-            return <span key={effect} className={styles.effect}>{effect}</span>
+            return <div key={effect} className={`${styles.effect} ${styles[effect]} ${styles['icon-lg']}`}></div>
         })
 
         let effectController : JSX.Element[] = AllStatusEffects.map(effect => {

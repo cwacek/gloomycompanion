@@ -1,6 +1,7 @@
-
-+ Add auto-remove status effects for monsters on card turn
-+ Auto-modify monster attack values based on drawn cards 
++ Add auto-remove status effects for monsters on card turn.
+  + This actually needs to happen on the next *monster turn*, which isn't the next card turn, problematically
++ Show Bosses correctly 
++ Make stats sharable.
 
 Nice to have
 + Highlight next monster based on initiative

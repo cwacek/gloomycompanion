@@ -95,7 +95,7 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
           </ModalBody>
           <ModalFooter>
             <Button disabled={this.state.selectedId == null} color='secondary' size='lg' onClick={() => this.addMonster('normal')}>Normal</Button>
-            <Button disabled={this.state.selectedId == null} color='secondary' size='lg' onClick={() => this.addMonster('elite')}>Elite</Button>
+            <Button disabled={this.state.selectedId == null} color='warning' size='lg' onClick={() => this.addMonster('elite')}>Elite</Button>
           </ModalFooter>
         </Modal>
       </div>
