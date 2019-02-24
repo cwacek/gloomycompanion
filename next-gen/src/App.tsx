@@ -4,7 +4,7 @@ import './App.css';
 
 import {DECKS, LocalState, IMonster } from './data/cards';
 import Select from 'react-select';
-import {SelectionType, isSelectionType, range} from './util'
+import {SelectionType, isSelectionType, range, DeckTypes} from './util'
 
 import styles from './styles/layout.module.scss';
 import plus_circle from './images/plus-circle.svg';
@@ -12,15 +12,23 @@ import plus_circle from './images/plus-circle.svg';
 import autobind from 'autobind-decorator';
 import { ValueType } from 'react-select/lib/types';
 import MonsterColumn from './MonsterColumn';
+import { MONSTER_STATS } from './data/monster_stats';
 
 interface IProps { }
 interface IState {
-  selectedMonster : string | undefined;
+  selectedMonster : SelectionType | undefined;
 }
 
-const monsterOptions : SelectionType[] = Object.keys(DECKS).map(name => {
-  return {value: name, label: name}
-});
+const monsterOptions: SelectionType[] = Object.keys(DECKS)
+  .filter((f) => f !== "Boss")
+  .map((name: string) => {
+    return { value: name, label: name, type: "monster" as DeckTypes }
+  })
+  .concat(Object.keys(MONSTER_STATS.bosses)
+    .map((name: string) => {
+      return { value: name, label: name, type: "boss" as DeckTypes }
+    })
+  )
 
 class App extends Component<IProps, IState> {
   static contextType = AppContext
@@ -34,14 +42,14 @@ class App extends Component<IProps, IState> {
   @autobind
   selectMonster(selection: ValueType<SelectionType>): void {
     if (isSelectionType(selection)) {
-      this.setState({ selectedMonster: selection.value });
+      this.setState({ selectedMonster: selection});
     }
   }
 
   @autobind
   addMonster() {
     if (this.state.selectedMonster) {
-      this.context!.activateMonsterType(this.state.selectedMonster);
+      this.context!.activateMonsterType(this.state.selectedMonster.value, this.state.selectedMonster.type);
       this.setState({selectedMonster: undefined})
     }
   }

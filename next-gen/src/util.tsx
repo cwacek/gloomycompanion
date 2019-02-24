@@ -1,6 +1,8 @@
 import React from 'react'
 import {ValueType} from 'react-select/lib/types'
-export interface SelectionType {value : string, label : string};
+
+export type DeckTypes = "boss" | "monster";
+export interface SelectionType {value : string, label : string, type : DeckTypes};
 
 export function isSelectionType(
   selection: ValueType<SelectionType>

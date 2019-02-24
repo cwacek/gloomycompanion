@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { LocalState, DECKS, IMonster } from '../data/cards';
 import autobind from 'autobind-decorator';
 import { IProps, IAppContext, AppContextProvider } from './AppContext';
+import { DeckTypes } from '../util';
 
 export default class DataProvider extends Component<IProps, IAppContext> {
 
@@ -28,10 +29,14 @@ export default class DataProvider extends Component<IProps, IAppContext> {
   }
 
   @autobind
-  activateMonsterType(name: string): void {
+  activateMonsterType(name: string, type : DeckTypes): void {
     this.setState((prevState, props) => {
       let newMonsters = prevState.activeMonsters;
-      newMonsters.push(DECKS[name]);
+      if (type === "monster") {
+        newMonsters.push(DECKS[name]);
+      } else {
+        newMonsters.push(DECKS["Boss"]);
+      }
 
       prevState.store.Put('decks', newMonsters);
       return {
