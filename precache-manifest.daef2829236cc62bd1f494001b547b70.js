@@ -4,16 +4,16 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/earth.443bd9ff.svg"
   },
   {
-    "revision": "1cb37200ecbd79125636",
-    "url": "/gloomycompanion/static/css/main.cfbd855d.chunk.css"
+    "revision": "f5ab449c18ddc674fa4f",
+    "url": "/gloomycompanion/static/css/main.bacbcbd2.chunk.css"
   },
   {
     "revision": "45f1850feb5d65d64201fd318cd055e0",
     "url": "/gloomycompanion/static/media/shuffle.45f1850f.svg"
   },
   {
-    "revision": "3c00128d2056f9889367",
-    "url": "/gloomycompanion/static/js/1.3c00128d.chunk.js"
+    "revision": "3e2188660f0e4460e2a7",
+    "url": "/gloomycompanion/static/js/1.3e218866.chunk.js"
   },
   {
     "revision": "258ef92a8acfb6fb4fca",
@@ -64,6 +64,10 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/back.1c2fbc78.jpg"
   },
   {
+    "revision": "7d7f60b482afb14e571cb82d482d1916",
+    "url": "/gloomycompanion/static/media/poison.7d7f60b4.svg"
+  },
+  {
     "revision": "52753d3cfb0d514dcd181636928d2d30",
     "url": "/gloomycompanion/static/media/wound.52753d3c.svg"
   },
@@ -72,16 +76,16 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/immobilize.d10777f5.svg"
   },
   {
-    "revision": "7d7f60b482afb14e571cb82d482d1916",
-    "url": "/gloomycompanion/static/media/poison.7d7f60b4.svg"
+    "revision": "94f6aac18f7e3a0f01143a0e60b7eaf0",
+    "url": "/gloomycompanion/static/media/invisibility.94f6aac1.svg"
   },
   {
     "revision": "96983af10205de5c42c3b92205807def",
     "url": "/gloomycompanion/static/media/muddle.96983af1.svg"
   },
   {
-    "revision": "94f6aac18f7e3a0f01143a0e60b7eaf0",
-    "url": "/gloomycompanion/static/media/invisibility.94f6aac1.svg"
+    "revision": "8acb9b8ecef3675500bb1d25e2ceebb4",
+    "url": "/gloomycompanion/static/media/strengthen.8acb9b8e.svg"
   },
   {
     "revision": "b82f281dd42c84601e47c559788f2d9f",
@@ -92,16 +96,12 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/attack.a1598f5a.svg"
   },
   {
-    "revision": "8acb9b8ecef3675500bb1d25e2ceebb4",
-    "url": "/gloomycompanion/static/media/strengthen.8acb9b8e.svg"
+    "revision": "4bfeefc7a62e1082b4e2171f3403ad09",
+    "url": "/gloomycompanion/static/media/move.4bfeefc7.svg"
   },
   {
     "revision": "1ade028be23c8667098ed4261735916b",
     "url": "/gloomycompanion/static/media/range.1ade028b.svg"
-  },
-  {
-    "revision": "4bfeefc7a62e1082b4e2171f3403ad09",
-    "url": "/gloomycompanion/static/media/move.4bfeefc7.svg"
   },
   {
     "revision": "079d79cdabefd485672e127b9837bc03",
@@ -120,8 +120,8 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/push.c3799cf8.svg"
   },
   {
-    "revision": "1cb37200ecbd79125636",
-    "url": "/gloomycompanion/static/js/main.1cb37200.chunk.js"
+    "revision": "f5ab449c18ddc674fa4f",
+    "url": "/gloomycompanion/static/js/main.f5ab449c.chunk.js"
   },
   {
     "revision": "91304f4e92f3848840ab54fceab09374",
@@ -232,11 +232,11 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/light.ef434304.svg"
   },
   {
-    "revision": "3c00128d2056f9889367",
+    "revision": "3e2188660f0e4460e2a7",
     "url": "/gloomycompanion/static/css/1.2d19f39f.chunk.css"
   },
   {
-    "revision": "f53f3636bbf1aad0357e4619482fa994",
+    "revision": "0147a6967c31e6517c783c454c7aea33",
     "url": "/gloomycompanion/index.html"
   }
 ];
