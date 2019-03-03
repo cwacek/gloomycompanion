@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/earth.443bd9ff.svg"
   },
   {
-    "revision": "53864e2ab840cfeee7e4",
+    "revision": "3a3cf5d3fae86948d8b7",
     "url": "/gloomycompanion/static/css/main.cfbd855d.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/shuffle.45f1850f.svg"
   },
   {
-    "revision": "39e80ababd237dab00ec",
-    "url": "/gloomycompanion/static/js/1.39e80aba.chunk.js"
+    "revision": "f42f46f281e3cfe77ae3",
+    "url": "/gloomycompanion/static/js/1.f42f46f2.chunk.js"
   },
   {
     "revision": "258ef92a8acfb6fb4fca",
@@ -68,16 +68,12 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/wound.52753d3c.svg"
   },
   {
-    "revision": "d10777f5e7f4456f28f0e6c6bb36df02",
-    "url": "/gloomycompanion/static/media/immobilize.d10777f5.svg"
-  },
-  {
     "revision": "7d7f60b482afb14e571cb82d482d1916",
     "url": "/gloomycompanion/static/media/poison.7d7f60b4.svg"
   },
   {
-    "revision": "94f6aac18f7e3a0f01143a0e60b7eaf0",
-    "url": "/gloomycompanion/static/media/invisibility.94f6aac1.svg"
+    "revision": "d10777f5e7f4456f28f0e6c6bb36df02",
+    "url": "/gloomycompanion/static/media/immobilize.d10777f5.svg"
   },
   {
     "revision": "96983af10205de5c42c3b92205807def",
@@ -86,6 +82,10 @@ self.__precacheManifest = [
   {
     "revision": "8acb9b8ecef3675500bb1d25e2ceebb4",
     "url": "/gloomycompanion/static/media/strengthen.8acb9b8e.svg"
+  },
+  {
+    "revision": "94f6aac18f7e3a0f01143a0e60b7eaf0",
+    "url": "/gloomycompanion/static/media/invisibility.94f6aac1.svg"
   },
   {
     "revision": "b82f281dd42c84601e47c559788f2d9f",
@@ -120,8 +120,8 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/push.c3799cf8.svg"
   },
   {
-    "revision": "53864e2ab840cfeee7e4",
-    "url": "/gloomycompanion/static/js/main.53864e2a.chunk.js"
+    "revision": "3a3cf5d3fae86948d8b7",
+    "url": "/gloomycompanion/static/js/main.3a3cf5d3.chunk.js"
   },
   {
     "revision": "91304f4e92f3848840ab54fceab09374",
@@ -232,11 +232,11 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/light.ef434304.svg"
   },
   {
-    "revision": "39e80ababd237dab00ec",
+    "revision": "f42f46f281e3cfe77ae3",
     "url": "/gloomycompanion/static/css/1.2d19f39f.chunk.css"
   },
   {
-    "revision": "167499c3cca7a07d9289fdbd48fdb126",
+    "revision": "5cdc9e601cbd875365359b9d506e9e84",
     "url": "/gloomycompanion/index.html"
   }
 ];
