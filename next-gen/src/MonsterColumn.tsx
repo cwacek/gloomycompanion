@@ -22,6 +22,7 @@ interface IState {
   addModalOpen: boolean
   availableIds: number[]
   selectedId?: number
+  turnActive : boolean
 }
 
 export default class MonsterColumn extends React.Component<IProps, IState> {
@@ -31,8 +32,11 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
     currentMonsters: [],
     addModalOpen: false,
     availableIds: Array(10).fill(0).map((_, idx) => {return 1 + idx}),
-    selectedId: undefined
+    selectedId: undefined,
+    turnActive: false,
   }
+
+  monsterRefs: React.RefObject<MonsterStateProvider>[] = [];
 
   componentDidMount() {
       this.setState(() => {
@@ -43,6 +47,8 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
   }
 
   render() {
+    this.monsterRefs = [];
+
     let style: React.CSSProperties = {
       gridColumn: this.props.columnIdx + 1
     };
@@ -60,7 +66,10 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
     })
 
     let monsters = this.state.currentMonsters.map((m: MonsterState) => {
-      return <MonsterStateProvider key={m.id} name={this.props.monsterInfo.name}
+
+      let ref = React.createRef<MonsterStateProvider>()
+      let msp = <MonsterStateProvider key={m.id} name={this.props.monsterInfo.name}
+        ref={ref}
         level={this.context!.monsterLevel}
         id={m.id}
         type={m.type}
@@ -68,6 +77,10 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
       >
         <MonsterStatus monster={m} />
       </MonsterStateProvider>
+
+      this.monsterRefs.push(ref)
+
+      return msp;
     })
 
     return (
@@ -80,7 +93,13 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
 
         <Deck monster={this.props.monsterInfo} />
         <div className={styles.buttonset}>
-        <Button color='secondary' size='lg' onClick={this.openAddModal}>Add</Button>
+        <Button color='secondary' onClick={this.openAddModal}>Add</Button>
+
+        {this.state.turnActive ? 
+          <Button color='danger' onClick={this.endTurn}>End Turn</Button>
+          :
+          <Button color='success' onClick={this.initTurn}>Start Turn</Button>
+        }
         </div>
         <div className={styles["monsterlist"]} >
         {monsters}
@@ -100,6 +119,32 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
         </Modal>
       </div>
     );
+  }
+
+  @autobind
+  endTurn() : void {
+    this.monsterRefs.forEach((ref : React.RefObject<MonsterStateProvider>) => {
+      if (!ref.current) {
+        console.log("Skipping update for bad ref");
+        return
+      }
+      ref.current.endTurn();
+    })
+    this.setState(pState => { return {turnActive: !pState.turnActive}});
+  }
+
+  @autobind
+  initTurn() : void {
+    console.log("Take turn");
+    this.monsterRefs.forEach((ref : React.RefObject<MonsterStateProvider>) => {
+      if (!ref.current) {
+        console.log("Skipping update for bad ref");
+        return
+      }
+      ref.current.initTurn();
+    })
+
+    this.setState(pState => { return {turnActive: !pState.turnActive}});
   }
 
   @autobind

@@ -82,6 +82,30 @@ export class MonsterStateProvider extends React.Component<IProps, IState> {
     }
 
     @autobind
+    public initTurn() {
+        if (this.state.effects.length >= 0) {
+            let effects : string[] = this.state.effects
+            let wounded = effects.includes('wound')
+            if (wounded) {
+                this.applyDamage(1);
+            }
+        }
+    }
+
+    @autobind
+    public endTurn() {
+        this.setState((pState) => {
+            let newEffects = pState.effects.filter((e) => {
+                return !TemporaryEffects.includes(e as StatusEffectsType);
+            })
+
+            return {
+                effects: newEffects
+            }
+        }, this.persist)
+    }
+
+    @autobind
     toggleEffect(effect : StatusEffectsType) {
         this.setState((pState : IState) => {
             if (pState.effects.includes(effect)) {
