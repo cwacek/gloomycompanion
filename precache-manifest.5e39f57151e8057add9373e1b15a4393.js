@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/earth.443bd9ff.svg"
   },
   {
-    "revision": "3a3cf5d3fae86948d8b7",
+    "revision": "1cb37200ecbd79125636",
     "url": "/gloomycompanion/static/css/main.cfbd855d.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/shuffle.45f1850f.svg"
   },
   {
-    "revision": "f42f46f281e3cfe77ae3",
-    "url": "/gloomycompanion/static/js/1.f42f46f2.chunk.js"
+    "revision": "3c00128d2056f9889367",
+    "url": "/gloomycompanion/static/js/1.3c00128d.chunk.js"
   },
   {
     "revision": "258ef92a8acfb6fb4fca",
@@ -68,20 +68,16 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/wound.52753d3c.svg"
   },
   {
-    "revision": "7d7f60b482afb14e571cb82d482d1916",
-    "url": "/gloomycompanion/static/media/poison.7d7f60b4.svg"
-  },
-  {
     "revision": "d10777f5e7f4456f28f0e6c6bb36df02",
     "url": "/gloomycompanion/static/media/immobilize.d10777f5.svg"
   },
   {
-    "revision": "96983af10205de5c42c3b92205807def",
-    "url": "/gloomycompanion/static/media/muddle.96983af1.svg"
+    "revision": "7d7f60b482afb14e571cb82d482d1916",
+    "url": "/gloomycompanion/static/media/poison.7d7f60b4.svg"
   },
   {
-    "revision": "8acb9b8ecef3675500bb1d25e2ceebb4",
-    "url": "/gloomycompanion/static/media/strengthen.8acb9b8e.svg"
+    "revision": "96983af10205de5c42c3b92205807def",
+    "url": "/gloomycompanion/static/media/muddle.96983af1.svg"
   },
   {
     "revision": "94f6aac18f7e3a0f01143a0e60b7eaf0",
@@ -96,12 +92,16 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/attack.a1598f5a.svg"
   },
   {
-    "revision": "4bfeefc7a62e1082b4e2171f3403ad09",
-    "url": "/gloomycompanion/static/media/move.4bfeefc7.svg"
+    "revision": "8acb9b8ecef3675500bb1d25e2ceebb4",
+    "url": "/gloomycompanion/static/media/strengthen.8acb9b8e.svg"
   },
   {
     "revision": "1ade028be23c8667098ed4261735916b",
     "url": "/gloomycompanion/static/media/range.1ade028b.svg"
+  },
+  {
+    "revision": "4bfeefc7a62e1082b4e2171f3403ad09",
+    "url": "/gloomycompanion/static/media/move.4bfeefc7.svg"
   },
   {
     "revision": "079d79cdabefd485672e127b9837bc03",
@@ -120,8 +120,8 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/push.c3799cf8.svg"
   },
   {
-    "revision": "3a3cf5d3fae86948d8b7",
-    "url": "/gloomycompanion/static/js/main.3a3cf5d3.chunk.js"
+    "revision": "1cb37200ecbd79125636",
+    "url": "/gloomycompanion/static/js/main.1cb37200.chunk.js"
   },
   {
     "revision": "91304f4e92f3848840ab54fceab09374",
@@ -232,11 +232,11 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/light.ef434304.svg"
   },
   {
-    "revision": "f42f46f281e3cfe77ae3",
+    "revision": "3c00128d2056f9889367",
     "url": "/gloomycompanion/static/css/1.2d19f39f.chunk.css"
   },
   {
-    "revision": "5cdc9e601cbd875365359b9d506e9e84",
+    "revision": "f53f3636bbf1aad0357e4619482fa994",
     "url": "/gloomycompanion/index.html"
   }
 ];
