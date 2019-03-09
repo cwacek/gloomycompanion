@@ -153,19 +153,19 @@ export default class MonsterAction extends Component<{ definition: IActionType }
       <span className='nobr'>WOUND <img className='icon' src={ wound }/></span>
   };
 
-  REGEX = /(%[^%]*%)/gi;
+  static MACRO_REGEX = /(%[^%]*%)/gi;
 
   renderString(definition : string) {
       let actionElems : JSX.Element[] = []
       let searchString = definition
-      let match = this.REGEX.exec(searchString)
+      let match = MonsterAction.MACRO_REGEX.exec(searchString)
       let previousMatchIndex = 0;
       let elemCounter = 0
       while (match != null) {
           actionElems.push(<span key={elemCounter++}>{definition.slice(previousMatchIndex, match.index)}</span>) 
           previousMatchIndex = match.index + match[0].length;
           actionElems.push(<span key={elemCounter++}>{this.MACROS[match[0]]}</span>);
-          match = this.REGEX.exec(searchString);
+          match = MonsterAction.MACRO_REGEX.exec(searchString);
       }
       if (previousMatchIndex < definition.length) {
           actionElems.push(<span key={elemCounter++}>{definition.slice(previousMatchIndex)}</span>)

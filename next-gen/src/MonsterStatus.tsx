@@ -6,6 +6,8 @@ import { Popover, PopoverHeader, PopoverBody, ButtonGroup } from "reactstrap";
 import autobind from "autobind-decorator";
 import Button from "reactstrap/lib/Button";
 import {FaRegCheckSquare, FaSquare} from 'react-icons/fa';
+import MonsterAction from "./MonsterAction";
+import { render } from "react-dom";
 
 
 interface IProps {
@@ -42,6 +44,36 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
 
         let health = this.context.health/this.props.monster.baseAttributes.health * 100;
 
+        let attributes = this.props.monster.baseAttributes.attributes.sort().map((s: string, i: number) => {
+            let elemCounter = 0
+            let previousMatchIndex = 0
+            let regex =MonsterAction.MACRO_REGEX 
+            regex.lastIndex = 0;
+            let match = regex.exec(s)
+            if (match != null) {
+                let renderedElems = []
+                while (match != null) {
+                    let val = s.slice(previousMatchIndex, match.index)
+                    if (val.trim().length > 0) {
+                        renderedElems.push(<span key={elemCounter++}>{val}</span>) 
+                    }
+                    previousMatchIndex = match.index + match[0].length;
+                    renderedElems.push(<span key={elemCounter++} className={styles[match[0].replace(/%/g, "")]}></span>);
+                    match = MonsterAction.MACRO_REGEX.exec(s);
+                }
+                if (previousMatchIndex < s.length) {
+                    renderedElems.push(<span key={elemCounter++}>{s.slice(previousMatchIndex)}</span>)
+                }
+                //let label = match[0].replace(/%/g, "")
+                //s = s.slice(match.index + match[0].length);
+                return <span key={i} >
+                            {renderedElems}
+                </span >
+            } else {
+                return <span key={i} className={styles.attr}>{s}</span>
+            }
+        })
+
         return <div onClick={this.togglePopover} id={`monsterDetails-${this.props.monster.name.replace(' ', '_')}-${this.props.monster.id}`}>
             <div className={[styles.statusContainer, styles[this.props.monster.type]].join(" ")}>
                 {this.context.health > 0 ? null : <div className={styles.dying}/> }
@@ -77,6 +109,7 @@ export default class MonsterStatus extends React.Component<IProps, IState> {
                         <span className={styles.range}>
                             {this.props.monster.baseAttributes.range}
                         </span>
+                        {attributes}
                     </div>
                 </div>
             </div>

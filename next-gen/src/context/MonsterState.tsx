@@ -199,22 +199,6 @@ export default class MonsterState{
         }
     }
 
-    get effects() : StatusEffectsType[] {
-        let result : StatusEffectsType[] = []
-        for (let [key, value] of this.activeEffects.entries()) {
-            if (value) {
-                result.push(key as StatusEffectsType);
-            }
-        }
-
-        return result;
-    }
-
-    hasEffect(effect : StatusEffectsType) : boolean{
-        let hasIt = this.activeEffects.get(effect);
-        return hasIt == null ? false : hasIt;
-    }
-
     static fromJSON(json: MonsterStateJSON): MonsterState {
         return new MonsterState(json.id, json.name, json.level, json.type, json );
     }
@@ -235,34 +219,5 @@ export default class MonsterState{
             health : this.health,
             effects: effects,
         }
-    }
-
-    applyEffects(active : StatusEffectsType[]) {
-        AllStatusEffects.forEach(effect => {
-            if (active.includes(effect)) {
-                this.activeEffects.set(effect, true);
-            } else {
-                this.activeEffects.set(effect, false);
-            }
-        })
-    }
-
-    applyEffect(effect : StatusEffectsType) {
-        this.activeEffects.set(effect, true);
-    } 
-
-    /** 
-     * Perform all actions associated with the beginning of a monster turn, including applying status
-     * effects, etc.
-     */
-    initializeTurn() {
-        if (this.activeEffects.get('wound')) {
-            this.health--;
-        }
-
-        //Clear all temporary effects
-        TemporaryEffects.forEach((effect : StatusEffectsType) => {
-            this.activeEffects.set(effect, false);
-        })
     }
 }
