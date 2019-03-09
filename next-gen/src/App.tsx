@@ -13,6 +13,7 @@ import autobind from 'autobind-decorator';
 import { ValueType } from 'react-select/lib/types';
 import MonsterColumn from './MonsterColumn';
 import { MONSTER_STATS } from './data/monster_stats';
+import Button from 'reactstrap/lib/Button';
 
 interface IProps { }
 interface IState {
@@ -44,6 +45,11 @@ class App extends Component<IProps, IState> {
     if (isSelectionType(selection)) {
       this.setState({ selectedMonster: selection});
     }
+  }
+
+  @autobind
+  clearState() {
+    this.context!.store.ClearAll()
   }
 
   @autobind
@@ -80,6 +86,9 @@ class App extends Component<IProps, IState> {
               onChange={this.selectMonster}
               className={styles.monster_select}
             />
+          </div>
+          <div className={styles.clearButton}>
+            <Button color='warning' onClick={this.clearState}>Clear State</Button>
           </div>
           <div className={styles.monsterLevel}>
           Level

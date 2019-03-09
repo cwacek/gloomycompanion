@@ -1929,6 +1929,10 @@ export class LocalState {
     this.sessionId = session;
   }
 
+  ClearAll() {
+    localStorage.clear()
+  }
+
   Clear(key : string) {
     localStorage.removeItem(`gloomy:${this.sessionId}:${key}`);
   }
