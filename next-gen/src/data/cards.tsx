@@ -36,7 +36,7 @@ export class AoEAttack {
 
 export interface ComplexAction {
     cause: string
-    effect: AoEAttack | string
+    effect: AoEAttack | string | StyledAction
 }
 
 export class StyledAction {
@@ -436,11 +436,10 @@ export const DECK_DEFINITIONS: {
       {
         shuffle: true,
         initiative: 40,
-        actions: [
-          "* %heal% 3",
-          "** Self",
-          "* %earth%%use_element%: <span class='small'>%immobilize% Target all enemies within %range% 3</span>"
-        ]
+        complexActions: [
+            {action: "%heal% 3", modifiers: ["Self"]},
+            {action: {cause: "%earth%%use_element%", effect: "%immobilize% Target all enemies within %range% 3"}}
+        ],
       },
       {
         shuffle: true,
@@ -488,10 +487,20 @@ export const DECK_DEFINITIONS: {
       {
         shuffle: false,
         initiative: 87,
+        complexActions: [
+          {
+            action: "%move% +0",
+            modifiers: [ ]
+          },
+          {
+            action: new AoEAttack(-1, aoe_4_with_black),
+            modifiers: [ ]
+          },
+          {
+            action: "%any%%use_element%: %earth%"
+          }
+        ],
         actions: [
-          "* %move% +0",
-          "* %attack% -1 <div class='collapse'>%aoe-4-with-black%</div>",
-          "* %any%%use_element%: %earth%"
         ]
       }
     ]
@@ -557,11 +566,11 @@ export const DECK_DEFINITIONS: {
       {
         shuffle: false,
         initiative: 8,
-        actions: [
-          "* %move% -1",
-          "* <span class='small'> Create a 4 damage trap in an adjacent empty hex closest to an enemy </span>",
-          "* %any%%use_element%: %fire%"
-        ]
+        complexActions: [
+            {action: "%move% -1"},
+            {action: new StyledAction("Create a 4 damage trap in an adjacent empty hex closest to an enemy ", "small")},
+            {action: {cause: "%any%%use_element%:", effect: "%fire%"}}
+        ],
       }
     ]
   },
@@ -571,11 +580,10 @@ export const DECK_DEFINITIONS: {
       {
         shuffle: false,
         initiative: 18,
-        actions: [
-          "* %immobilize%",
-          "** Target all enemies within %range% 2",
-          "* %ice%%use_element%: <span class='small'>%heal% 3<br/>Self</span>"
-        ]
+        complexActions: [
+            {action: "%immobilize%", modifiers: ["Target all enemies within %range% 2"]},
+            {action: {cause: "%ice%%use_element%:", effect: new StyledAction("%heal% 3 Self", "small")}}
+        ],
       },
       {
         shuffle: false,

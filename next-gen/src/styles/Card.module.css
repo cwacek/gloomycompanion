@@ -591,9 +591,11 @@ img.shuffle
 
 .complex_action .effect {
     display:inline-block;
-    text-align: start;
+    text-align: center;
     padding-left: 5px;
     min-width: 8em;
+    font-size: 75%;
+
 }
 
 .aoe_attack {
@@ -604,7 +606,7 @@ img.shuffle
 }
 
 .aoe_container img {
-    padding-left: 2em;
+    /*padding-left: 2em;*/
     width: 2.5em;
     margin-left: -4.0em
 }

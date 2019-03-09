@@ -174,7 +174,7 @@ export default class MonsterAction extends Component<{ definition: IActionType }
   }
 
   renderAoEAttack(definition : AoEAttack) {
-      let attack = this.renderString(`%attack% ${definition.bonus < 0 ? '-' : '+'}${definition.bonus}`)
+      let attack = this.renderString(`%attack% ${definition.bonus < 0 ? '' : '+'}${definition.bonus}`)
       let img = <div className={styles.aoe_container}><img src={definition.aoe}/></div>
 
       return <div className={styles.aoe_attack}>{attack}{img}</div>
