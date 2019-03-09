@@ -129,8 +129,12 @@ export class MonsterStateProvider extends React.Component<IProps, IState> {
 
     @autobind
     persist() {
-        let store : LocalState = this.context.store
-        store.Put(`monsters:${this.props.name}:${this.props.type}:${this.props.id}`, this);
+        let store: LocalState = this.context.store
+        if (this.state.health <= 0) {
+            store.Clear(`monsters:${this.props.name}:${this.props.type}:${this.props.id}`)
+        } else {
+            store.Put(`monsters:${this.props.name}:${this.props.type}:${this.props.id}`, this);
+        }
     }
 
     componentDidMount() {
