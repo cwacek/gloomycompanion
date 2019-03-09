@@ -49,7 +49,10 @@ class App extends Component<IProps, IState> {
 
   @autobind
   clearState() {
-    this.context!.store.ClearAll()
+    if (window.confirm("This will clear all monster state information. Are you sure?")) {
+      this.context!.store.ClearAll()
+      window.location.reload()
+    }
   }
 
   @autobind
