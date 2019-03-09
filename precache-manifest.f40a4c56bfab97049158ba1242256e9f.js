@@ -1,19 +1,19 @@
 self.__precacheManifest = [
   {
-    "revision": "443bd9ff0c694e5fb81dfa3cd4ba8412",
-    "url": "/gloomycompanion/static/media/earth.443bd9ff.svg"
+    "revision": "8b2be9d77f1a25b7fa17938e96a264de",
+    "url": "/gloomycompanion/static/media/aoe-4-with-black.8b2be9d7.svg"
   },
   {
-    "revision": "f5ab449c18ddc674fa4f",
-    "url": "/gloomycompanion/static/css/main.bacbcbd2.chunk.css"
+    "revision": "97cde0bf8b1975e9e522",
+    "url": "/gloomycompanion/static/css/main.6a74f90c.chunk.css"
   },
   {
     "revision": "45f1850feb5d65d64201fd318cd055e0",
     "url": "/gloomycompanion/static/media/shuffle.45f1850f.svg"
   },
   {
-    "revision": "3e2188660f0e4460e2a7",
-    "url": "/gloomycompanion/static/js/1.3e218866.chunk.js"
+    "revision": "c60bdf7faefed5b6caea",
+    "url": "/gloomycompanion/static/js/1.c60bdf7f.chunk.js"
   },
   {
     "revision": "258ef92a8acfb6fb4fca",
@@ -64,8 +64,16 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/back.1c2fbc78.jpg"
   },
   {
-    "revision": "7d7f60b482afb14e571cb82d482d1916",
-    "url": "/gloomycompanion/static/media/poison.7d7f60b4.svg"
+    "revision": "bb5c34b133a4a5a62b39b55eb1650588",
+    "url": "/gloomycompanion/static/media/shield.bb5c34b1.svg"
+  },
+  {
+    "revision": "170dbe3a0f7d555e6887ef99cc8ee3d4",
+    "url": "/gloomycompanion/static/media/retaliate.170dbe3a.svg"
+  },
+  {
+    "revision": "db12f0c32a98712bdb3ff4d8d65b4077",
+    "url": "/gloomycompanion/static/media/fly.db12f0c3.svg"
   },
   {
     "revision": "52753d3cfb0d514dcd181636928d2d30",
@@ -74,6 +82,10 @@ self.__precacheManifest = [
   {
     "revision": "d10777f5e7f4456f28f0e6c6bb36df02",
     "url": "/gloomycompanion/static/media/immobilize.d10777f5.svg"
+  },
+  {
+    "revision": "7d7f60b482afb14e571cb82d482d1916",
+    "url": "/gloomycompanion/static/media/poison.7d7f60b4.svg"
   },
   {
     "revision": "94f6aac18f7e3a0f01143a0e60b7eaf0",
@@ -108,8 +120,8 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/disarm.079d79cd.svg"
   },
   {
-    "revision": "8b2be9d77f1a25b7fa17938e96a264de",
-    "url": "/gloomycompanion/static/media/aoe-4-with-black.8b2be9d7.svg"
+    "revision": "97cde0bf8b1975e9e522",
+    "url": "/gloomycompanion/static/js/main.97cde0bf.chunk.js"
   },
   {
     "revision": "aeb051dbf6c9a9db815f54ff6deacfe2",
@@ -120,8 +132,8 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/push.c3799cf8.svg"
   },
   {
-    "revision": "f5ab449c18ddc674fa4f",
-    "url": "/gloomycompanion/static/js/main.f5ab449c.chunk.js"
+    "revision": "443bd9ff0c694e5fb81dfa3cd4ba8412",
+    "url": "/gloomycompanion/static/media/earth.443bd9ff.svg"
   },
   {
     "revision": "91304f4e92f3848840ab54fceab09374",
@@ -144,16 +156,8 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/fire.673d53c2.svg"
   },
   {
-    "revision": "db12f0c32a98712bdb3ff4d8d65b4077",
-    "url": "/gloomycompanion/static/media/fly.db12f0c3.svg"
-  },
-  {
     "revision": "b81e97cb5285d668a64cb06f9cff9e9c",
     "url": "/gloomycompanion/static/media/elderDrake.special1Area.b81e97cb.svg"
-  },
-  {
-    "revision": "bb5c34b133a4a5a62b39b55eb1650588",
-    "url": "/gloomycompanion/static/media/shield.bb5c34b1.svg"
   },
   {
     "revision": "39e1aa1049148ac27ce9c6ecb2540eab",
@@ -196,10 +200,6 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/aoe-circle.0a6787b3.svg"
   },
   {
-    "revision": "170dbe3a0f7d555e6887ef99cc8ee3d4",
-    "url": "/gloomycompanion/static/media/retaliate.170dbe3a.svg"
-  },
-  {
     "revision": "7c623f77764724aede7acac33c0a7e2d",
     "url": "/gloomycompanion/static/media/inoxBodyguard.special1Area.7c623f77.svg"
   },
@@ -232,11 +232,11 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/light.ef434304.svg"
   },
   {
-    "revision": "3e2188660f0e4460e2a7",
-    "url": "/gloomycompanion/static/css/1.2d19f39f.chunk.css"
+    "revision": "c60bdf7faefed5b6caea",
+    "url": "/gloomycompanion/static/css/1.33c49d48.chunk.css"
   },
   {
-    "revision": "0147a6967c31e6517c783c454c7aea33",
+    "revision": "80a4d81f8796223664b1fabee7e49891",
     "url": "/gloomycompanion/index.html"
   }
 ];
