@@ -202,7 +202,7 @@ export default class MonsterColumn extends React.Component<IProps, IState> {
       return {
         currentMonsters: monsters
       }
-    })
+    }, this.persist)
 
   }
 
