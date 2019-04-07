@@ -1,20 +1,26 @@
 
 
 /* grid styling */
-use {
+.hex {
     transition: 0.4s;
     cursor: pointer;
     fill: transparent;
 }
 
-.pod-wrap use:hover {
-    fill: #000000;
+.hex.active {
+    fill: lightgoldenrodyellow;
 }
+
+.pod-wrap {
+    pointer-events: painted;
+}
+
 
 /* other styling */
 svg {
     width: 600px;
     flex: 1;
+    pointer-events: visible;
 }
 
 .boardarea {
@@ -41,4 +47,8 @@ a {
 
 a:hover {
     color: #333;
+}
+
+.hex.hovered {
+    fill: red;
 }
