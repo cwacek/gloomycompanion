@@ -1,7 +1,8 @@
 import {shuffle_list} from '../util'
 
-import aoe_4_with_black from '../images/aoe-4-with-black.svg'
-import aoe_circle_with_side_black from '../images/aoe-circle-with-side-black.svg'
+import aoe_line_3_with_black from '../images/aoe-line-3-with-black.svg';
+import aoe_4_with_black from '../images/aoe-4-with-black.svg';
+import aoe_circle_with_side_black from '../images/aoe-circle-with-side-black.svg';
 import MonsterState, { MonsterStateJSON } from '../context/MonsterState';
 
 export interface ICard {
@@ -521,18 +522,29 @@ export const DECK_DEFINITIONS: {
       {
         shuffle: true,
         initiative: 46,
-        actions: [
-          "* %attack% +0",
-          "** %range% +0",
-          "** %fire%%use_element%:  %aoe-circle%"
-        ]
+        complexActions: [
+          {
+            action: "%attack% +0",
+            modifiers: [
+              "%range% +0",
+              {cause: "%fire%%use_element%", effect: "%aoe-circle%"}
+            ]
+        }
+      ]
       },
       {
         shuffle: false,
         initiative: 49,
-        actions: [
-          "* %attack% +0 %aoe-line-3-with-black%",
-          "** <table align='center'><tr><td>%fire%%use_element%:</td> <td> +1 %attack% <br> %wound% </td> </tr> </table>"
+        complexActions: [
+          {
+            action: new AoEAttack(0, aoe_line_3_with_black),
+            modifiers: [
+              {
+                cause: "%fire%%use_element%",
+                effect: "+1 %attack%  %wound%"
+              }
+            ]
+          }
         ]
       },
       {
@@ -553,14 +565,13 @@ export const DECK_DEFINITIONS: {
         shuffle: true,
         initiative: 30,
         complexActions: [
-            {action: {cause: "%fire%%use_element%:", effect: "All adjacent enemies suffer 2 damage"}}
+            {action: {cause: "%fire%%use_element%", effect: "All adjacent enemies suffer 2 damage"}}
         ],
         actions: [
           "* %move% +0",
           "* %attack% -2",
           "** %range% +0",
-          "** %wound%",
-          "** %target% 2"
+          "** %wound%, %target% 2",
         ]
       },
       {
@@ -636,10 +647,10 @@ export const DECK_DEFINITIONS: {
       {
         shuffle: false,
         initiative: 18,
-        actions: [
-          "* %shield% 2",
-          "* %move% +1",
-          "* %fire%%use_element%: <span class='small'>Frost Demon suffers 1 damage</span>"
+        complexActions: [
+          {action: "%shield% 2"},
+          {action: "%move% +1"},
+          {action:{cause: "%fire%%use_element%", effect: "Frost Demon suffers 1 damage"}}
         ]
       }
     ]
@@ -791,7 +802,7 @@ export const DECK_DEFINITIONS: {
         actions: [
           "* %move% -1",
           "* %attack% +0 %aoe-line-4-with-black%",
-          '** %dark%%use_element%: Perform "%heal% 2, Self" </br>for each target damaged'
+          '** %dark%%use_element%: Perform "%heal% 2, Self" for each target damaged'
         ]
       },
       {
@@ -1230,11 +1241,11 @@ export const DECK_DEFINITIONS: {
       {
         shuffle: false,
         initiative: 15,
-        actions: [
-          "* %move% +0",
-          "* %attack% -1",
-          "* <span class='small'>All adjacent enemies and allies suffer 1 damage.</span>",
-          "* <span class='small'>%any%%use_element%: %dark%</span>"
+        complexActions: [
+          new StyledAction("%move% +0", ""),
+          new StyledAction("%attack% -1", ""),
+          {action: new StyledAction("All adjacent enemies and allies suffer 1 damage", "small")},
+          {action:{cause: "%any%%use_element%", effect: "%dark%"}}
         ]
       }
     ]
@@ -1270,17 +1281,29 @@ export const DECK_DEFINITIONS: {
       {
         shuffle: true,
         initiative: 94,
-        actions: [
-          "* Ooze suffers 2 damage ",
-          "** <span class='small'>Summons normal Ooze with a hit point value equal to the summoning Ooze's current hit point value (limited by a normal Ooze's specified maximum hit point value)</span>"
+        complexActions: [
+          {
+            action: "Ooze suffers 2 damage",
+            modifiers: [
+              new StyledAction(
+                "Summons normal Ooze with a hit point value equal to the summoning Ooze's current hit point value (limited by a normal Ooze's specified maximum hit point value)",
+                 "small")
+            ]
+          }
         ]
       },
       {
         shuffle: true,
         initiative: 94,
-        actions: [
-          "* Ooze suffers 2 damage ",
-          "** <span class='small'>Summons normal Ooze with a hit point value equal to the summoning Ooze's current hit point value (limited by a normal Ooze's specified maximum hit point value)</span>"
+        complexActions: [
+          {
+            action: "Ooze suffers 2 damage",
+            modifiers: [
+              new StyledAction(
+                "Summons normal Ooze with a hit point value equal to the summoning Ooze's current hit point value (limited by a normal Ooze's specified maximum hit point value)",
+                 "small")
+            ]
+          }
         ]
       },
       {

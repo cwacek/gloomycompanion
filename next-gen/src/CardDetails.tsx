@@ -21,7 +21,7 @@ const CardDetails = (props: IProps) => {
     if (action.modifiers) {
       modifiers = action.modifiers.map((mod, idx) => {
         return (
-          <li key={idx}>
+          <li  className={styles.modifier} key={idx}>
             <MonsterAction definition={mod} />
           </li>
         );

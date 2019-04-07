@@ -68,6 +68,16 @@
     background-image: url(../images/strengthen.svg);
 }
 
+.target {
+    @extend %pseudo-icon;
+    background-image: url(../images/target.svg);
+}
+
+.pierce {
+    @extend %pseudo-icon;
+    background-image: url(../images/pierce.svg);
+}
+
 .stun {
     @extend %pseudo-icon;
     background-image: url(../images/stun.svg);

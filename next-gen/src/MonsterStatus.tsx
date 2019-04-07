@@ -7,7 +7,6 @@ import autobind from "autobind-decorator";
 import Button from "reactstrap/lib/Button";
 import {FaRegCheckSquare, FaSquare} from 'react-icons/fa';
 import MonsterAction from "./MonsterAction";
-import { render } from "react-dom";
 
 
 interface IProps {

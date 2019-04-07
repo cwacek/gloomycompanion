@@ -73,35 +73,35 @@ export default class MonsterAction extends Component<{ definition: IActionType }
     "%aoe-4-with-black%":
       <img className='aoe h2' src={aoe_4_with_black}/>,
     "%aoe-circle%":
-      <div className='collapse small'><img className='aoe h3' src={aoe_circle}/></div>,
+      <div className='small'><img className='aoe h3' src={aoe_circle}/></div>,
     "%aoe-circle-with-middle-black%":
-      <div className='collapse small'><img className='aoe h3' src={ aoe_circle_with_middle_black }/></div>,
+      <div className='small'><img className='aoe h3' src={ aoe_circle_with_middle_black }/></div>,
     "%aoe-circle-with-side-black%":
       <img className='aoe h3' src={ aoe_circle_with_side_black }/>,
     "%aoe-line-3-with-black%":
-      <div className='collapse'><img className='aoe h1 rotated' src={ aoe_line_3_with_black }/></div>,
+      <div className=''><img className='aoe h1 rotated' src={ aoe_line_3_with_black }/></div>,
     "%aoe-line-4-with-black%":
-      <div className='collapse'><img className='aoe h1 rotated' src={ aoe_line_4_with_black }/></div>,
+      <div className=''><img className='aoe h1 rotated' src={ aoe_line_4_with_black }/></div>,
     "%aoe-line-6-with-black%":
       <img className='aoe h6 right_aligned' src={ aoe_line_6_with_black }/>,
     "%aoe-triangle-2-side%":
-      <div className='collapse'><img className='aoe h2' src={ aoe_triangle_2_side }/></div>,
+      <div className=''><img className='aoe h2' src={ aoe_triangle_2_side }/></div>,
     "%aoe-triangle-2-side-with-black%":
-      <div className='collapse'><img className='aoe h2' src={ aoe_triangle_2_side_with_black }/></div>,
+      <div className=''><img className='aoe h2' src={ aoe_triangle_2_side_with_black }/></div>,
     "%aoe-triangle-3-side-with-corner-black%":
-      <div className='collapse'><img className='aoe h3' src={ aoe_triangle_3_side_with_corner_black }/></div>,
+      <div className=''><img className='aoe h3' src={ aoe_triangle_3_side_with_corner_black }/></div>,
     "%attack%":
       <span className='nobr'>Attack <img className='icon' src={ attack }/></span>,
     "%bless%":
       <span className='nobr'>BLESS <img className='icon' src={ bless }/></span>,
     "%boss-aoe-elder-drake-sp1%":
-      <div className='collapse'><img className='aoe h3' src={ elderDrake }/></div>,
+      <div className=''><img className='aoe h3' src={ elderDrake }/></div>,
     "%boss-aoe-inox-bodyguard-sp1%":
-      <div className='collapse'><img className='aoe h3' src={ inoxBodyguard }/></div>,
+      <div className=''><img className='aoe h3' src={ inoxBodyguard }/></div>,
     "%boss-aoe-sightless-eye-sp1%":
-      <div className='collapse'><img className='aoe h3' src={ sightlessEye1 }/></div>,
+      <div className=''><img className='aoe h3' src={ sightlessEye1 }/></div>,
     "%boss-aoe-sightless-eye-sp2%":
-      <div className='collapse'><img className='aoe h3' src={ sightlessEye2 }/></div>,
+      <div className=''><img className='aoe h3' src={ sightlessEye2 }/></div>,
     "%curse%":
       <span className='nobr'>CURSE <img className='icon' src={ curse }/></span>,
     "%dark%": <img className={styles.element} src={ dark }/>,
@@ -144,13 +144,13 @@ export default class MonsterAction extends Component<{ definition: IActionType }
     "%strengthen%":
       <span className='nobr'>STRENGTHEN <img className='icon' src={ strengthen }/></span>,
     "%stun%":
-      <span className='nobr'>STUN <img className='icon' src={ stun }/></span>,
+      <span className='nobr'><img className='icon' src={ stun }/></span>,
     "%target%":
       <span className='nobr'>Target <img className='icon' src={ target }/></span>,
     "%use_element%":
       <img className={[styles.element, styles.overlay].join(' ')} src={ use_element }/>,
     "%wound%":
-      <span className='nobr'>WOUND <img className='icon' src={ wound }/></span>
+      <span className='nobr'><img className='icon' src={ wound }/></span>
   };
 
   static MACRO_REGEX = /(%[^%]*%)/gi;
@@ -162,15 +162,15 @@ export default class MonsterAction extends Component<{ definition: IActionType }
       let previousMatchIndex = 0;
       let elemCounter = 0
       while (match != null) {
-          actionElems.push(<span key={elemCounter++}>{definition.slice(previousMatchIndex, match.index)}</span>) 
+          actionElems.push(<span className={styles.textwrapper} key={elemCounter++}>{definition.slice(previousMatchIndex, match.index)}</span>) 
           previousMatchIndex = match.index + match[0].length;
-          actionElems.push(<span key={elemCounter++}>{this.MACROS[match[0]]}</span>);
+          actionElems.push(<span className={styles.textwrapper} key={elemCounter++}>{this.MACROS[match[0]]}</span>);
           match = MonsterAction.MACRO_REGEX.exec(searchString);
       }
       if (previousMatchIndex < definition.length) {
-          actionElems.push(<span key={elemCounter++}>{definition.slice(previousMatchIndex)}</span>)
+          actionElems.push(<span className={styles.textwrapper} key={elemCounter++}>{definition.slice(previousMatchIndex)}</span>)
       }
-    return <span className={styles.nobr} >{actionElems}</span>;
+    return <span className={styles.textwrapper} >{actionElems}</span>;
   }
 
   renderAoEAttack(definition : AoEAttack) {
@@ -210,7 +210,7 @@ export default class MonsterAction extends Component<{ definition: IActionType }
       } else if (this.isComplexAction(definition)) {
           return this.renderComplexAction(definition)
       } else if (definition instanceof StyledAction) {
-        return <span className={styles[definition.style]}>{definition.action}</span>
+        return <span className={styles[definition.style]}>{this.renderString(definition.action)}</span>
       }
   }  
 }

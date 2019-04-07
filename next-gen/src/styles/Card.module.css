@@ -582,20 +582,30 @@ img.shuffle
     height: 1.75em;
 }
 
+.modifier .complex_action {
+    font-size: 100%;
+}
+
+.complex_action {
+    display: grid;
+    grid-template-columns: minmax(2em, 1fr) minmax(min-content, 5fr);
+    grid-template-rows: auto;
+    column-gap: 5px;
+    font-size: 75%;
+    align-items: center;
+}
+
 .complex_action .cause {
-    display:inline-block;
-    text-align: end;
-    padding-right: 5px;
-    min-width: 4em;
+    justify-self: end;
 }
 
 .complex_action .effect {
-    display:inline-block;
-    text-align: center;
-    padding-left: 5px;
-    min-width: 8em;
-    font-size: 75%;
+    justify-self: start;
+}
 
+.complex_action .effect  img{
+    max-width: 1.5em;
+    max-height: 1.5em;
 }
 
 .aoe_attack {
