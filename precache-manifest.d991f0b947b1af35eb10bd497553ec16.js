@@ -1,19 +1,19 @@
 self.__precacheManifest = [
   {
-    "revision": "8b2be9d77f1a25b7fa17938e96a264de",
-    "url": "/gloomycompanion/static/media/aoe-4-with-black.8b2be9d7.svg"
+    "revision": "1ade028be23c8667098ed4261735916b",
+    "url": "/gloomycompanion/static/media/range.1ade028b.svg"
   },
   {
-    "revision": "97cde0bf8b1975e9e522",
-    "url": "/gloomycompanion/static/css/main.6a74f90c.chunk.css"
+    "revision": "f612dc32c1eca3e44c55",
+    "url": "/gloomycompanion/static/css/main.b62e8264.chunk.css"
   },
   {
     "revision": "45f1850feb5d65d64201fd318cd055e0",
     "url": "/gloomycompanion/static/media/shuffle.45f1850f.svg"
   },
   {
-    "revision": "c60bdf7faefed5b6caea",
-    "url": "/gloomycompanion/static/js/1.c60bdf7f.chunk.js"
+    "revision": "5ad2f2b5508fb79bdcac",
+    "url": "/gloomycompanion/static/js/1.5ad2f2b5.chunk.js"
   },
   {
     "revision": "258ef92a8acfb6fb4fca",
@@ -36,12 +36,12 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/shuffle-black.7a079e57.svg"
   },
   {
-    "revision": "33f3c32fbaaae4a1cebe09203f6e51ad",
-    "url": "/gloomycompanion/static/media/minus-circle.33f3c32f.svg"
-  },
-  {
     "revision": "c15c651ebb2c71b16eae9166e10d8d7b",
     "url": "/gloomycompanion/static/media/draw-two.c15c651e.svg"
+  },
+  {
+    "revision": "33f3c32fbaaae4a1cebe09203f6e51ad",
+    "url": "/gloomycompanion/static/media/minus-circle.33f3c32f.svg"
   },
   {
     "revision": "16b9908c5de2082885178c4f9341fd1e",
@@ -64,16 +64,16 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/back.1c2fbc78.jpg"
   },
   {
+    "revision": "db12f0c32a98712bdb3ff4d8d65b4077",
+    "url": "/gloomycompanion/static/media/fly.db12f0c3.svg"
+  },
+  {
     "revision": "bb5c34b133a4a5a62b39b55eb1650588",
     "url": "/gloomycompanion/static/media/shield.bb5c34b1.svg"
   },
   {
     "revision": "170dbe3a0f7d555e6887ef99cc8ee3d4",
     "url": "/gloomycompanion/static/media/retaliate.170dbe3a.svg"
-  },
-  {
-    "revision": "db12f0c32a98712bdb3ff4d8d65b4077",
-    "url": "/gloomycompanion/static/media/fly.db12f0c3.svg"
   },
   {
     "revision": "52753d3cfb0d514dcd181636928d2d30",
@@ -84,44 +84,56 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/immobilize.d10777f5.svg"
   },
   {
-    "revision": "7d7f60b482afb14e571cb82d482d1916",
-    "url": "/gloomycompanion/static/media/poison.7d7f60b4.svg"
-  },
-  {
     "revision": "94f6aac18f7e3a0f01143a0e60b7eaf0",
     "url": "/gloomycompanion/static/media/invisibility.94f6aac1.svg"
   },
   {
-    "revision": "96983af10205de5c42c3b92205807def",
-    "url": "/gloomycompanion/static/media/muddle.96983af1.svg"
+    "revision": "7d7f60b482afb14e571cb82d482d1916",
+    "url": "/gloomycompanion/static/media/poison.7d7f60b4.svg"
   },
   {
     "revision": "8acb9b8ecef3675500bb1d25e2ceebb4",
     "url": "/gloomycompanion/static/media/strengthen.8acb9b8e.svg"
   },
   {
-    "revision": "b82f281dd42c84601e47c559788f2d9f",
-    "url": "/gloomycompanion/static/media/stun.b82f281d.svg"
+    "revision": "96983af10205de5c42c3b92205807def",
+    "url": "/gloomycompanion/static/media/muddle.96983af1.svg"
+  },
+  {
+    "revision": "91304f4e92f3848840ab54fceab09374",
+    "url": "/gloomycompanion/static/media/target.91304f4e.svg"
   },
   {
     "revision": "a1598f5a051ca44ea571d8fd9a871d26",
     "url": "/gloomycompanion/static/media/attack.a1598f5a.svg"
   },
   {
+    "revision": "588df0b34e5bbcf0205a28a1d1161201",
+    "url": "/gloomycompanion/static/media/pierce.588df0b3.svg"
+  },
+  {
     "revision": "4bfeefc7a62e1082b4e2171f3403ad09",
     "url": "/gloomycompanion/static/media/move.4bfeefc7.svg"
   },
   {
-    "revision": "1ade028be23c8667098ed4261735916b",
-    "url": "/gloomycompanion/static/media/range.1ade028b.svg"
+    "revision": "b82f281dd42c84601e47c559788f2d9f",
+    "url": "/gloomycompanion/static/media/stun.b82f281d.svg"
+  },
+  {
+    "revision": "f612dc32c1eca3e44c55",
+    "url": "/gloomycompanion/static/js/main.f612dc32.chunk.js"
   },
   {
     "revision": "079d79cdabefd485672e127b9837bc03",
     "url": "/gloomycompanion/static/media/disarm.079d79cd.svg"
   },
   {
-    "revision": "97cde0bf8b1975e9e522",
-    "url": "/gloomycompanion/static/js/main.97cde0bf.chunk.js"
+    "revision": "8b2be9d77f1a25b7fa17938e96a264de",
+    "url": "/gloomycompanion/static/media/aoe-4-with-black.8b2be9d7.svg"
+  },
+  {
+    "revision": "b39ca9367d23e4614e6a31e36b2698eb",
+    "url": "/gloomycompanion/static/media/aoe-line-3-with-black.b39ca936.svg"
   },
   {
     "revision": "aeb051dbf6c9a9db815f54ff6deacfe2",
@@ -134,10 +146,6 @@ self.__precacheManifest = [
   {
     "revision": "443bd9ff0c694e5fb81dfa3cd4ba8412",
     "url": "/gloomycompanion/static/media/earth.443bd9ff.svg"
-  },
-  {
-    "revision": "91304f4e92f3848840ab54fceab09374",
-    "url": "/gloomycompanion/static/media/target.91304f4e.svg"
   },
   {
     "revision": "c963fe2e42f0f23a914676eccb042910",
@@ -208,16 +216,8 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/sightlessEye.special2Area.c723bd57.svg"
   },
   {
-    "revision": "588df0b34e5bbcf0205a28a1d1161201",
-    "url": "/gloomycompanion/static/media/pierce.588df0b3.svg"
-  },
-  {
     "revision": "06520bc71c0f1447abee20675c5b6af9",
     "url": "/gloomycompanion/static/media/ice.06520bc7.svg"
-  },
-  {
-    "revision": "b39ca9367d23e4614e6a31e36b2698eb",
-    "url": "/gloomycompanion/static/media/aoe-line-3-with-black.b39ca936.svg"
   },
   {
     "revision": "34db005c43d0c6b86c12575e5ba9a87a",
@@ -232,11 +232,11 @@ self.__precacheManifest = [
     "url": "/gloomycompanion/static/media/light.ef434304.svg"
   },
   {
-    "revision": "c60bdf7faefed5b6caea",
+    "revision": "5ad2f2b5508fb79bdcac",
     "url": "/gloomycompanion/static/css/1.33c49d48.chunk.css"
   },
   {
-    "revision": "80a4d81f8796223664b1fabee7e49891",
+    "revision": "7b985b3a6926d22635a7488a57e8be83",
     "url": "/gloomycompanion/index.html"
   }
 ];
