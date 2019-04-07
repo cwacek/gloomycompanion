@@ -190,6 +190,7 @@
 }
 
 .monsterActionPane {
+    touch-action: manipulation;
     font-family: "PirataOne";
     font-size: 20pt;
     .damage {
