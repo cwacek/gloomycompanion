@@ -1,0 +1,44 @@
+
+
+/* grid styling */
+use {
+    transition: 0.4s;
+    cursor: pointer;
+    fill: transparent;
+}
+
+.pod-wrap use:hover {
+    fill: #000000;
+}
+
+/* other styling */
+svg {
+    width: 600px;
+    flex: 1;
+}
+
+.boardarea {
+    background-color: #cccccc;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+    height: 100vh;
+    font-weight: 700;
+    font-family: sans-serif;
+}
+
+a {
+    color: #ccc;
+    padding: 10px;
+    text-decoration: none;
+    transition: color 0.4s;
+}
+
+a:hover {
+    color: #333;
+}
