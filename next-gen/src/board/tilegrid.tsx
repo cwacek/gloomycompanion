@@ -2,61 +2,29 @@ import React, {Component} from 'react';
 import './tile.module.scss';
 import styles from './tile.module.scss';
 import autobind from 'autobind-decorator';
+import { Hex, HexRef, calcXOffset, calcYOffset, rotateRight } from './HexRef';
+import PlayArea from './playarea';
 
 interface IProps {};
 interface IState {
   targetHex?: HexRef;
+  playtileArea : HexRef[];
 };
 
-interface HexRef {
-  row: number;
-  position: number;
-}
+const sameHex = (h1? : HexRef, h2? :HexRef) => h1 && h2 && h1[0]===h2[0] && h1[1]===h2[1]
 
-const sameHex = (h1? : HexRef, h2? :HexRef) => h1 && h2 && h1.position === h2.position && h1.row === h2.row
-
-interface IHexProps {
-  viewBox: number[];
-  row: number;
-  position:  number;
-  hoverState?: string;
-  onHover: (hex : HexRef)=>any;
-}
-
-const Hex: React.SFC<IHexProps> = (props) => {
-  const center = [
-    (props.viewBox[2] - props.viewBox[0]) / 2,
-    (props.viewBox[3] - props.viewBox[1]) / 2
-  ];
-
-  const rowOffset = Math.abs(props.row) % 2 == 1 ? -7 : 0;
-  const negAdjust = props.position < 0 ? -1 : 1
-
-  const translateX = center[0] + ((rowOffset + Math.abs(props.position * 14)) *  negAdjust)
-  const translateY = center[1] + props.row * 12;
-  let classes = [styles.hex];
-  if (props.hoverState != undefined) {
-    classes.push(styles[props.hoverState])
-  }
-
-  return (
-    <g transform={`translate(${translateX}, ${translateY})`}
-        className={classes.join(" ")}
-        onMouseOver={()=>{props.onHover({row: props.row, position: props.position})}}>
-      <polygon
-        stroke="#000000"
-        strokeWidth="0.5"
-        points="-7,4 -7,-4 0,-8 7,-4 7,4 0,8"
-      />
-    </g>
-  );
- }
 
 class TileGrid extends Component<IProps, IState> {
     size = 11;
     viewBox = [0, 0, 300, 300]
+    center = [
+      (this.viewBox[2] - this.viewBox[0]) / 2,
+      (this.viewBox[3] - this.viewBox[1]) / 2
+    ];
+
     state = {
-      targetHex: undefined
+      targetHex: undefined,
+      playtileArea: [[0,0],[0,1],[0,2],[0,3],[0,4],[1,4]] as HexRef[]
     }
 
     @autobind
@@ -64,6 +32,26 @@ class TileGrid extends Component<IProps, IState> {
       this.setState({
         targetHex: hex
       });
+    }
+
+    @autobind
+    handleKeyDown(e: KeyboardEvent) {
+      console.log(`Keypress: ${e.key}`)
+      if (e.key === 'r') {
+        this.setState((pState: IState) => {
+          return {
+            playtileArea: rotateRight(pState.playtileArea)
+          };
+        });
+      }
+    }
+
+    componentWillUnmount() {
+
+    }
+
+    componentDidMount() {
+      document.addEventListener('keydown', this.handleKeyDown);
     }
 
     render () {
@@ -89,20 +77,30 @@ class TileGrid extends Component<IProps, IState> {
             gridHexes.push(
               <Hex
                 key={`tile-${rowIdx}-${i}`}
-                viewBox={this.viewBox}
+                center = {this.center}
                 position={position}
                 row={row}
-                hoverState={sameHex(this.state.targetHex, {row: row, position: position}) ? 'active' : ''} 
+                hoverState={sameHex(this.state.targetHex, [row, position]) ? 'active' : ''} 
                 onHover={this.updateTargetHex}
               />
             );
           }
         }
 
+        let playTileCenter = [50, 20];
+        if (this.state.targetHex) {
+          playTileCenter = [
+            this.center[0] + calcXOffset(this.state.targetHex!),
+            this.center[1] + calcYOffset(this.state.targetHex!),
+          ]
+        }
+
         return (
           <div>
             <div className={styles.boardarea} >
               <svg viewBox={this.viewBox.join(" ")}>
+
+                <PlayArea center={playTileCenter} area={this.state.playtileArea}/>
 
                 <g className={styles['pod-wrap']} 
                   onMouseLeave={()=>{this.updateTargetHex(undefined)}}

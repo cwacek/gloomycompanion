@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import App from './App';
-import TileGrid from './board/tile';
+import TileGrid from './board/tilegrid';
 import * as serviceWorker from './serviceWorker';
 import {Route, RouteComponentProps, HashRouter, Switch} from 'react-router-dom';
 import DataProvider from "./context/DataProvider";
