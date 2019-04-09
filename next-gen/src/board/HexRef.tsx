@@ -2,73 +2,88 @@
 import React from 'react';
 import styles from './tile.module.scss';
 
-export type HexRef = [number, number];
+export class HexRef {
+    q : number;
+    r : number;
+    s : number
+    constructor(q : number, r : number) {
+        this.q = q;
+        this.r = r;
+        this.s = -q - r;
+
+        if (this.q + this.r + this.s != 0){
+            throw new Error("Bad Hex Coords!")
+        }
+    }
+
+    static fromArr(qr : number[]) : HexRef {
+        return new HexRef(qr[0], qr[1])
+    }
+
+    rotateRight() {
+        return new HexRef(-this.s, -this.q);
+    }
+
+    toString() : string {
+        return "" + [this.q, this.r, this.s];
+    }
+
+    equals(other : HexRef) : boolean {
+        return other.q == this.q && other.r == this.r && other.s == this.s
+    }
+}
+
+const orientationMatrix = {
+  f0: Math.sqrt(3.0),
+  f1: Math.sqrt(3.0) / 2.0,
+  f2: 0.0,
+  f3: 3.0 / 2.0,
+  b0: Math.sqrt(3.0) / 3.0,
+  b2: -1.0 / 3.0,
+  b3: 0.0,
+  b4: 2.0 / 3.0,
+  start_angle: 0.5
+};
+  const M = orientationMatrix;
+
+export const calcXOffset = (hex : HexRef) => {
+  return (M.f0 * hex.q + M.f1 * hex.r) * 8;
+}
+
+export const calcYOffset = (hex : HexRef) => {
+    return (M.f2 * hex.q + M.f3 * hex.r) * 8;
+}
 
 interface IHexProps {
   center: number[];
-  row: number;
-  position:  number;
+  coords: HexRef;
   hoverState?: string;
   onHover?: (hex : HexRef)=>any;
 }
 
-const rotateRadians = (2 * Math.PI)/6
+export const Hex: React.SFC<IHexProps> = props => {
+  const x = calcXOffset(props.coords)
+  const y = calcYOffset(props.coords)
 
-export const rotateRight = (hexes : HexRef[]) => {
-    let xPrime;
-    let offset
-    let newHexes = hexes.map(hex => {
-      console.log("Start ", hex);
-          // We need to make an adjustment for our slightly screwy coordinate system
-          // in even length rows.
-      if (Math.abs(hex[0]) % 2 == 1) {
-          offset = hex[1] < 0 ? -1.5 : 1.5;
-      } else {
-          offset = 1
-      }
-    let xPrime =
-            hex[0] * Math.cos(rotateRadians) - (hex[1] * offset) * Math.sin(rotateRadians);
-      let yPrime =
-        hex[0] * Math.sin(rotateRadians) + (hex[1] * offset) * Math.cos(rotateRadians);
-
-      console.log("Calc ", xPrime, yPrime);
-      let updated = [Math.round(xPrime/offset), Math.round(yPrime+offset)];
-      updated = updated.map(v => v == 0 ? 0 : v)
-      console.log("New Position ", updated);
-      return updated;
-    });
-    
-    return newHexes as HexRef[];
-}
-
-export const calcXOffset = (hex : HexRef) => {
-  const rowOffset = Math.abs(hex[0]) % 2 == 1 ? -7 : 0;
-  const negAdjust = hex[1]< 0 ? -1 : 1;
-  return ((rowOffset + Math.abs(hex[1] * 14)) *  negAdjust)
-}
-
-export const calcYOffset = (hex : HexRef) => {
-    return hex[0] * 12;
-}
-
-export const Hex: React.SFC<IHexProps> = (props) => {
-  const translateX = props.center[0] + calcXOffset([props.row, props.position])
-  const translateY = props.center[1] + calcYOffset([props.row, props.position])
   let classes = [styles.hex];
   if (props.hoverState != undefined) {
-    classes.push(styles[props.hoverState])
+    classes.push(styles[props.hoverState]);
   }
 
   return (
-    <g transform={`translate(${translateX}, ${translateY})`}
-        className={classes.join(" ")}
-        onMouseOver={()=>{props.onHover && props.onHover([props.row, props.position])}}>
+    <g
+      transform={`translate(${props.center[0] + x}, ${props.center[1] + y})`}
+      className={classes.join(" ")}
+      onMouseOver={() => {
+        props.onHover && props.onHover(props.coords);
+      }}
+    >
       <polygon
         stroke="#000000"
         strokeWidth="0.5"
         points="-7,4 -7,-4 0,-8 7,-4 7,4 0,8"
       />
-      <text fill="#111" textAnchor="middle" fontSize="3pt">{`${props.row}, ${props.position}`}</text>
+      <text fill="#111" textAnchor="middle" fontSize="3pt">{`${props.coords}`} </text>
     </g>
   );
- }
+};
