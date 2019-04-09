@@ -94,6 +94,7 @@ class TileGrid extends Component<IProps, IState> {
             this.center[1] + calcYOffset(this.state.targetHex!),
           ]
         }
+        let mult = 4;
 
         return (
           <div>
@@ -101,6 +102,13 @@ class TileGrid extends Component<IProps, IState> {
               <svg viewBox={this.viewBox.join(" ")}>
 
                 <PlayArea center={playTileCenter} area={this.state.playtileArea}/>
+                <ellipse cx={this.center[0]} cy={this.center[1]} 
+                rx={mult * 14}
+                ry={mult * 13}
+                stroke="black"
+                strokeWidth="2"
+                fillOpacity="0"
+                />
 
                 <g className={styles['pod-wrap']} 
                   onMouseLeave={()=>{this.updateTargetHex(undefined)}}

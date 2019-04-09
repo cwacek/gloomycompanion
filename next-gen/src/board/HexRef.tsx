@@ -22,17 +22,17 @@ export const rotateRight = (hexes : HexRef[]) => {
           // We need to make an adjustment for our slightly screwy coordinate system
           // in even length rows.
       if (Math.abs(hex[0]) % 2 == 1) {
-          offset = hex[1] < 0 ? -0.5 : 0.5;
+          offset = hex[1] < 0 ? -1.5 : 1.5;
       } else {
-          offset = 0
+          offset = 1
       }
     let xPrime =
-            hex[0] * Math.cos(rotateRadians) - (hex[1] - offset) * Math.sin(rotateRadians);
+            hex[0] * Math.cos(rotateRadians) - (hex[1] * offset) * Math.sin(rotateRadians);
       let yPrime =
-        hex[0] * Math.sin(rotateRadians) + (hex[1] - offset) * Math.cos(rotateRadians);
+        hex[0] * Math.sin(rotateRadians) + (hex[1] * offset) * Math.cos(rotateRadians);
 
       console.log("Calc ", xPrime, yPrime);
-      let updated = [Math.round(xPrime), Math.round(yPrime)];
+      let updated = [Math.round(xPrime/offset), Math.round(yPrime+offset)];
       updated = updated.map(v => v == 0 ? 0 : v)
       console.log("New Position ", updated);
       return updated;
