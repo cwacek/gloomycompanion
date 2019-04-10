@@ -1,14 +1,15 @@
-import React, {Component} from 'react';
+import React, {Component, SyntheticEvent} from 'react';
 import './tile.module.scss';
 import styles from './tile.module.scss';
 import autobind from 'autobind-decorator';
 import { Hex, HexRef, calcXOffset, calcYOffset} from './HexRef';
-import PlayArea from './playarea';
+import MapTile, { TILES, IMapTile } from './playarea';
 
 interface IProps {};
 interface IState {
   targetHex?: HexRef;
-  playtileArea : HexRef[];
+  activeMapTile? : IMapTile
+  activeTileRotation : number
 };
 
 class TileGrid extends Component<IProps, IState> {
@@ -19,9 +20,12 @@ class TileGrid extends Component<IProps, IState> {
       (this.viewBox[3] - this.viewBox[1]) / 2
     ];
 
+    listener= null;
+
     state = {
       targetHex: undefined,
-      playtileArea: [[0,0],[0,1],[0,2],[0,3],[0,4],[1,4]].map(HexRef.fromArr) 
+      activeMapTile: TILES.get('a1a'),
+      activeTileRotation: 0
     }
 
     @autobind
@@ -32,19 +36,19 @@ class TileGrid extends Component<IProps, IState> {
     }
 
     @autobind
+    selectMapTile(evt: React.FormEvent<HTMLSelectElement>) {
+      console.log("onSelect: ", evt)
+      this.setState({
+        activeMapTile: TILES.get(evt.currentTarget.value)
+      })
+    } 
+
+    @autobind
     handleKeyDown(e: KeyboardEvent) {
       console.log(`Keypress: ${e.key}`)
       if (e.key === 'r') {
-        this.setState((pState: IState) => {
-          return {
-            playtileArea: pState.playtileArea.map(hex => hex.rotateRight())
-          };
-        });
+        this.setState(pState => {return {activeTileRotation: pState.activeTileRotation + 60}})
       }
-    }
-
-    componentWillUnmount() {
-
     }
 
     componentDidMount() {
@@ -73,35 +77,6 @@ class TileGrid extends Component<IProps, IState> {
           }
         }
 
-        /*
-        for (let rowIdx = 0; rowIdx < this.size; rowIdx++) {
-          let row = rowIdx % 2 == 0 ? rowIdx / 2 : -1 * Math.ceil(rowIdx / 2);
-          let rowLength = this.size - Math.ceil(rowIdx/2)
-
-          for (let i = 0; i < rowLength; i++) {
-            let position : number;
-            if (rowLength % 2 == 1) {
-              // There's a center grid
-              position = i % 2 == 0 ? i / 2 : -1 * Math.ceil(i / 2);
-            } else {
-              let offset = i+1;
-              position = offset % 2 == 0 ? offset / 2 : -1 * Math.ceil(offset / 2);
-            }
-
-            gridHexes.push(
-              <Hex
-                key={`tile-${rowIdx}-${i}`}
-                center = {this.center}
-                position={position}
-                row={row}
-                hoverState={sameHex(this.state.targetHex, [row, position]) ? 'active' : ''} 
-                onHover={this.updateTargetHex}
-              />
-            );
-          }
-        }
-          */
-
         let playTileCenter = [50, 20];
         if (this.state.targetHex) {
           playTileCenter = [
@@ -109,26 +84,34 @@ class TileGrid extends Component<IProps, IState> {
             this.center[1] + calcYOffset(this.state.targetHex!),
           ]
         }
-        let mult = 4;
 
         return (
           <div>
-            <div className={styles.boardarea} >
+            <div className={styles.boardarea}>
+              <select onChange={this.selectMapTile}
+                      value={this.state.activeMapTile ? (this.state.activeMapTile! as IMapTile).name : undefined}>
+                {Array.from(TILES, (v, k) => v[1]).map(
+                  (t: IMapTile) => (
+                    <option key={t.name} value={t.name} >{t.name}</option>
+                  )
+                )}
+              </select>
               <svg viewBox={this.viewBox.join(" ")}>
+                {this.state.activeMapTile ? (
+                  <MapTile
+                    center={playTileCenter}
+                    tile={this.state.activeMapTile!}
+                    rotation={this.state.activeTileRotation}
+                  />
+                ) : null}
 
-                <PlayArea center={playTileCenter} area={this.state.playtileArea}/>
-                <ellipse cx={this.center[0]} cy={this.center[1]} 
-                rx={mult * 14}
-                ry={mult * 13}
-                stroke="black"
-                strokeWidth="2"
-                fillOpacity="0"
-                />
-
-                <g className={styles['pod-wrap']} 
-                  onMouseLeave={()=>{this.updateTargetHex(undefined)}}
+                <g
+                  className={styles["pod-wrap"]}
+                  onMouseLeave={() => {
+                    this.updateTargetHex(undefined);
+                  }}
                 >
-                {gridHexes}
+                  {gridHexes}
                 </g>
               </svg>
             </div>

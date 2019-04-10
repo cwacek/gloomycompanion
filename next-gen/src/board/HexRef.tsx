@@ -25,7 +25,7 @@ export class HexRef {
     }
 
     toString() : string {
-        return "" + [this.q, this.r, this.s];
+        return "" + [this.q, this.r];
     }
 
     equals(other : HexRef) : boolean {
