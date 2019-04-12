@@ -1,6 +1,7 @@
 
 import React from 'react';
 import styles from './tile.module.scss';
+import { ViewOptionsContext, IViewOptions } from './ViewOptions';
 
 export class HexRef {
     q : number;
@@ -71,19 +72,28 @@ export const Hex: React.SFC<IHexProps> = props => {
   }
 
   return (
-    <g
-      transform={`translate(${props.center[0] + x}, ${props.center[1] + y})`}
-      className={classes.join(" ")}
-      onMouseOver={() => {
-        props.onHover && props.onHover(props.coords);
-      }}
-    >
-      <polygon
-        stroke="#000000"
-        strokeWidth="0.5"
-        points="-7,4 -7,-4 0,-8 7,-4 7,4 0,8"
-      />
-      <text fill="#111" textAnchor="middle" fontSize="3pt">{`${props.coords}`} </text>
-    </g>
+    <ViewOptionsContext.Consumer>
+      {(viewOptions: IViewOptions) => (
+        <g
+          transform={`translate(${props.center[0] + x}, ${props.center[1] +
+            y})`}
+          className={classes.join(" ")}
+          onMouseOver={() => {
+            props.onHover && props.onHover(props.coords);
+          }}
+        >
+          <polygon
+            stroke="#000000"
+            strokeWidth={viewOptions.drawHexGrid ? "0.5" : "0"}
+            points="-7,4 -7,-4 0,-8 7,-4 7,4 0,8"
+          />
+          {viewOptions.drawHexCoordinates ? (
+            <text fill="#111" textAnchor="middle" fontSize="3pt">
+              {`${props.coords}`}{" "}
+            </text>
+          ) : null}
+        </g>
+      )}
+    </ViewOptionsContext.Consumer>
   );
 };

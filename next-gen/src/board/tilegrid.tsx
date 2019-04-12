@@ -1,13 +1,14 @@
-import React, {Component, SyntheticEvent} from 'react';
+import React, {Component, SyntheticEvent, MouseEvent} from 'react';
 import './tile.module.scss';
 import styles from './tile.module.scss';
 import autobind from 'autobind-decorator';
 import { Hex, HexRef, calcXOffset, calcYOffset} from './HexRef';
-import MapTile, { TILES, IMapTile } from './playarea';
+import {MapTile, TILES, IMapTile } from './playarea';
 
 interface IProps {};
 interface IState {
   targetHex?: HexRef;
+  placedMapTiles : {tile : IMapTile, center : HexRef, rotation: number}[];
   activeMapTile? : IMapTile
   activeTileRotation : number
 };
@@ -24,6 +25,7 @@ class TileGrid extends Component<IProps, IState> {
 
     state = {
       targetHex: undefined,
+      placedMapTiles: [] as {tile : IMapTile, center : HexRef, rotation: number}[],
       activeMapTile: TILES.get('a1a'),
       activeTileRotation: 0
     }
@@ -44,6 +46,24 @@ class TileGrid extends Component<IProps, IState> {
     } 
 
     @autobind
+    handleClick(e : MouseEvent) {
+      console.log("Clicked!");
+      this.setState(pState => {
+        if (!pState.activeMapTile) return null
+
+        return {
+          activeMapTile: undefined,
+          placedMapTiles: pState.placedMapTiles.concat([{
+            tile: pState.activeMapTile,
+            center: pState.targetHex!,
+            rotation: pState.activeTileRotation
+          }])
+        }
+      })
+    }
+
+
+    @autobind
     handleKeyDown(e: KeyboardEvent) {
       console.log(`Keypress: ${e.key}`)
       if (e.key === 'r') {
@@ -53,6 +73,14 @@ class TileGrid extends Component<IProps, IState> {
 
     componentDidMount() {
       document.addEventListener('keydown', this.handleKeyDown);
+    }
+
+    @autobind
+    calculateCenter(tgt : HexRef) : [number, number]{
+      return [
+        this.center[0] + calcXOffset(tgt),
+        this.center[1] + calcYOffset(tgt),
+      ]
     }
 
     render () {
@@ -79,10 +107,7 @@ class TileGrid extends Component<IProps, IState> {
 
         let playTileCenter = [50, 20];
         if (this.state.targetHex) {
-          playTileCenter = [
-            this.center[0] + calcXOffset(this.state.targetHex!),
-            this.center[1] + calcYOffset(this.state.targetHex!),
-          ]
+          playTileCenter = this.calculateCenter(this.state.targetHex!)
         }
 
         return (
@@ -105,11 +130,20 @@ class TileGrid extends Component<IProps, IState> {
                   />
                 ) : null}
 
+                {this.state.placedMapTiles.map(t => <MapTile
+                    key={`${t.tile.name}_${t.center.toString()}`}
+                    center={this.calculateCenter(t.center)}
+                    tile={t.tile}
+                    rotation={t.rotation}
+                    />
+                ) }
+
                 <g
                   className={styles["pod-wrap"]}
                   onMouseLeave={() => {
                     this.updateTargetHex(undefined);
                   }}
+                  onClick={this.handleClick}
                 >
                   {gridHexes}
                 </g>

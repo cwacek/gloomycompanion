@@ -7,11 +7,20 @@ import TileGrid from './board/tilegrid';
 import * as serviceWorker from './serviceWorker';
 import {Route, RouteComponentProps, HashRouter, Switch} from 'react-router-dom';
 import DataProvider from "./context/DataProvider";
+import ViewOptionsProvider from './board/ViewOptions';
 
 ReactDOM.render(
   <HashRouter>
     <Switch>
-      <Route exact path="/board" render={(props: RouteComponentProps) => <TileGrid />} />
+      <Route
+        exact
+        path="/board"
+        render={(props: RouteComponentProps) => (
+          <ViewOptionsProvider>
+            <TileGrid />
+          </ViewOptionsProvider>
+        )}
+      />
       <Route
         path="/:id?"
         render={(props: RouteComponentProps) => (

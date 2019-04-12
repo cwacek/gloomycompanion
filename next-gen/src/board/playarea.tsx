@@ -4,6 +4,7 @@ import styles from './tile.module.scss';
 
 import a3a from './tiles/A3a.png';
 import a1a from './tiles/A1a.png';
+import { ViewOptionsContext } from "./ViewOptions";
 
 export interface IMapTile {
     name: string;
@@ -71,21 +72,20 @@ export const TILES: Map<string, IMapTile> = new Map([
          ]
        ]);
 
-interface IState {
-}
-
-export default class MapTile extends React.Component<IProps, IState> {
-
-    render () {
-        return <g className={styles.playarea}>
-        <g transform={`rotate(${this.props.rotation}, ${this.props.center[0]}, ${this.props.center[1]})
-                       translate(${this.props.center[0]}, ${this.props.center[1]})`}>
-            <image {...this.props.tile.background} preserveAspectRatio="xMidYMid meet"/>             
-        {this.props.tile.area.map(hex => {
-            return <Hex key={hex.toString()} center={[0,0]} coords={hex}></Hex>
-        })}
-        </g>
-        </g>
-    }
-
-}
+export const MapTile : React.SFC<IProps> = (props) => {
+    return <ViewOptionsContext.Consumer>
+        {viewOptions => 
+            <g className={styles.playarea}>
+            <g transform={`rotate(${props.rotation}, ${props.center[0]}, ${props.center[1]})
+                        translate(${props.center[0]}, ${props.center[1]})`}>
+                {viewOptions.displayMapTileImagery ? 
+                    <image {...props.tile.background} preserveAspectRatio="xMidYMid meet"/>             
+                    : null }
+            {props.tile.area.map(hex => {
+                return <Hex key={hex.toString()} center={[0,0]} coords={hex}></Hex>
+            })}
+            </g>
+            </g>
+        }
+    </ViewOptionsContext.Consumer>
+};
