@@ -8,6 +8,7 @@ import * as serviceWorker from './serviceWorker';
 import {Route, RouteComponentProps, HashRouter, Switch} from 'react-router-dom';
 import DataProvider from "./context/DataProvider";
 import ViewOptionsProvider from './board/ViewOptions';
+import { ScenarioStateProvider } from './board/ScenarioStateProvider';
 
 ReactDOM.render(
   <HashRouter>
@@ -17,7 +18,9 @@ ReactDOM.render(
         path="/board"
         render={(props: RouteComponentProps) => (
           <ViewOptionsProvider>
+            <ScenarioStateProvider>
             <TileGrid />
+            </ScenarioStateProvider>
           </ViewOptionsProvider>
         )}
       />
