@@ -107,7 +107,7 @@ class TileGrid extends Component<IProps, IState> {
     return (
       <div>
         <div className={styles.boardarea}>
-        <div>
+        <div className={styles.selector}>
          <TileSelector onSelect={this.selectMapTile}/>
         </div>
           <svg viewBox={this.viewBox.join(" ")}>

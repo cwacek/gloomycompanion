@@ -2,11 +2,13 @@ import React, { FormEvent } from "react";
 import { Hex, HexRef } from "./HexRef";
 import styles from './tile.module.scss';
 
+import { ViewOptionsContext } from "./ViewOptions";
+import Select from "react-select";
+import { ValueType } from "react-select/lib/types";
+
 import a3a from './tiles/A3a.png';
 import a1a from './tiles/A1a.png';
-import { ViewOptionsContext } from "./ViewOptions";
-import Select from "react-select/lib/Select";
-import { ValueType } from "react-select/lib/types";
+import wood_door_horiz from './tiles/wood_door_horiz.png';
 
 type TileType = "door" | "room"
 
@@ -84,20 +86,12 @@ export const TILES: Map<string, IMapTile> = new Map([
                type: "door" as TileType,
              area: [
                [0, 0],
-               [1, 0],
-               [2, 0],
-               [-1, 0],
-               [-2, 0],
-               [-1, -1],
-               [0, -1],
-               [1, -1],
-               [2, -1]
              ].map(HexRef.fromArr),
              background: {
-               xlinkHref: a1a,
-               width: 72,
-               x: -35,
-               y: -24
+               xlinkHref: wood_door_horiz,
+               width: 14,
+               x: -7,
+               y: -8
              }
            }
          ]
@@ -106,24 +100,28 @@ export const TILES: Map<string, IMapTile> = new Map([
 
 type SelectorValueType = ValueType<{ value: string, label: string, data: IMapTile}>
 
-export const TileSelector: React.SFC<{onSelect: (tile : IMapTile) =>void }> = (props) => {
+export const TileSelector: React.SFC<{
+  onSelect: (tile: IMapTile) => void;
+}> = props => {
+  const tiles = Array.from(TILES, (v, k) => v[1]).map((t: IMapTile) => {
+    return { value: t.name, label: t.name, data: t };
+  });
 
-    const tiles = Array.from(TILES, (v, k) => v[1]).map((t: IMapTile) => {
-        return { value: t.name, label: t.name, data: t} 
-    })
-
-    return <Select
+  return (
+    <div>
+      <Select
         options={tiles}
         onChange={(e: SelectorValueType) => {
-            if (!e || e instanceof Array) {
-              console.log("N thing doing ");
-            } else {
-              props.onSelect(e.data);
-            }
+          if (!e || e instanceof Array) {
+            console.log("N thing doing ");
+          } else {
+            props.onSelect(e.data);
+          }
         }}
-    />
-
-}
+      />
+    </div>
+  );
+};
 
 
 export const MapTile : React.SFC<IProps> = (props) => {
