@@ -17,11 +17,11 @@ ReactDOM.render(
         exact
         path="/board"
         render={(props: RouteComponentProps) => (
-          <ViewOptionsProvider>
-            <ScenarioStateProvider>
-            <TileGrid />
-            </ScenarioStateProvider>
-          </ViewOptionsProvider>
+          <ScenarioStateProvider>
+            <ViewOptionsProvider>
+              <TileGrid />
+            </ViewOptionsProvider>
+          </ScenarioStateProvider>
         )}
       />
       <Route

@@ -1,9 +1,9 @@
 import React, {Component, SyntheticEvent, MouseEvent} from 'react';
-import './tile.module.scss';
+//import './tile.module.scss';
 import styles from './tile.module.scss';
 import autobind from 'autobind-decorator';
 import { Hex, HexRef, calcXOffset, calcYOffset} from './HexRef';
-import {MapTile, TILES, IMapTile } from './playarea';
+import {MapTile, TILES, IMapTile, TileSelector } from './playarea';
 import { ScenarioState } from './ScenarioStateProvider';
 
 interface IProps {};
@@ -40,10 +40,9 @@ class TileGrid extends Component<IProps, IState> {
   }
 
   @autobind
-  selectMapTile(evt: React.FormEvent<HTMLSelectElement>) {
-    console.log("onSelect: ", evt);
+  selectMapTile(tile : IMapTile) {
     this.setState({
-      activeMapTile: TILES.get(evt.currentTarget.value)
+      activeMapTile: tile
     });
   }
 
@@ -108,20 +107,9 @@ class TileGrid extends Component<IProps, IState> {
     return (
       <div>
         <div className={styles.boardarea}>
-          <select
-            onChange={this.selectMapTile}
-            value={
-              this.state.activeMapTile
-                ? (this.state.activeMapTile! as IMapTile).name
-                : undefined
-            }
-          >
-            {Array.from(TILES, (v, k) => v[1]).map((t: IMapTile) => (
-              <option key={t.name} value={t.name}>
-                {t.name}
-              </option>
-            ))}
-          </select>
+        <div>
+         <TileSelector onSelect={this.selectMapTile}/>
+        </div>
           <svg viewBox={this.viewBox.join(" ")}>
             {this.state.activeMapTile ? (
               <MapTile
