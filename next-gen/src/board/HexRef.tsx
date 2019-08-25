@@ -29,6 +29,10 @@ export class HexRef {
         return "" + [this.q, this.r];
     }
 
+    toJSON() : {q: number, r: number} {
+        return {q: this.q, r: this.r}
+    }
+
     equals(other : HexRef) : boolean {
         return other.q == this.q && other.r == this.r && other.s == this.s
     }

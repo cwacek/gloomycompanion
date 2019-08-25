@@ -24,6 +24,15 @@ export interface IMapTile {
     area: HexRef[];
 }
 
+export function MapTileAsJSON(t : IMapTile) : any {
+    return {
+        name: t.name,
+        type: t.type,
+        area: t.area.map(h => h.toJSON())
+    }
+}
+
+
 interface IProps {
     tile : IMapTile;
     center: number[];
