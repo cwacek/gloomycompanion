@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "/Users/cwacek/Documents/projects/gloomyserver"
+		}
+	],
+	"settings": {
+		"go.autocompleteUnimportedPackages": true
+	}
+}

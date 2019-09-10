@@ -1,14 +1,13 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Hex, HexRef } from "./HexRef";
 import styles from './tile.module.scss';
 
 import { ViewOptionsContext } from "./ViewOptions";
 import Select from "react-select";
 import { ValueType } from "react-select/lib/types";
+import { useAuth0 } from "../context/AuthWrapper";
 
-import a3a from './tiles/A3a.png';
-import a1a from './tiles/A1a.png';
-import wood_door_horiz from './tiles/wood_door_horiz.png';
+import config from "../auth_config.json";
 
 type TileType = "door" | "room"
 
@@ -57,7 +56,7 @@ export const TILES: Map<string, IMapTile> = new Map([
                [2, -1]
              ].map(HexRef.fromArr),
              background: {
-               xlinkHref: a3a,
+               xlinkHref: "",//a3a,
                width: 78,
                x: -39,
                y: -28
@@ -81,7 +80,7 @@ export const TILES: Map<string, IMapTile> = new Map([
                [2, -1]
              ].map(HexRef.fromArr),
              background: {
-               xlinkHref: a1a,
+               xlinkHref: "",//a1a,
                width: 72,
                x: -35,
                y: -24
@@ -97,7 +96,7 @@ export const TILES: Map<string, IMapTile> = new Map([
                [0, 0],
              ].map(HexRef.fromArr),
              background: {
-               xlinkHref: wood_door_horiz,
+               xlinkHref: "",//wood_door_horiz,
                width: 14,
                x: -7,
                y: -8
@@ -112,9 +111,35 @@ type SelectorValueType = ValueType<{ value: string, label: string, data: IMapTil
 export const TileSelector: React.SFC<{
   onSelect: (tile: IMapTile) => void;
 }> = props => {
-  const tiles = Array.from(TILES, (v, k) => v[1]).map((t: IMapTile) => {
-    return { value: t.name, label: t.name, data: t };
-  });
+
+  const { getTokenSilently } = useAuth0();
+  const [tiles, setTiles] = useState([])
+
+  useEffect(() => {
+    console.log("Using hook");
+    const fetchData = async () => {
+      try {
+        const token = await getTokenSilently!();
+
+        const response = await fetch(`${config.gloomyserver_api}/v1/tiles`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        const responseData = await response.json();
+
+        setTiles(
+          responseData.map((d : {Name: string}) => {
+            return { value: d.Name, label: d.Name, data: d };
+          })
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [getTokenSilently]);
 
   return (
     <div>
