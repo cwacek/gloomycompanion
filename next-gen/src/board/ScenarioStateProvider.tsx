@@ -1,8 +1,9 @@
 import React from "react";
-import { IMapTile, MapTileAsJSON } from "./playarea";
+import { MapTileAsJSON } from "./playarea";
 import { HexRef } from "./HexRef";
 import autobind from "autobind-decorator";
 import LoginBar from "./LoginBar"
+import { IMapTile } from "../data/api";
 
 
 

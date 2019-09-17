@@ -85,7 +85,6 @@ export const Auth0Provider : React.SFC<providerProps> = (props) => {
     setIsAuthenticated(true);
     setUser(user);
   };
-    console.log("Rendering provider");
   return (
     <Auth0Context.Provider
       value={{

@@ -3,8 +3,9 @@ import React, {Component, SyntheticEvent, MouseEvent} from 'react';
 import styles from './tile.module.scss';
 import autobind from 'autobind-decorator';
 import { Hex, HexRef, calcXOffset, calcYOffset} from './HexRef';
-import {MapTile, TILES, IMapTile, TileSelector } from './playarea';
+import {MapTile, TileSelector } from './playarea';
 import { ScenarioState } from './ScenarioStateProvider';
+import { IMapTile } from '../data/api';
 
 interface IProps {};
 interface IState {
@@ -28,7 +29,7 @@ class TileGrid extends Component<IProps, IState> {
 
   state = {
     targetHex: undefined,
-    activeMapTile: TILES.get("a1a"),
+    activeMapTile: undefined,
     activeTileRotation: 0
   };
 
@@ -121,7 +122,7 @@ class TileGrid extends Component<IProps, IState> {
 
             {this.context.placedMapTiles.map(t => (
               <MapTile
-                key={`${t.tile.name}_${t.center.toString()}`}
+                key={`${t.tile.Name}_${t.center.toString()}`}
                 center={this.calculateCenter(t.center)}
                 tile={t.tile}
                 rotation={t.rotation}

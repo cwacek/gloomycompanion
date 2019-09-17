@@ -6,11 +6,12 @@ import { ViewOptionsContext } from "./ViewOptions";
 import Select from "react-select";
 import { ValueType } from "react-select/lib/types";
 import { useAuth0 } from "../context/AuthWrapper";
+import {GetTiles, IMapTile, GetTileImageURL} from "../data/api";
+import { string } from "prop-types";
 
-import config from "../auth_config.json";
+type TileType = "Door" | "Room"
 
-type TileType = "door" | "room"
-
+/*
 export interface IMapTile {
     name: string;
     type: TileType;
@@ -22,12 +23,13 @@ export interface IMapTile {
      };
     area: HexRef[];
 }
+*/
 
 export function MapTileAsJSON(t : IMapTile) : any {
     return {
-        name: t.name,
-        type: t.type,
-        area: t.area.map(h => h.toJSON())
+        name: t.Name,
+        type: t.Type,
+        //area: t.area.map(h => h.toJSON())
     }
 }
 
@@ -38,6 +40,7 @@ interface IProps {
     rotation : number;
 }
 
+/*
 export const TILES: Map<string, IMapTile> = new Map([
          [
            "a2a",
@@ -104,6 +107,7 @@ export const TILES: Map<string, IMapTile> = new Map([
            }
          ]
        ]);
+       */
 
 
 type SelectorValueType = ValueType<{ value: string, label: string, data: IMapTile}>
@@ -112,34 +116,29 @@ export const TileSelector: React.SFC<{
   onSelect: (tile: IMapTile) => void;
 }> = props => {
 
-  const { getTokenSilently } = useAuth0();
-  const [tiles, setTiles] = useState([])
+  const {loading, getTokenSilently} = useAuth0();
+  const [tiles, setTiles] = useState<{value :string, label: string, data : IMapTile}[]>([])
 
   useEffect(() => {
-    console.log("Using hook");
     const fetchData = async () => {
       try {
+        if (loading) {
+          return
+        }
         const token = await getTokenSilently!();
 
-        const response = await fetch(`${config.gloomyserver_api}/v1/tiles`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-
-        const responseData = await response.json();
-
-        setTiles(
-          responseData.map((d : {Name: string}) => {
+        const tiles = await GetTiles(token);
+        const tileState =  tiles.map((d) => {
             return { value: d.Name, label: d.Name, data: d };
           })
-        );
+
+        setTiles(tileState);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, [getTokenSilently]);
+  }, [loading]);
 
   return (
     <div>
@@ -158,20 +157,52 @@ export const TileSelector: React.SFC<{
 };
 
 
-export const MapTile : React.SFC<IProps> = (props) => {
-    return <ViewOptionsContext.Consumer>
-        {viewOptions => 
-            <g className={styles.playarea}>
-            <g transform={`rotate(${props.rotation}, ${props.center[0]}, ${props.center[1]})
-                        translate(${props.center[0]}, ${props.center[1]})`}>
-                {viewOptions.displayMapTileImagery ? 
-                    <image {...props.tile.background} preserveAspectRatio="xMidYMid meet"/>             
-                    : null }
+export const MapTile: React.SFC<IProps> = props => {
+  const {loading, getTokenSilently} = useAuth0();
+  const [tileImgUrl, setTileImgUrl] = useState<string>("")
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (loading) {
+          return
+        }
+
+        if (props.tile) {
+              const token = await getTokenSilently!();
+              let url = await GetTileImageURL(token, props.tile)
+              setTileImgUrl(url);
+        } else {
+          setTileImgUrl("");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData()
+  }, [loading, props.tile]);
+  /*
             {props.tile.area.map(hex => {
                 return <Hex key={hex.toString()} center={[0,0]} coords={hex}></Hex>
             })}
-            </g>
-            </g>
-        }
+            */
+  return (
+    <ViewOptionsContext.Consumer>
+      {viewOptions => (
+        <g className={styles.playarea}>
+          <g
+            transform={`rotate(${props.rotation}, ${props.center[0]}, ${props.center[1]})
+                        translate(${props.center[0]}, ${props.center[1]})`}
+          >
+            {viewOptions.displayMapTileImagery ? (
+              
+              <image href={tileImgUrl}
+                preserveAspectRatio="xMidYMid meet"
+              />
+            ) : null}
+          </g>
+        </g>
+      )}
     </ViewOptionsContext.Consumer>
+  );
 };
