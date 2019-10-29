@@ -1,4 +1,4 @@
-import React, {Component, SyntheticEvent, MouseEvent} from 'react';
+import React, {Component, SyntheticEvent, MouseEvent, useState} from 'react';
 //import './tile.module.scss';
 import styles from './tile.module.scss';
 import autobind from 'autobind-decorator';
@@ -32,13 +32,6 @@ class TileGrid extends Component<IProps, IState> {
     activeMapTile: undefined,
     activeTileRotation: 0
   };
-
-  @autobind
-  updateTargetHex(hex?: HexRef) {
-    this.setState({
-      targetHex: hex
-    });
-  }
 
   @autobind
   selectMapTile(tile : IMapTile) {
@@ -80,25 +73,6 @@ class TileGrid extends Component<IProps, IState> {
   }
 
   render() {
-    if (this.size % 2 != 1) {
-      throw new Error("can't deal with even sized tilegrids");
-    }
-
-    let gridHexes: JSX.Element[] = [];
-    for (let x = -this.size; x < this.size; x++) {
-      for (let y = -this.size; y < this.size; y++) {
-        let ref = new HexRef(x, y);
-        gridHexes.push(
-          <Hex
-            key={`tile-${ref}`}
-            center={this.center}
-            coords={ref}
-            hoverState={this.state.targetHex === ref ? "active" : ""}
-            onHover={this.updateTargetHex}
-          />
-        );
-      }
-    }
 
     let playTileCenter = [50, 20];
     if (this.state.targetHex) {
@@ -129,20 +103,49 @@ class TileGrid extends Component<IProps, IState> {
               />
             ))}
 
-            <g
-              className={styles["pod-wrap"]}
-              onMouseLeave={() => {
-                this.updateTargetHex(undefined);
-              }}
-              onClick={this.handleClick}
-            >
-              {gridHexes}
-            </g>
+            <HexGrid onClick={this.handleClick} size={this.size} center={this.center}/>
           </svg>
         </div>
       </div>
     );
   }
 }
+
+export const HexGrid: React.SFC<{
+  onClick: (e: MouseEvent, h?: HexRef) => void;
+  size: number;
+  center: number[];
+}> = props => {
+  const [target, setTarget] = useState<HexRef>();
+  if (props.size % 2 != 1) {
+    throw new Error("can't deal with even sized tilegrids");
+  }
+
+  let gridHexes: JSX.Element[] = [];
+  for (let x = -props.size; x < props.size; x++) {
+    for (let y = -props.size; y < props.size; y++) {
+      let ref = new HexRef(x, y);
+      gridHexes.push(
+        <Hex
+          key={`tile-${ref}`}
+          center={props.center}
+          coords={ref}
+          hoverState={target === ref ? "active" : ""}
+          onHover={setTarget}
+        />
+      );
+    }
+  }
+
+  return (
+    <g
+      className={styles["pod-wrap"]}
+      onMouseLeave={() => setTarget(undefined)}
+      onClick={e => props.onClick(e, target)}
+    >
+      {gridHexes}
+    </g>
+  );
+};
 
 export default TileGrid;

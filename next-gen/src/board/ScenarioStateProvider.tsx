@@ -43,10 +43,6 @@ export class ScenarioStateProvider extends React.Component<{}, IScenarioState> {
 
     render () {
         return <div>
-            <header>
-        <LoginBar />
-
-            </header>
         <ScenarioState.Provider value={this.state}>
         {this.props.children}
         </ScenarioState.Provider>

@@ -196,7 +196,7 @@ export const MapTile: React.SFC<IProps> = props => {
           >
             {viewOptions.displayMapTileImagery ? (
               
-              <image href={tileImgUrl}
+              <image xlinkHref={tileImgUrl} width="28"
                 preserveAspectRatio="xMidYMid meet"
               />
             ) : null}

@@ -3,14 +3,14 @@ import config from "../auth_config.json";
 
 
 export interface IMapTile {
-    Name: string;
-    Type: TileType;
-	Position:{
-		XOffset     :number
-		YOffset     :number
-		SizePercent :number
-    }
-    imageUrl? : string
+  Name: string;
+  Type: TileType;
+  Position: {
+    XOffset: number;
+    YOffset: number;
+    SizePercent: number;
+  };
+  imageUrl?: string;
 }
 
 type TileType = "door" | "room"
