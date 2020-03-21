@@ -1,5 +1,5 @@
-import React, {ReactNode} from 'react';
-import { LocalState, ICard, IMonster } from '../data/cards';
+import React from 'react';
+import { LocalState, IMonster } from '../data/cards';
 import { RouteComponentProps } from 'react-router';
 import { DeckTypes } from '../util';
 

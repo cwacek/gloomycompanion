@@ -1,12 +1,11 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from './tile.module.scss';
 
 import { ViewOptionsContext } from "./ViewOptions";
-import { ValueType } from "react-select/lib/types";
 import { useAuth0 } from "../context/AuthWrapper";
 import {GetTiles, IMapTile, GetTileImageURL} from "../data/api";
 import { FormGroup, FormLabel } from "react-bootstrap";
-import FormControl, { FormControlProps } from 'react-bootstrap/FormControl';
+import FormControl from 'react-bootstrap/FormControl';
 
 
 /*
@@ -59,7 +58,7 @@ export const TileSelector: React.SFC<{
       }
     };
     fetchData();
-  }, [loading]);
+  }, [loading, getTokenSilently]);
 
   const tileOptions = tiles.map(t => <option key={t.value} value={t.value}>{t.label}</option>)
 
@@ -70,7 +69,7 @@ export const TileSelector: React.SFC<{
         <FormControl
           as="select"
           onChange={e => {
-            const tile = tiles.find(t => t.value == e.currentTarget.value);
+            const tile = tiles.find(t => t.value === e.currentTarget.value);
             if (tile) {
               props.onSelect(tile.data);
             }
@@ -115,6 +114,7 @@ export const MapTile: React.SFC<IProps> = props => {
       }
     };
     fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, props.tile.Name, props.tile.Type]);
 
   return (

@@ -1,8 +1,8 @@
-import React, { Component, CSSProperties, ReactNode } from 'react';
-import {AppContext, IAppContext } from './context/AppContext'
+import React, { Component } from 'react';
+import {AppContext } from './context/AppContext'
 import './App.css';
 
-import {DECKS, LocalState, IMonster } from './data/cards';
+import {DECKS, IMonster } from './data/cards';
 import Select from 'react-select';
 import {SelectionType, isSelectionType, range, DeckTypes} from './util'
 
@@ -71,7 +71,7 @@ class App extends Component<IProps, IState> {
 
     let availableMonsters = monsterOptions.filter(opt => {
       return !this.context!.activeMonsters.find((m : IMonster) => {
-        return opt.value == m.name
+        return opt.value === m.name
       })
     })
 
@@ -80,6 +80,7 @@ class App extends Component<IProps, IState> {
         <div className={styles.controls}>
           <div className={styles.new_monster}>
             <img
+              alt="add monster"
               src={plus_circle}
               onClick={this.addMonster}
               className={styles.expand_icon}

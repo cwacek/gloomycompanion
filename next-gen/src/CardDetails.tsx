@@ -1,12 +1,11 @@
 
-import React, { Component } from 'react';
-import {ICard, IMonsterAction} from './data/cards';
+import React from 'react';
+import {ICard} from './data/cards';
 import styles from './styles/Card.module.css';
 import MonsterAction from './MonsterAction';
 
 import shuffle from './images/shuffle.svg';
 
-import autobind from 'autobind-decorator';
 
 interface IProps {
     card : ICard | null
@@ -41,7 +40,7 @@ const CardDetails = (props: IProps) => {
         {props.card.initiative}
       </span>
       {props.card.shuffle ? (
-        <img className={styles.shuffle} src={shuffle} />
+        <img alt="" className={styles.shuffle} src={shuffle} />
       ) : null}
       <ul>{actions}</ul>
     </div>

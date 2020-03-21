@@ -12,7 +12,7 @@ export class HexRef {
         this.r = r;
         this.s = -q - r;
 
-        if (this.q + this.r + this.s != 0){
+        if (this.q + this.r + this.s !== 0){
             throw new Error("Bad Hex Coords!")
         }
     }
@@ -34,7 +34,7 @@ export class HexRef {
     }
 
     equals(other : HexRef) : boolean {
-        return other.q == this.q && other.r == this.r && other.s == this.s
+        return other.q === this.q && other.r === this.r && other.s === this.s
     }
 }
 
@@ -71,7 +71,7 @@ export const Hex: React.SFC<IHexProps> = props => {
   const y = calcYOffset(props.coords)
 
   let classes = [styles.hex];
-  if (props.hoverState != undefined) {
+  if (props.hoverState !== undefined) {
     classes.push(styles[props.hoverState]);
   }
 

@@ -9,7 +9,6 @@ import Deck from './Deck'
 import MonsterState, { MonsterStateProvider } from './context/MonsterState';
 import autobind from 'autobind-decorator';
 import { AppContext } from './context/AppContext';
-import { createMandatoryContext, PersistableStateContext } from './util';
 import { MonsterTypes } from './data/monster_stats';
 
 interface IProps {

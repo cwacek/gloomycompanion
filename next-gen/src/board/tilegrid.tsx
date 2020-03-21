@@ -1,4 +1,4 @@
-import React, {Component, SyntheticEvent, MouseEvent, useState} from 'react';
+import React, {Component, MouseEvent, useState} from 'react';
 //import './tile.module.scss';
 import styles from './tile.module.scss';
 import autobind from 'autobind-decorator';
@@ -41,7 +41,7 @@ class TileGrid extends Component<IProps, IState> {
   }
 
   @autobind
-  handleClick(e: MouseEvent) {
+  handleClick() {
     if (!this.state.activeMapTile) return null;
     this.context.placeTile({
       tile: this.state.activeMapTile!,
@@ -118,7 +118,7 @@ export const HexGrid: React.FC<{
   center: number[];
 }> = props => {
   const [target, setTarget] = useState<HexRef>();
-  if (props.size % 2 != 1) {
+  if (props.size % 2 !== 1) {
     throw new Error("can't deal with even sized tilegrids");
   }
 

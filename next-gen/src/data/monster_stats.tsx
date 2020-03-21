@@ -1,12 +1,5 @@
 export type MonsterTypes = "elite" | "normal"
 
-const SPECIAL_VALUES: { [key: string]: string } =
-{
-  "X": "X = Hexes moved",
-  "C": "C = Number of Characters",
-  "V": "V = Number of Scouts present"
-}
-
 export interface BossAttrs {
   level: number;
   health: string;

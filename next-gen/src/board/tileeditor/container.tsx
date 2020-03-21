@@ -1,20 +1,21 @@
 
-import React, { useState, ChangeEvent, useReducer, Reducer, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useReducer, Reducer, useMemo, useCallback, useEffect } from 'react';
 import { IMapTile, UpdateTile, ITilePosition } from '../../data/api';
 import { TileSelector, MapTile } from '../playarea';
 import styles from '../tile.module.scss';
-import { HexGrid, HexGridPerf } from '../tilegrid';
+import { HexGridPerf } from '../tilegrid';
 import { calcYOffset, HexRef, calcXOffset } from '../HexRef';
 import Form from 'react-bootstrap/Form'
 import FormGroup from 'react-bootstrap/FormGroup'
-import FormControl from 'react-bootstrap/FormControl'
 import FormLabel from 'react-bootstrap/FormLabel'
-import { FormControlProps, InputGroup, Alert } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { useAuth0 } from '../../context/AuthWrapper';
-import { FaMinus, FaPlus } from 'react-icons/fa';
 import { NumericInput } from '../../components/NumericInput';
 import { withShortcut, IWithShortcut } from 'react-keybind';
+
+const HEXSIZE = 5;
+const VIEWBOX = [0, 0, 300, 300];
 
 type Attr = keyof ITilePosition
 type Action = 
@@ -38,6 +39,7 @@ type Action =
             }
           };
         }
+        break;
       case "setAttr":
         if (tile) {
           return {
@@ -51,6 +53,7 @@ type Action =
             }
           };
         }
+        break;
       case "resize":
         if (tile) {
           return {
@@ -64,6 +67,7 @@ type Action =
             }
           };
         }
+        break;
       case "set":
         return action.value as IMapTile;
     }
@@ -76,7 +80,7 @@ interface Flash {
 }
 
 const TileEditorRaw: React.FunctionComponent<IWithShortcut> = (props) => {
-  const {loading, getTokenSilently} = useAuth0();
+  const {getTokenSilently} = useAuth0();
   const [tile, dispatch] = useReducer<Reducer<IMapTile | undefined, Action>>(
     tileReducer,
     undefined
@@ -133,10 +137,8 @@ const TileEditorRaw: React.FunctionComponent<IWithShortcut> = (props) => {
     );
   })
 
-  const size = 5;
-  const viewBox = [0, 0, 300, 300];
   const center = useMemo(() => {
-    return [(viewBox[2] - viewBox[0]) / 2, (viewBox[3] - viewBox[1]) / 2];
+    return [(VIEWBOX[2] - VIEWBOX[0]) / 2, (VIEWBOX[3] - VIEWBOX[1]) / 2];
   }, []);
 
   const noEffect = useCallback(()=>{}, [])
@@ -197,12 +199,12 @@ const TileEditorRaw: React.FunctionComponent<IWithShortcut> = (props) => {
         )}
       </Form>
       <div className={styles.viewer}>
-        <svg className={styles.renderer} viewBox={viewBox.join(" ")}>
+        <svg className={styles.renderer} viewBox={VIEWBOX.join(" ")}>
           {tile == null ? null : (
             <MapTile center={playTileCenter} tile={tile} rotation={0} />
           )}
 
-          <HexGridPerf onClick={noEffect} size={size} center={center} />
+          <HexGridPerf onClick={noEffect} size={HEXSIZE} center={center} />
         </svg>
       </div>
     </div>

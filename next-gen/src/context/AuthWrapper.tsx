@@ -1,11 +1,7 @@
 
 import React, { useState, useEffect, useContext } from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
-import { any } from "prop-types";
 import Auth0Client from "@auth0/auth0-spa-js/dist/typings/Auth0Client";
-
-const DEFAULT_REDIRECT_CALLBACK = () =>
-  window.history.replaceState({}, document.title, window.location.pathname);
 
 interface Auth0ContextType {
         isAuthenticated : boolean

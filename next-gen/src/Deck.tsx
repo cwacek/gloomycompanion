@@ -1,5 +1,5 @@
-import React, { Component, useContext } from 'react';
-import {ICard, IMonster} from './data/cards';
+import React, { useContext } from 'react';
+import {IMonster} from './data/cards';
 import styles from './styles/Card.module.css';
 import CardDetails from './CardDetails';
 

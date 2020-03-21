@@ -1,5 +1,3 @@
-import {shuffle_list} from '../util'
-
 import aoe_line_3_with_black from '../images/aoe-line-3-with-black.svg';
 import aoe_4_with_black from '../images/aoe-4-with-black.svg';
 import aoe_circle_with_side_black from '../images/aoe-circle-with-side-black.svg';

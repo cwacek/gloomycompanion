@@ -1,12 +1,7 @@
 import React from "react";
-import { MapTileAsJSON } from "./playarea";
 import { HexRef } from "./HexRef";
 import autobind from "autobind-decorator";
-import LoginBar from "./LoginBar"
 import { IMapTile } from "../data/api";
-
-
-
 
 
 interface IPlacedTile {tile : IMapTile, center : HexRef, rotation: number};
@@ -19,7 +14,7 @@ interface IScenarioState {
 
 export const ScenarioState = React.createContext<IScenarioState>({
     placedMapTiles: [],
-    placeTile: (t) => {}
+    placeTile: () => {}
 })
 
 export class ScenarioStateProvider extends React.Component<{}, IScenarioState> {

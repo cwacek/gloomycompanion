@@ -1,5 +1,5 @@
 import { getMonsterAttrs, MonsterTypes, MonsterAttrs } from "../data/monster_stats";
-import React, { Component } from "react";
+import React from "react";
 import autobind from "autobind-decorator";
 import { AppContext } from "./AppContext";
 import { LocalState } from "../data/cards";
@@ -61,7 +61,7 @@ export class MonsterStateProvider extends React.Component<IProps, IState> {
         this.setState(pState => {
             let nextHealth = Math.max(0, Math.min(pState.health - dmg, pState.attrs!.health))
 
-            if (nextHealth == 0) {
+            if (nextHealth === 0) {
                 this.context.store.Clear(`monsters:${this.props.name}:${this.props.type}:${this.props.id}`);
                 setTimeout(()=> {
                     this.props.onDeath(this.props.id);

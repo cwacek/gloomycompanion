@@ -1,4 +1,4 @@
-import React, { Children, ChangeEvent } from "react";
+import React, {  } from "react";
 import autobind from "autobind-decorator";
 import styles from './tile.module.scss';
 

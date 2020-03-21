@@ -2,7 +2,7 @@ import React from "react";
 import MonsterState, { StatusEffectsType, AllStatusEffects, MonsterStateCtx } from "./context/MonsterState";
 
 import styles from './styles/MonsterStatus.module.scss';
-import { Popover, PopoverHeader, PopoverBody, ButtonGroup } from "reactstrap";
+import { Popover, PopoverBody, ButtonGroup } from "reactstrap";
 import autobind from "autobind-decorator";
 import Button from "reactstrap/lib/Button";
 import {FaRegCheckSquare, FaSquare} from 'react-icons/fa';

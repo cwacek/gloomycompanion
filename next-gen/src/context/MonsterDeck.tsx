@@ -1,5 +1,5 @@
 import { shuffle_list } from '../util';
-import { IMonster, ICard, DECKS, DECK_DEFINITIONS, IMonsterAction } from '../data/cards';
+import { IMonster, ICard, DECK_DEFINITIONS, IMonsterAction } from '../data/cards';
 import React from 'react';
 import { AppContext } from './AppContext';
 import autobind from 'autobind-decorator';
@@ -44,7 +44,7 @@ export class DeckStateProvider extends React.Component<IProps, IState> {
 
   componentDidMount() {
     let thing = DECK_DEFINITIONS.find((d) => {
-      return (d.class == this.props.monster.class);
+      return (d.class === this.props.monster.class);
     });
     if (!thing) {
       throw new Error(`Failed to find deck for ${this.props.monster.name}`);
