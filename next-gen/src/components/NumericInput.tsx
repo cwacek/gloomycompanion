@@ -28,9 +28,7 @@ export function NumericInput<T>(props : IProps<T>) : React.ReactElement {
           <FormControl
             type="number"
             value={props.value.toString()}
-            onChange={(
-              event: React.FormEvent<FormControl & FormControlProps>
-            ) =>
+            onChange={(event : React.FormEvent<HTMLInputElement>) =>
               props.onSet(props.attribute, parseInt(event.currentTarget.value!))
             }
           ></FormControl>

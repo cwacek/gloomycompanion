@@ -96,6 +96,7 @@ export const MapTile: React.SFC<IProps> = props => {
   const [tileImgUrl, setTileImgUrl] = useState<string>("")
 
   useEffect(() => {
+    console.log("MapTile fetching data")
     const fetchData = async () => {
       try {
         if (loading) {
@@ -114,7 +115,7 @@ export const MapTile: React.SFC<IProps> = props => {
       }
     };
     fetchData()
-  }, [loading, props.tile]);
+  }, [loading, props.tile.Name, props.tile.Type]);
 
   return (
     <ViewOptionsContext.Consumer>

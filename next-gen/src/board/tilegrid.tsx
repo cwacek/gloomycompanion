@@ -112,7 +112,7 @@ class TileGrid extends Component<IProps, IState> {
 }
 
 
-export const HexGrid: React.SFC<{
+export const HexGrid: React.FC<{
   onClick: (e: MouseEvent, h?: HexRef) => void;
   size: number;
   center: number[];
@@ -148,5 +148,7 @@ export const HexGrid: React.SFC<{
     </g>
   );
 };
+
+export const HexGridPerf = React.memo(HexGrid)
 
 export default TileGrid;

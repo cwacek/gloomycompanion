@@ -3,7 +3,7 @@ import React, { useState, ChangeEvent, useReducer, Reducer, useMemo, useCallback
 import { IMapTile, UpdateTile, ITilePosition } from '../../data/api';
 import { TileSelector, MapTile } from '../playarea';
 import styles from '../tile.module.scss';
-import { HexGrid } from '../tilegrid';
+import { HexGrid, HexGridPerf } from '../tilegrid';
 import { calcYOffset, HexRef, calcXOffset } from '../HexRef';
 import Form from 'react-bootstrap/Form'
 import FormGroup from 'react-bootstrap/FormGroup'
@@ -134,11 +134,10 @@ export const TileEditor: React.FunctionComponent<{}> = () => {
             <MapTile center={playTileCenter} tile={tile} rotation={0} />
           )}
 
-          <HexGrid onClick={noEffect} size={size} center={center} />
+          <HexGridPerf onClick={noEffect} size={size} center={center} />
         </svg>
       </div>
     </div>
   );
 };
-
 
