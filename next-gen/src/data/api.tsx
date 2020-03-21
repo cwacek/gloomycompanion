@@ -2,14 +2,16 @@
 import config from "../auth_config.json";
 
 
+export interface ITilePosition {
+    XOffset: number;
+    YOffset: number;
+    Size: number;
+}
+
 export interface IMapTile {
   Name: string;
   Type: TileType;
-  Position: {
-    XOffset: number;
-    YOffset: number;
-    SizePercent: number;
-  };
+  Position: ITilePosition;
   imageUrl?: string;
 }
 
@@ -25,6 +27,23 @@ export const GetTiles = async (token : string) : Promise<IMapTile[]> => {
         return response.json().then(val => val as IMapTile[])
 }
 
+export const UpdateTile = async (token: string, t: IMapTile) => {
+  const response = await fetch(
+    `${config.gloomyserver_api}/v1/tiles/${t.Type}/${t.Name}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(t),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    }
+  );
+
+  response.json().then(val => val as IMapTile[]);
+};
+
+
 function arrayBufferToBase64(buffer : ArrayBuffer) : string{
   let binary = '';
     let  bytes = [].slice.call(new Uint8Array(buffer));
@@ -37,7 +56,7 @@ function arrayBufferToBase64(buffer : ArrayBuffer) : string{
 export const GetTileImageURL = async (token : string, tile : IMapTile) => {
       //const imageURL = `${config.gloomyserver_api}/v1/tiles/show?type=${tile.Type}&name=${tile.Name}`;
       const response = await fetch(
-        `${config.gloomyserver_api}/v1/tiles/show?type=${tile.Type}&name=${tile.Name}`,
+        `${config.gloomyserver_api}/v1/tiles/${tile.Type}/${tile.Name}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

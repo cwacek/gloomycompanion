@@ -1,15 +1,13 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { Hex, HexRef } from "./HexRef";
 import styles from './tile.module.scss';
 
 import { ViewOptionsContext } from "./ViewOptions";
-import Select from "react-select";
 import { ValueType } from "react-select/lib/types";
 import { useAuth0 } from "../context/AuthWrapper";
 import {GetTiles, IMapTile, GetTileImageURL} from "../data/api";
-import { string } from "prop-types";
+import { FormGroup, FormLabel } from "react-bootstrap";
+import FormControl, { FormControlProps } from 'react-bootstrap/FormControl';
 
-type TileType = "Door" | "Room"
 
 /*
 export interface IMapTile {
@@ -34,83 +32,6 @@ export function MapTileAsJSON(t : IMapTile) : any {
 }
 
 
-interface IProps {
-    tile : IMapTile;
-    center: number[];
-    rotation : number;
-}
-
-/*
-export const TILES: Map<string, IMapTile> = new Map([
-         [
-           "a2a",
-           {
-             name: "a2a",
-             type: "room" as TileType,
-             area: [
-               [0, 0],
-               [1, 0],
-               [2, 0],
-               [-1, 0],
-               [-2, 0],
-               [-1, -1],
-               [0, -1],
-               [1, -1],
-               [2, -1]
-             ].map(HexRef.fromArr),
-             background: {
-               xlinkHref: "",//a3a,
-               width: 78,
-               x: -39,
-               y: -28
-             }
-           }
-         ],
-         [
-           "a1a",
-           {
-             name: "a1a",
-             type: "room" as TileType,
-             area: [
-               [0, 0],
-               [1, 0],
-               [2, 0],
-               [-1, 0],
-               [-2, 0],
-               [-1, -1],
-               [0, -1],
-               [1, -1],
-               [2, -1]
-             ].map(HexRef.fromArr),
-             background: {
-               xlinkHref: "",//a1a,
-               width: 72,
-               x: -35,
-               y: -24
-             }
-           }
-         ],
-         [
-           "Horizontal Wood Door",
-           {
-             name: "Horizontal Wood Door",
-               type: "door" as TileType,
-             area: [
-               [0, 0],
-             ].map(HexRef.fromArr),
-             background: {
-               xlinkHref: "",//wood_door_horiz,
-               width: 14,
-               x: -7,
-               y: -8
-             }
-           }
-         ]
-       ]);
-       */
-
-
-type SelectorValueType = ValueType<{ value: string, label: string, data: IMapTile}>
 
 export const TileSelector: React.SFC<{
   onSelect: (tile: IMapTile) => void;
@@ -140,21 +61,34 @@ export const TileSelector: React.SFC<{
     fetchData();
   }, [loading]);
 
+  const tileOptions = tiles.map(t => <option key={t.value} value={t.value}>{t.label}</option>)
+
   return (
     <div>
-      <Select
-        options={tiles}
-        onChange={(e: SelectorValueType) => {
-          if (!e || e instanceof Array) {
-            console.log("N thing doing ");
-          } else {
-            props.onSelect(e.data);
+      <FormGroup controlId="tileselelctor">
+        <FormLabel>Select Tile</FormLabel>
+        <FormControl
+          as="select"
+          onChange={(e => {
+            const tile = tiles.find(t => t.value == e.currentTarget.value);
+            if (tile) {
+              props.onSelect(tile.data);
+            }
           }
-        }}
-      />
+          )}
+        >
+          {tileOptions}
+        </FormControl>
+      </FormGroup>
     </div>
   );
 };
+
+interface IProps {
+    tile : IMapTile;
+    center: number[];
+    rotation : number;
+}
 
 
 export const MapTile: React.SFC<IProps> = props => {
@@ -181,22 +115,18 @@ export const MapTile: React.SFC<IProps> = props => {
     };
     fetchData()
   }, [loading, props.tile]);
-  /*
-            {props.tile.area.map(hex => {
-                return <Hex key={hex.toString()} center={[0,0]} coords={hex}></Hex>
-            })}
-            */
+
   return (
     <ViewOptionsContext.Consumer>
       {viewOptions => (
         <g className={styles.playarea}>
           <g
             transform={`rotate(${props.rotation}, ${props.center[0]}, ${props.center[1]})
-                        translate(${props.center[0]}, ${props.center[1]})`}
+                        translate(${props.center[0] + props.tile.Position.XOffset}, ${props.center[1] + props.tile.Position.YOffset})`}
           >
             {viewOptions.displayMapTileImagery ? (
               
-              <image xlinkHref={tileImgUrl} width="28"
+              <image xlinkHref={tileImgUrl} width={props.tile.Position.Size}
                 preserveAspectRatio="xMidYMid meet"
               />
             ) : null}

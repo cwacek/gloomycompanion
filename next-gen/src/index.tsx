@@ -20,6 +20,13 @@ import authConfig from "./auth_config.json";
 import { TileEditor } from "./board/tileeditor/container";
 import LoginBar from "./board/LoginBar";
 
+if (process.env.NODE_ENV === 'development') {
+  const whyDidYouRender = require('@welldone-software/why-did-you-render');
+  whyDidYouRender(React, {
+    trackAllPureComponents: true,
+  });
+}
+
 // A function that routes the user to the right place
 // after login
 const onRedirectCallback = (appState: {

@@ -18,6 +18,14 @@
 .playarea .hex {
     fill: lightblue;
     fill-opacity: 0.5;
+
+}
+
+/* other styling */
+svg.renderer {
+    width: 600px;
+    flex: 1;
+    pointer-events: visible;
 }
 
 .viewOptions {
@@ -26,17 +34,26 @@
 }
 
 
-/* other styling */
-svg {
-    width: 600px;
-    flex: 1;
-    pointer-events: visible;
-}
-
 .boardarea {
     background-color: #cccccc;
 }
 
 .selector {
     width: 36em;
+}
+
+.tileeditor {
+    height: 100%;
+    background-color: white;
+    margin: 25px 0;
+    padding: 10px 25px;
+    display: grid;
+    grid-template-columns: 15em auto;
+    grid-template-rows: auto;
+
+    .viewer {
+        justify-content: center;
+        align-content: center;
+        display: grid;
+    }
 }
