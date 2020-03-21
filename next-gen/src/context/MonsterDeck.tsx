@@ -47,7 +47,7 @@ export class DeckStateProvider extends React.Component<IProps, IState> {
       return (d.class == this.props.monster.class);
     });
     if (!thing) {
-      throw new Error(`Failed to find deck for ${name}`);
+      throw new Error(`Failed to find deck for ${this.props.monster.name}`);
     }
     let deckDef: {
       class: string;

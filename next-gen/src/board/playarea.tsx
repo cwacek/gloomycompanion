@@ -69,13 +69,13 @@ export const TileSelector: React.SFC<{
         <FormLabel>Select Tile</FormLabel>
         <FormControl
           as="select"
-          onChange={(e => {
+          onChange={e => {
             const tile = tiles.find(t => t.value == e.currentTarget.value);
             if (tile) {
               props.onSelect(tile.data);
             }
           }
-          )}
+          }
         >
           {tileOptions}
         </FormControl>

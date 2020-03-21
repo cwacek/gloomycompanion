@@ -27,8 +27,8 @@ export const GetTiles = async (token : string) : Promise<IMapTile[]> => {
         return response.json().then(val => val as IMapTile[])
 }
 
-export const UpdateTile = async (token: string, t: IMapTile) => {
-  const response = await fetch(
+export const UpdateTile = async (token: string, t: IMapTile) : Promise<Response>=> {
+  return fetch(
     `${config.gloomyserver_api}/v1/tiles/${t.Type}/${t.Name}`,
     {
       method: "PATCH",
@@ -39,8 +39,6 @@ export const UpdateTile = async (token: string, t: IMapTile) => {
       }
     }
   );
-
-  response.json().then(val => val as IMapTile[]);
 };
 
 

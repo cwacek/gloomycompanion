@@ -1,4 +1,6 @@
 import React from "react";
+import { ShortcutProvider} from 'react-keybind'
+
 import ReactDOM from "react-dom";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.css";
@@ -41,6 +43,7 @@ const onRedirectCallback = (appState: {
   );
 };
 ReactDOM.render(
+  <ShortcutProvider>
   <Auth0Provider
     initOptions={{
       ...authConfig,
@@ -85,7 +88,9 @@ ReactDOM.render(
         />
       </Switch>
     </HashRouter>
-  </Auth0Provider>,
+  </Auth0Provider>
+  </ShortcutProvider>
+  ,
   document.getElementById("root")
 );
 /*
