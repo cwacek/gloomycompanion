@@ -51,7 +51,7 @@ ReactDOM.render(
     <HashRouter>
       <Switch>
         <Route
-          path="/board"
+          path="/"
           render={(props: RouteComponentProps) => (
             <div>
             <header>
@@ -76,7 +76,7 @@ ReactDOM.render(
           )}
         />
         <Route
-          path="/:id?"
+          path="/monstertiles/:id?"
           render={(props: RouteComponentProps) => (
             <DataProvider {...props}>
               <App />
