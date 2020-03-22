@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import styles from './tile.module.scss';
 
-import { ViewOptionsContext } from "./ViewOptions";
 import { useAuth0 } from "../context/AuthWrapper";
-import {GetTiles, IMapTile, GetTileImageURL} from "../data/api";
-import { FormGroup, FormLabel } from "react-bootstrap";
+import {GetTiles, IMapTile, GetTileData} from "../data/api";
+import { FormGroup, FormLabel, Spinner, Row, Col } from "react-bootstrap";
 import FormControl from 'react-bootstrap/FormControl';
 
 
@@ -39,6 +37,25 @@ export const TileSelector: React.SFC<{
   const {loading, getTokenSilently} = useAuth0();
   const [tiles, setTiles] = useState<{value :string, label: string, data : IMapTile}[]>([])
 
+  const updateTileOnSelect = async (tile: IMapTile) => {
+    if (loading) {
+      return;
+    }
+    const token = await getTokenSilently!();
+    const updated = await GetTileData(token, tile);
+    const tileState = tiles.map(d => {
+      if (d.value === updated.Name) {
+        return { value: d.value, label: d.label, data: updated };
+      } else {
+        return d
+      }
+    });
+
+    setTiles(tileState);
+    props.onSelect(updated);
+  };
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,74 +83,34 @@ export const TileSelector: React.SFC<{
     <div>
       <FormGroup controlId="tileselelctor">
         <FormLabel>Select Tile</FormLabel>
-        <FormControl
-          as="select"
-          onChange={e => {
-            const tile = tiles.find(t => t.value === e.currentTarget.value);
-            if (tile) {
-              props.onSelect(tile.data);
-            }
-          }
-          }
-        >
-          {tileOptions}
-        </FormControl>
-      </FormGroup>
-    </div>
-  );
-};
 
-interface IProps {
-    tile : IMapTile;
-    center: number[];
-    rotation : number;
-}
-
-
-export const MapTile: React.SFC<IProps> = props => {
-  const {loading, getTokenSilently} = useAuth0();
-  const [tileImgUrl, setTileImgUrl] = useState<string>("")
-
-  useEffect(() => {
-    console.log("MapTile fetching data")
-    const fetchData = async () => {
-      try {
-        if (loading) {
-          return
-        }
-
-        if (props.tile) {
-              const token = await getTokenSilently!();
-              let url = await GetTileImageURL(token, props.tile)
-              setTileImgUrl(url);
-        } else {
-          setTileImgUrl("");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading, props.tile.Name, props.tile.Type]);
-
-  return (
-    <ViewOptionsContext.Consumer>
-      {viewOptions => (
-        <g className={styles.playarea}>
-          <g
-            transform={`rotate(${props.rotation}, ${props.center[0]}, ${props.center[1]})
-                        translate(${props.center[0] + props.tile.Position.XOffset}, ${props.center[1] + props.tile.Position.YOffset})`}
-          >
-            {viewOptions.displayMapTileImagery ? (
-              
-              <image xlinkHref={tileImgUrl} width={props.tile.Position.Size}
-                preserveAspectRatio="xMidYMid meet"
+        <Row>
+          <Col>
+            <FormControl
+              disabled={loading}
+              as="select"
+              onChange={e => {
+                const tile = tiles.find(t => t.value === e.currentTarget.value);
+                if (tile) {
+                  updateTileOnSelect(tile.data);
+                }
+              }}
+            >
+              {tileOptions}
+            </FormControl>
+          </Col>
+          <Col sm={1}>
+            {loading ? (
+              <Spinner
+                variant="secondary"
+                size="sm"
+                animation="border"
+                as="span"
               />
             ) : null}
-          </g>
-        </g>
-      )}
-    </ViewOptionsContext.Consumer>
+          </Col>
+        </Row>
+      </FormGroup>
+    </div>
   );
 };

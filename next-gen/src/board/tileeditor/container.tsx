@@ -1,7 +1,8 @@
 
 import React, { useState, useReducer, Reducer, useMemo, useCallback, useEffect } from 'react';
 import { IMapTile, UpdateTile, ITilePosition } from '../../data/api';
-import { TileSelector, MapTile } from '../playarea';
+import { TileSelector } from '../playarea';
+import { MapTile } from "../components/MapTile";
 import styles from '../tile.module.scss';
 import { HexGridPerf } from '../tilegrid';
 import { calcYOffset, HexRef, calcXOffset } from '../HexRef';
@@ -11,7 +12,7 @@ import FormLabel from 'react-bootstrap/FormLabel'
 import { Alert } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { useAuth0 } from '../../context/AuthWrapper';
-import { NumericInput } from '../../components/NumericInput';
+import { NumericInput } from '../components/NumericInput';
 import { withShortcut, IWithShortcut } from 'react-keybind';
 
 const HEXSIZE = 5;
@@ -89,10 +90,13 @@ const TileEditorRaw: React.FunctionComponent<IWithShortcut> = (props) => {
   const [status, setStatus] = useState<Flash | undefined>(undefined)
 
   useEffect(() => {
+    if (status !== undefined) {
     setTimeout(()=>setStatus(undefined), 5000)
+    }
   }, [status])
 
   useEffect(() => {
+    console.log("Loading shortcuts")
     props.shortcut!.registerShortcut!(
       () =>
         dispatch({ type: "incrementAttr", attribute: "XOffset", value: -1 }),
@@ -109,14 +113,14 @@ const TileEditorRaw: React.FunctionComponent<IWithShortcut> = (props) => {
     );
     props.shortcut!.registerShortcut!(
       () =>
-        dispatch({ type: "incrementAttr", attribute: "YOffset", value: 1 }),
+        dispatch({ type: "incrementAttr", attribute: "YOffset", value: -1 }),
       ["w", "uparrow"],
       "up",
       "move up"
     );
     props.shortcut!.registerShortcut!(
       () =>
-        dispatch({ type: "incrementAttr", attribute: "YOffset", value: -1 }),
+        dispatch({ type: "incrementAttr", attribute: "YOffset", value: 1 }),
       ["s", "downarrow"],
       "down",
       "move down"
@@ -135,7 +139,16 @@ const TileEditorRaw: React.FunctionComponent<IWithShortcut> = (props) => {
       "bigger",
       "make bigger"
     );
-  })
+    return () => {
+      props.shortcut!.unregisterShortcut!(["e", "'"])
+      props.shortcut!.unregisterShortcut!(["q", "/"])
+      props.shortcut!.unregisterShortcut!(["w", "uparrow"])
+      props.shortcut!.unregisterShortcut!(["s", "downarrow"])
+      props.shortcut!.unregisterShortcut!(["d", "rightarrow"])
+      props.shortcut!.unregisterShortcut!(["a", "leftarrow"])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const center = useMemo(() => {
     return [(VIEWBOX[2] - VIEWBOX[0]) / 2, (VIEWBOX[3] - VIEWBOX[1]) / 2];

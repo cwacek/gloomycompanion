@@ -51,10 +51,26 @@ function arrayBufferToBase64(buffer : ArrayBuffer) : string{
     return window.btoa(binary);
   };
 
-export const GetTileImageURL = async (token : string, tile : IMapTile) => {
-      //const imageURL = `${config.gloomyserver_api}/v1/tiles/show?type=${tile.Type}&name=${tile.Name}`;
+export const GetTileData = async (token : string, tile : IMapTile) : Promise<IMapTile> => {
       const response = await fetch(
         `${config.gloomyserver_api}/v1/tiles/${tile.Type}/${tile.Name}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json"
+          }
+        }
+      );
+      console.log("Got response", response)
+      const json = await response.json()
+      console.log("Tile:", json)
+      let tileData : IMapTile = json
+      return tileData
+}
+
+export const GetTileImageURL = async (token : string, tile : IMapTile) => {
+      const response = await fetch(
+        `${config.gloomyserver_api}/v1/tiles/${tile.Type}/${tile.Name}?cache=true`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -63,6 +79,8 @@ export const GetTileImageURL = async (token : string, tile : IMapTile) => {
         }
       );
       let buf = await response.arrayBuffer();
+      console.log("Received image data")
       let dataUrl = `data:image/png;base64,${arrayBufferToBase64(buf)}`
+      console.log("Wrote image data to data url")
       return dataUrl
 }

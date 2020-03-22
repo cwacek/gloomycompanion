@@ -3,7 +3,8 @@ import React, {Component, MouseEvent, useState} from 'react';
 import styles from './tile.module.scss';
 import autobind from 'autobind-decorator';
 import { Hex, HexRef, calcXOffset, calcYOffset} from './HexRef';
-import {MapTile, TileSelector } from './playarea';
+import {TileSelector } from './playarea';
+import { MapTile } from "./components/MapTile";
 import { ScenarioState } from './ScenarioStateProvider';
 import { IMapTile } from '../data/api';
 
