@@ -3,3 +3,4 @@ app.manifest
 web.config
 *.orig
 next-gen/build/*
+next-gen/src/generated/graphql.tsx

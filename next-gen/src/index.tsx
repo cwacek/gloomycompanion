@@ -1,8 +1,11 @@
 import React from "react";
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ShortcutProvider} from 'react-keybind'
 
 import ReactDOM from "react-dom";
-import "./index.css";
+import "./styles/main.css"
 import "bootstrap/dist/css/bootstrap.css";
 import App from "./App";
 import TileGrid from "./board/tilegrid";
@@ -21,6 +24,8 @@ import { Auth0Provider } from "./context/AuthWrapper";
 import authConfig from "./auth_config.json";
 import { TileEditor } from "./board/tileeditor/container";
 import LoginBar from "./board/LoginBar";
+import { ScenarioListContainer } from "./components/scenarios/ScenarioList";
+import {ScenarioEditorContainer} from "./components/scenarios/ScenarioEditor"
 
 if (process.env.NODE_ENV === 'development') {
   const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -42,55 +47,74 @@ const onRedirectCallback = (appState: {
       : window.location.pathname
   );
 };
+
+const client = new ApolloClient({
+  uri: `${authConfig.gloomyserver_api}/v2/query`
+});
+
 ReactDOM.render(
   <ShortcutProvider>
-  <Auth0Provider
-    initOptions={{
-      ...authConfig,
-      redirect_uri: `${window.location.protocol}//${window.location.host}`
-    }}
-    onRedirectCallback={onRedirectCallback}
-  >
-    <HashRouter>
-      <Switch>
-        <Route
-          path="/"
-          render={(props: RouteComponentProps) => (
-            <div>
-            <header>
-                <LoginBar />
-                <Link to={`${props.match.url}/grid`}>Board</Link>
-                <Link to={`${props.match.url}/tileeditor`}>Tile Editor</Link>
-            </header>
+    <Auth0Provider
+      initOptions={{
+        ...authConfig,
+        redirect_uri: `${window.location.protocol}//${window.location.host}`,
+      }}
+      onRedirectCallback={onRedirectCallback}
+    >
+      <ApolloProvider client={client}>
+        <ApolloHooksProvider client={client}>
+          <HashRouter>
+            <Switch>
               <Route
-                path={`${props.match.path}/grid`}
-              render={(props: RouteComponentProps) => (
-              <ScenarioStateProvider>
-                <ViewOptionsProvider>
-                  <TileGrid />
-                </ViewOptionsProvider>
-              </ScenarioStateProvider>
-              )}/>
-              <Route
-                path={`${props.match.path}/tileeditor`}
-                component={TileEditor}
+                path="/"
+                render={(props: RouteComponentProps) => (
+                  <div>
+                    <header>
+                      <LoginBar />
+                      <Link to={`${props.match.url}/boards`}>Boards</Link>
+                      <Link to={`${props.match.url}/tileeditor`}>
+                        Tile Editor
+                      </Link>
+                    </header>
+                    <Route
+                      path={`${props.match.path}/grid`}
+                      render={(props: RouteComponentProps) => (
+                        <ScenarioStateProvider>
+                          <ViewOptionsProvider>
+                            <TileGrid />
+                          </ViewOptionsProvider>
+                        </ScenarioStateProvider>
+                      )}
+                    />
+                    <Route
+                      path={`${props.match.path}/boards`}
+                      component={ScenarioListContainer}
+                    />
+                    <Route
+                      path={`${props.match.path}/board/:id`}
+                      component={ScenarioEditorContainer}
+                    />
+                    <Route
+                      path={`${props.match.path}/tileeditor`}
+                      component={TileEditor}
+                    />
+                  </div>
+                )}
               />
-            </div>
-          )}
-        />
-        <Route
-          path="/monstertiles/:id?"
-          render={(props: RouteComponentProps) => (
-            <DataProvider {...props}>
-              <App />
-            </DataProvider>
-          )}
-        />
-      </Switch>
-    </HashRouter>
-  </Auth0Provider>
-  </ShortcutProvider>
-  ,
+              <Route
+                path="/monstertiles/:id?"
+                render={(props: RouteComponentProps) => (
+                  <DataProvider {...props}>
+                    <App />
+                  </DataProvider>
+                )}
+              />
+            </Switch>
+          </HashRouter>
+        </ApolloHooksProvider>
+      </ApolloProvider>
+    </Auth0Provider>
+  </ShortcutProvider>,
   document.getElementById("root")
 );
 /*
