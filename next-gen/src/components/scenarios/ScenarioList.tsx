@@ -3,6 +3,7 @@ import React from "react";
 import {Link} from "react-router-dom"
 import gql from 'graphql-tag'
 import { useBoardListQuery, BoardListQuery } from "../../generated/graphql";
+import { Loading, Error } from "../util/query";
 
 
 export const QUERY_SCENARIO_LIST = gql`
@@ -46,7 +47,7 @@ const ScenarioCards : React.FC<{data : BoardListQuery}> = (props) =>{
             </div>
             <div className="w-2/5 flex flex-column space-y-1">
               <button disabled type="button" className="rounded bg-blue-600 shadow-xs text-white">Play</button>
-              <Link to={`//board/${board.id}`} className="rounded bg-blue-600 shadow-xs text-white text-center">Edit</Link>
+              <Link to={`/board/${board.id}`} className="rounded bg-blue-600 shadow-xs text-white text-center">Edit</Link>
             </div>
           </div>
           <div className="text-gray-500 text-xs font-italic mt-4">
@@ -58,15 +59,3 @@ const ScenarioCards : React.FC<{data : BoardListQuery}> = (props) =>{
   );
 }
 
-const Loading : React.FC = () => {
-  return <div>
-    <span> Loading</span>
-  </div>
-  }
-
-  const Error : React.FC<{message: string}> = (props) => {
-    return <div>
-      <span>Error</span>
-      <span>{props.message}</span>
-    </div>
-  }

@@ -38,11 +38,11 @@
     "typescript": "^3.3.1"
   },
   "scripts": {
-    "start": "npm run watch:css && react-scripts start",
+    "start": "react-scripts start",
     "build": "npm run build:css && react-scripts build",
     "build:graphql": "graphql-codegen --config codegen.yml",
     "build:css": "postcss src/styles/tailwind.css -o src/styles/main.css",
-    "watch:css": "postcss src/styles/tailwind.css -o src/styles/main.css",
+    "watch:css": "postcss -w src/styles/tailwind.css -o src/styles/main.css",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",

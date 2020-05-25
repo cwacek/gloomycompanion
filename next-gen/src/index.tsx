@@ -14,18 +14,14 @@ import {
   Route,
   RouteComponentProps,
   HashRouter,
-  Switch,
-  Link
-} from "react-router-dom";
+  Switch} from "react-router-dom";
 import DataProvider from "./context/DataProvider";
 import ViewOptionsProvider from "./board/ViewOptions";
 import { ScenarioStateProvider } from "./board/ScenarioStateProvider";
 import { Auth0Provider } from "./context/AuthWrapper";
 import authConfig from "./auth_config.json";
-import { TileEditor } from "./board/tileeditor/container";
-import LoginBar from "./board/LoginBar";
-import { ScenarioListContainer } from "./components/scenarios/ScenarioList";
-import {ScenarioEditorContainer} from "./components/scenarios/ScenarioEditor"
+import NavBar from "./components/nav/NavBar";
+import { RenderRoutes } from "./routes";
 
 if (process.env.NODE_ENV === 'development') {
   const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -65,42 +61,20 @@ ReactDOM.render(
         <ApolloHooksProvider client={client}>
           <HashRouter>
             <Switch>
-              <Route
-                path="/"
-                render={(props: RouteComponentProps) => (
-                  <div>
-                    <header>
-                      <LoginBar />
-                      <Link to={`${props.match.url}/boards`}>Boards</Link>
-                      <Link to={`${props.match.url}/tileeditor`}>
-                        Tile Editor
-                      </Link>
-                    </header>
-                    <Route
-                      path={`${props.match.path}/grid`}
-                      render={(props: RouteComponentProps) => (
-                        <ScenarioStateProvider>
-                          <ViewOptionsProvider>
-                            <TileGrid />
-                          </ViewOptionsProvider>
-                        </ScenarioStateProvider>
-                      )}
-                    />
-                    <Route
-                      path={`${props.match.path}/boards`}
-                      component={ScenarioListContainer}
-                    />
-                    <Route
-                      path={`${props.match.path}/board/:id`}
-                      component={ScenarioEditorContainer}
-                    />
-                    <Route
-                      path={`${props.match.path}/tileeditor`}
-                      component={TileEditor}
-                    />
-                  </div>
-                )}
-              />
+              <Route path="/" >
+                <NavBar />
+                <Route
+                  path={`grid`}
+                  render={() => (
+                    <ScenarioStateProvider>
+                      <ViewOptionsProvider>
+                        <TileGrid />
+                      </ViewOptionsProvider>
+                    </ScenarioStateProvider>
+                  )}
+                />
+                <RenderRoutes which="main"/>
+              </Route>
               <Route
                 path="/monstertiles/:id?"
                 render={(props: RouteComponentProps) => (

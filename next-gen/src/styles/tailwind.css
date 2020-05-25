@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
+
+.btn-blue {
+    @apply rounded bg-blue-600 shadow-xs text-white text-center px-2 py-1
+}
+
+.btn-blue:hover {
+    @apply bg-blue-800
+}
+
 @tailwind utilities;
+
+@font-face
+{
+    font-family:                philosopher;
+    src:                        url(Philosopher-Bold.ttf);
+}
+
+@font-face
+{
+    font-family:                pirate;
+    src:                        url(PirataOne-Gloomhaven.ttf);
+}
+
+.font-philosopher {
+    font-family: philosopher;
+}
+
+.font-pirate {
+    font-family: pirate;
+}

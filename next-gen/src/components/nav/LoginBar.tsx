@@ -1,13 +1,13 @@
-import { useAuth0 } from "../context/AuthWrapper";
+import { useAuth0 } from "../../context/AuthWrapper";
 import React from "react"
 
-const LoginBar : React.SFC = () => {
+const LoginBar : React.SFC<{className : string}> = (props) => {
   const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
   return (
-    <div>
+    <div className={props.className} >
       {!isAuthenticated && (
-        <button
+        <button className="btn-blue"
           onClick={() =>
             loginWithRedirect!({})
           }
@@ -16,7 +16,7 @@ const LoginBar : React.SFC = () => {
         </button>
       )}
 
-      {isAuthenticated && <button onClick={() => logout!()}>Log out</button>}
+      {isAuthenticated && <button className="btn-blue" onClick={() => logout!()}>Log out</button>}
     </div>
   );
 };
